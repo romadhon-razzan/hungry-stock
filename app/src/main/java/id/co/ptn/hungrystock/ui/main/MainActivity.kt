@@ -1,4 +1,4 @@
-package id.co.ptn.hungrystock.ui
+package id.co.ptn.hungrystock.ui.main
 
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
