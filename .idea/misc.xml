@@ -3,9 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/Androids/Hungry-Stock/app/src/main/res/drawable/base_background_bottom_sheet.xml" value="0.1" />
         <entry key="..\:/Projects/Androids/Hungry-Stock/app/src/main/res/layout/activity_detail_watch_list.xml" value="0.1" />
         <entry key="..\:/Projects/Androids/Hungry-Stock/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Projects/Androids/Hungry-Stock/app/src/main/res/layout/activity_privacy_police.xml" value="0.1" />
         <entry key="..\:/Projects/Androids/Hungry-Stock/app/src/main/res/layout/empty_result.xml" value="0.1" />
+        <entry key="..\:/Projects/Androids/Hungry-Stock/app/src/main/res/layout/modal_suggested.xml" value="0.25" />
         <entry key="..\:/Projects/Androids/Hungry-Stock/app/src/main/res/layout/toolbar.xml" value="0.1" />
         <entry key="..\:/Projects/Androids/Hungry-Stock/app/src/main/res/layout/toolbar_search.xml" value="0.1" />
         <entry key="..\:/Projects/Androids/Tes Masuk Kerja/test-esq/app/src/main/res/layout/activity_main.xml" value="0.1" />

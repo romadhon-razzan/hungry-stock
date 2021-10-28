@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NoActionBar">
         <activity
+            android:name=".ui.privacy_police.PrivacyPoliceActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.watchlist.DetailWatchListActivity"
             android:exported="false" />
         <activity
