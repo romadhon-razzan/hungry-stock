@@ -1,4 +1,4 @@
-package id.co.ptn.hungrystock.network
+package id.co.ptn.hungrystock.core.network
 
 const val GET_DRINK_BY_FIRST_LETTER = "search.php?"
 const val GET_POPULAR = "popular.php"

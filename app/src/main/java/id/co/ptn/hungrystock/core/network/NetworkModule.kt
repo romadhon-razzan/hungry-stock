@@ -1,4 +1,4 @@
-package id.co.ptn.hungrystock.network
+package id.co.ptn.hungrystock.core.network
 
 import dagger.Module
 import dagger.Provides

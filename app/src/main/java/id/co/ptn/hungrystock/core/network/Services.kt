@@ -1,4 +1,4 @@
-package id.co.ptn.hungrystock.network
+package id.co.ptn.hungrystock.core.network
 
 import retrofit2.Response
 import retrofit2.http.*
