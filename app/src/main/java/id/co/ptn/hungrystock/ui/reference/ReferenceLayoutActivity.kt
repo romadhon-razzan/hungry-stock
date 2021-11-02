@@ -6,9 +6,7 @@ import androidx.databinding.DataBindingUtil
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
-import id.co.ptn.hungrystock.bases.modals.InfoModal
-import id.co.ptn.hungrystock.bases.modals.SuggestedModal
-import id.co.ptn.hungrystock.bases.modals.SuggestedOptionModal
+import id.co.ptn.hungrystock.bases.modals.*
 import id.co.ptn.hungrystock.databinding.ReferenceLayoutBinding
 
 @AndroidEntryPoint
@@ -39,7 +37,7 @@ class ReferenceLayoutActivity: BaseActivity() {
             val modal = SuggestedModal("Suggested", "Detail infonya apa aja. Bisa dijelasin di sini ya. Pada bagian ini, Bisa ditambahkan ilustrasi. Makasih")
                 modal.setListener(object : SuggestedModal.SuggestedModalListener {
                     override fun onSuggestedAction() {
-
+                        modal.dismiss()
                     }
                 })
                 modal.show(supportFragmentManager,"info_modal")
@@ -50,11 +48,45 @@ class ReferenceLayoutActivity: BaseActivity() {
             val modal = SuggestedOptionModal("Suggested", "Detail infonya apa aja. Bisa dijelasin di sini ya. Pada bagian ini, Bisa ditambahkan ilustrasi. Makasih")
             modal.setListener(object : SuggestedOptionModal.SuggestedModalListener {
                 override fun onPositiveAction() {
-                    TODO("Not yet implemented")
+                    modal.dismiss()
                 }
 
                 override fun onNegativeAction() {
-                    TODO("Not yet implemented")
+                    modal.dismiss()
+                }
+
+            })
+            modal.show(supportFragmentManager,"info_modal")
+        }
+
+        binding.cBpModalConfirm.primaryButton.text = "Show Modal Confirm"
+        binding.cBpModalConfirm.primaryButton.setOnClickListener {
+            val modal = ConfirmDefaultModal("Confirm", "Detail infonya apa aja. Bisa dijelasin di sini ya. Pada bagian ini, Bisa ditambahkan ilustrasi. Makasih")
+            modal.isCancelable = false
+            modal.setListener(object : ConfirmDefaultModal.ConfirmDefaultModalListener{
+                override fun onPositiveAction() {
+                    modal.dismiss()
+                }
+
+                override fun onNegativeAction() {
+                    modal.dismiss()
+                }
+
+            })
+            modal.show(supportFragmentManager,"info_modal")
+        }
+
+        binding.cBpModalConfirmCritical.primaryButton.text = "Show Modal Confirm Critical"
+        binding.cBpModalConfirmCritical.primaryButton.setOnClickListener {
+            val modal = ConfirmCriticalModal("Confirm Critical", "Detail infonya apa aja. Bisa dijelasin di sini ya. Pada bagian ini, Bisa ditambahkan ilustrasi. Makasih")
+            modal.isCancelable = false
+            modal.setListener(object : ConfirmCriticalModal.ConfirmDefaultModalListener{
+                override fun onPositiveAction() {
+                    modal.dismiss()
+                }
+
+                override fun onNegativeAction() {
+                    modal.dismiss()
                 }
 
             })

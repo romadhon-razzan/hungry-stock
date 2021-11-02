@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <RelativeLayout
+        android:id="@+id/label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="28dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="28dp">
+        <include
+            android:id="@+id/c_st"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_centerHorizontal="true"
+            layout="@layout/subtitle"/>
+
+        <include
+            android:id="@+id/c_message"
+            layout="@layout/label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/c_st"
+            android:layout_marginTop="@dimen/medium" />
+
+        <LinearLayout
+            android:id="@+id/container_button"
+            android:layout_below="@id/c_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium"
+            android:orientation="horizontal">
+
+            <include
+                android:id="@+id/c_bp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                layout="@layout/button_primary"/>
+
+            <include
+                android:id="@+id/c_bt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                layout="@layout/button_text"/>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>

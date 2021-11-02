@@ -41,6 +41,7 @@ class SuggestedModal constructor(private val title: String,
 
     private fun initListener() {
         binding.btClose.setOnClickListener { dismiss() }
+        binding.cBp.primaryButton.setOnClickListener { listener.onSuggestedAction() }
     }
 
     public interface SuggestedModalListener{

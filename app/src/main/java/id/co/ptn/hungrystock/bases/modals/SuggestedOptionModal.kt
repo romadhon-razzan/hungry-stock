@@ -44,6 +44,8 @@ class SuggestedOptionModal constructor(private val title: String,
 
     private fun initListener() {
         binding.btClose.setOnClickListener { dismiss() }
+        binding.cBp.primaryButton.setOnClickListener { listener.onPositiveAction() }
+        binding.cBt.textButton.setOnClickListener { listener.onNegativeAction() }
     }
 
     public interface SuggestedModalListener{

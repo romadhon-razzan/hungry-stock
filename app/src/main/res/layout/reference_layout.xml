@@ -48,6 +48,14 @@
                 android:id="@+id/c_bp_modal_suggested_option"
                 layout="@layout/button_primary"/>
 
+            <include
+                android:id="@+id/c_bp_modal_confirm"
+                layout="@layout/button_primary"/>
+
+            <include
+                android:id="@+id/c_bp_modal_confirm_critical"
+                layout="@layout/button_primary"/>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>
