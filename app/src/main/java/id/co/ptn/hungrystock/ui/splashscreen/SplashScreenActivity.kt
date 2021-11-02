@@ -7,18 +7,30 @@ import android.os.Looper
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
+import id.co.ptn.hungrystock.ui.general.auth.AuthActivity
 import id.co.ptn.hungrystock.ui.main.MainActivity
-import java.security.MessageDigest
 
 @AndroidEntryPoint
 class SplashScreenActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
+        init()
+    }
+
+    private fun init() {
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
+            if (sessionManager.token.isEmpty()) toLogin()
+            else toMain()
             finish()
         }, 2000)
-        
+    }
+
+    private fun toLogin() {
+        startActivity(Intent(this@SplashScreenActivity, AuthActivity::class.java))
+    }
+
+    private fun toMain() {
+        startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
     }
 }
