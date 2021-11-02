@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.general.auth.AuthActivity">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/large"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/c_l"
+                layout="@layout/label"/>
+
+            <include
+                android:id="@+id/c_tf1"
+                layout="@layout/text_field"/>
+
+            <include
+                android:id="@+id/c_tf2"
+                layout="@layout/text_field"/>
+
+            <include
+                android:id="@+id/c_bp"
+                layout="@layout/button_primary"/>
+
+            <include
+                android:id="@+id/c_bo"
+                layout="@layout/button_outline"/>
+
+            <include
+                android:id="@+id/c_bt"
+                layout="@layout/button_text"/>
+
+            <include
+                android:id="@+id/c_bp_modal"
+                layout="@layout/button_primary"/>
+
+            <include
+                android:id="@+id/c_bp_modal_suggested"
+                layout="@layout/button_primary"/>
+
+            <include
+                android:id="@+id/c_bp_modal_suggested_option"
+                layout="@layout/button_primary"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

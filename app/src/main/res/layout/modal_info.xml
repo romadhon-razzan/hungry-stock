@@ -33,13 +33,5 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/medium"
             layout="@layout/label"/>
-
-        <include
-            android:id="@+id/c_bp"
-            layout="@layout/button_primary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/c_message"
-            android:layout_marginTop="@dimen/medium" />
     </RelativeLayout>
 </layout>

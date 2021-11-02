@@ -9,6 +9,7 @@ import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
 import id.co.ptn.hungrystock.ui.general.auth.AuthActivity
 import id.co.ptn.hungrystock.ui.main.MainActivity
+import id.co.ptn.hungrystock.ui.reference.ReferenceLayoutActivity
 
 @AndroidEntryPoint
 class SplashScreenActivity : BaseActivity() {
@@ -20,8 +21,9 @@ class SplashScreenActivity : BaseActivity() {
 
     private fun init() {
         Handler(Looper.getMainLooper()).postDelayed({
-            if (sessionManager.token.isEmpty()) toLogin()
-            else toMain()
+            toReference()
+//            if (sessionManager.token.isEmpty()) toLogin()
+//            else toMain()
             finish()
         }, 2000)
     }
@@ -32,5 +34,9 @@ class SplashScreenActivity : BaseActivity() {
 
     private fun toMain() {
         startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
+    }
+
+    private fun toReference() {
+        startActivity(Intent(this@SplashScreenActivity, ReferenceLayoutActivity::class.java))
     }
 }

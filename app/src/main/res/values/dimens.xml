@@ -17,5 +17,7 @@
     <dimen name="font_medium">16sp</dimen>
     <dimen name="font_large">20sp</dimen>
 
+    <dimen name="subtitle">20sp</dimen>
+
 
 </resources>
