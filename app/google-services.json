@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "917184278429",
+    "project_id": "hungry-stock",
+    "storage_bucket": "hungry-stock.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917184278429:android:2eab86c08839eb31d58974",
+        "android_client_info": {
+          "package_name": "id.co.ptn.hungrystock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "917184278429-tt4pj31k57fce2temtm008enid75c8u5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.co.ptn.hungrystock",
+            "certificate_hash": "6220e1152824bc40220679e97fb0cdefaca9d6ad"
+          }
+        },
+        {
+          "client_id": "917184278429-shcur4inpjcdcipqusab57cbjgnqrvoj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4V6QCgYMv9aNYbt-FPHY2gz9flt7aH_k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "917184278429-shcur4inpjcdcipqusab57cbjgnqrvoj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
