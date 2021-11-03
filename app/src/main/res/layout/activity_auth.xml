@@ -3,32 +3,58 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <androidx.core.widget.NestedScrollView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.general.auth.AuthActivity">
-        <LinearLayout
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/c_app_bar"
+            layout="@layout/toolbar" />
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <androidx.appcompat.widget.AppCompatTextView
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            tools:context=".ui.general.auth.AuthActivity">
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/font_normal"
-                android:text="User Id"/>
+                android:padding="@dimen/large"
+                android:orientation="vertical">
+                <include
+                    android:id="@+id/c_l_id"
+                    layout="@layout/label" />
 
-            <include
-                android:id="@+id/c_bp"
-                layout="@layout/button_primary"/>
+                <include
+                    android:id="@+id/c_tf_id"
+                    layout="@layout/text_field" />
 
-            <include
-                android:id="@+id/c_bo"
-                layout="@layout/button_outline"/>
+                <androidx.legacy.widget.Space
+                    android:layout_width="@dimen/medium"
+                    android:layout_height="@dimen/medium"/>
 
-            <include
-                android:id="@+id/c_bt"
-                layout="@layout/button_text"/>
+                <include
+                    android:id="@+id/c_l_password"
+                    layout="@layout/label" />
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+                <include
+                    android:id="@+id/c_tf_password"
+                    layout="@layout/text_field" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="@dimen/large"
+                    android:layout_height="@dimen/large"/>
+
+                <include
+                    android:id="@+id/c_bp"
+                    layout="@layout/button_primary"/>
+
+                <include
+                    android:id="@+id/c_bt"
+                    layout="@layout/button_text"/>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

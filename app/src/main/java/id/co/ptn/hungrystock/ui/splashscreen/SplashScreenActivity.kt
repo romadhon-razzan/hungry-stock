@@ -21,22 +21,11 @@ class SplashScreenActivity : BaseActivity() {
 
     private fun init() {
         Handler(Looper.getMainLooper()).postDelayed({
-            toReference()
+            router.toOnboard()
 //            if (sessionManager.token.isEmpty()) toLogin()
 //            else toMain()
             finish()
         }, 2000)
     }
 
-    private fun toLogin() {
-        startActivity(Intent(this@SplashScreenActivity, AuthActivity::class.java))
-    }
-
-    private fun toMain() {
-        startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
-    }
-
-    private fun toReference() {
-        startActivity(Intent(this@SplashScreenActivity, ReferenceLayoutActivity::class.java))
-    }
 }

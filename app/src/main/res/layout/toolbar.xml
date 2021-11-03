@@ -2,29 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <RelativeLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height"
-        android:paddingStart="@dimen/small"
-        android:paddingEnd="@dimen/medium">
-
-        <ImageButton
-            android:id="@+id/bt_back"
-            android:layout_width="40dp"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/small"
-            android:background="@color/transparent"
-            android:src="@drawable/ic_back"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_title"
-            android:layout_toEndOf="@id/bt_back"
-            style="@style/LayoutMatchParent"
-            android:gravity="center_vertical"
-            android:singleLine="true"
-            android:textColor="@color/black"
-            android:textSize="@dimen/font_medium"
-            tools:text="Toolbar title"/>
-
-    </RelativeLayout>
+            app:titleTextColor="@color/white"/>
+    </com.google.android.material.appbar.AppBarLayout>
 </layout>
