@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NoActionBar">
         <activity
+            android:name=".ui.video_player.VideoPlayerActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.privacy_police.PrivacyPoliceActivity"
             android:exported="false" />
         <activity
