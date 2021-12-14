@@ -7,6 +7,7 @@ import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
 import id.co.ptn.hungrystock.databinding.ActivityOnboardingBinding
 import id.co.ptn.hungrystock.router.Router
+import id.co.ptn.hungrystock.ui.onboarding.adapters.OnboardVPAdapter
 
 class OnboardActivity : BaseActivity() {
     private lateinit var binding: ActivityOnboardingBinding
@@ -24,12 +25,10 @@ class OnboardActivity : BaseActivity() {
     }
 
     private fun setView() {
-        binding.cBp.primaryButton.text = "Masuk"
-        binding.cBt.textButton.text = "Daftar Sekarang"
+        binding.viewPager.adapter = OnboardVPAdapter(supportFragmentManager)
     }
 
     private fun listener() {
-        binding.cBp.primaryButton.setOnClickListener { router.toAuth() }
-        binding.cBt.textButton.setOnClickListener { router.toRegistration() }
+
     }
 }

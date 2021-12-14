@@ -3,14 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include
-            android:id="@+id/c_app_bar"
-            layout="@layout/toolbar" />
+        android:layout_height="match_parent"
+        android:background="@color/background">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -22,39 +19,145 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/large"
                 android:orientation="vertical">
-                <include
-                    android:id="@+id/c_l_id"
-                    layout="@layout/label" />
 
-                <include
-                    android:id="@+id/c_tf_id"
-                    layout="@layout/text_field" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/logo_86x88"/>
 
-                <androidx.legacy.widget.Space
-                    android:layout_width="@dimen/medium"
-                    android:layout_height="@dimen/medium"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/lbl_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/large"
+                    android:fontFamily="@font/barlow_semibold"
+                    android:gravity="center"
+                    android:text="@string/label_email_address"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/font_normal" />
 
-                <include
-                    android:id="@+id/c_l_password"
-                    layout="@layout/label" />
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small1"
+                    app:cardCornerRadius="4dp"
+                    app:strokeColor="#423B3C"
+                    app:strokeWidth="1dp"
+                    app:cardBackgroundColor="#1C191A">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:paddingStart="@dimen/normal"
+                        android:paddingEnd="@dimen/normal"
+                        android:background="@color/transparent"
+                        android:fontFamily="@font/barlow_semibold"
+                        android:textSize="@dimen/font_medium"
+                        android:textColor="@color/grey"
+                        android:textColorHint="@color/grey"
+                        android:hint="@string/cth_name_example_com"/>
+                </com.google.android.material.card.MaterialCardView>
 
-                <include
-                    android:id="@+id/c_tf_password"
-                    layout="@layout/text_field" />
 
-                <androidx.legacy.widget.Space
-                    android:layout_width="@dimen/large"
-                    android:layout_height="@dimen/large"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/lbl_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/normal1"
+                    android:fontFamily="@font/barlow_semibold"
+                    android:gravity="center"
+                    android:text="@string/label_password_sekarang"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/font_normal" />
 
-                <include
-                    android:id="@+id/c_bp"
-                    layout="@layout/button_primary"/>
 
-                <include
-                    android:id="@+id/c_bt"
-                    layout="@layout/button_text"/>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small1"
+                    app:cardCornerRadius="4dp"
+                    app:strokeColor="#423B3C"
+                    app:strokeWidth="1dp"
+                    app:cardBackgroundColor="#1C191A">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:paddingStart="@dimen/normal"
+                        android:paddingEnd="@dimen/normal"
+                        android:background="@color/transparent"
+                        android:fontFamily="@font/barlow_semibold"
+                        android:inputType="textPassword"
+                        android:textSize="@dimen/font_medium"
+                        android:textColor="@color/grey"
+                        android:textColorHint="@color/grey"
+                        android:text="12345678"/>
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <Button
+                    android:id="@+id/bt_forgot_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/normal1"
+                    android:layout_marginBottom="@dimen/normal"
+                    android:textAllCaps="false"
+                    android:textColor="@color/grey"
+                    android:fontFamily="@font/barlow_semibold"
+                    android:textSize="@dimen/font_normal"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:text="Lupa Password"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/bt_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    app:cardBackgroundColor="@color/secondary"
+                    app:cardCornerRadius="50dp"
+                    app:cardElevation="5dp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/barlow_semibold"
+                        android:gravity="center"
+                        android:text="@string/label_masuk"
+                        android:textColor="@color/dark"
+                        android:textSize="@dimen/font_normal" />
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bt_register"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            app:cardBackgroundColor="@color/transparent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/barlow_semibold"
+                    android:gravity="center"
+                    android:text="@string/belum_punya_akun"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_normal" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/normal"
+                    android:fontFamily="@font/barlow_semibold"
+                    android:gravity="center"
+                    android:text="@string/label_daftar_sekarang"
+                    android:textColor="@color/secondary"
+                    android:textSize="@dimen/font_normal" />
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
 </layout>

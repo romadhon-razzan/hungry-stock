@@ -7,15 +7,23 @@
     <dimen name="item_drink_size">150dp</dimen>
     <dimen name="item_popular_drink_size">200dp</dimen>
 
-    <dimen name="small">10dp</dimen>
-    <dimen name="normal">14dp</dimen>
-    <dimen name="medium">16dp</dimen>
-    <dimen name="large">20dp</dimen>
+    <dimen name="small">4dp</dimen>
+    <dimen name="small1">8dp</dimen>
+    <dimen name="normal">10dp</dimen>
+    <dimen name="normal1">14dp</dimen>
+    <dimen name="normal2">16dp</dimen>
+    <dimen name="medium">18dp</dimen>
+    <dimen name="medium1">20dp</dimen>
+    <dimen name="large">24dp</dimen>
+    <dimen name="large1">32dp</dimen>
 
-    <dimen name="font_small">10sp</dimen>
-    <dimen name="font_normal">14sp</dimen>
+    <dimen name="font_small">12sp</dimen>
+    <dimen name="font_normal">13sp</dimen>
+    <dimen name="font_normal1">14sp</dimen>
     <dimen name="font_medium">16sp</dimen>
+    <dimen name="font_medium1">18sp</dimen>
     <dimen name="font_large">20sp</dimen>
+    <dimen name="font_large1">32sp</dimen>
 
     <dimen name="subtitle">20sp</dimen>
 
