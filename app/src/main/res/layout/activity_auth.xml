@@ -12,18 +12,29 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@id/bt_register"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             tools:context=".ui.general.auth.AuthActivity">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/large"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/large">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/logo_86x88"/>
+                    android:src="@drawable/logo_86x88" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/large"
+                    android:fontFamily="@font/ft_coolvetica"
+                    android:text="Welcome to \n HUNGRYSTOCK"
+                    android:textColor="@color/grey"
+                    android:textSize="24sp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/lbl_username"
@@ -34,27 +45,30 @@
                     android:gravity="center"
                     android:text="@string/label_email_address"
                     android:textColor="@color/grey"
-                    android:textSize="@dimen/font_normal" />
+                    android:textSize="@dimen/font_normal"
+                    android:drawablePadding="@dimen/small"
+                    app:drawableEndCompat="@drawable/ic_required_asterisk" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small1"
+                    app:cardBackgroundColor="#1C191A"
                     app:cardCornerRadius="4dp"
                     app:strokeColor="#423B3C"
-                    app:strokeWidth="1dp"
-                    app:cardBackgroundColor="#1C191A">
+                    app:strokeWidth="1dp">
+
                     <androidx.appcompat.widget.AppCompatEditText
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:paddingStart="@dimen/normal"
-                        android:paddingEnd="@dimen/normal"
                         android:background="@color/transparent"
                         android:fontFamily="@font/barlow_semibold"
-                        android:textSize="@dimen/font_medium"
+                        android:hint="@string/cth_name_example_com"
+                        android:paddingStart="@dimen/normal"
+                        android:paddingEnd="@dimen/normal"
                         android:textColor="@color/grey"
                         android:textColorHint="@color/grey"
-                        android:hint="@string/cth_name_example_com"/>
+                        android:textSize="@dimen/font_medium" />
                 </com.google.android.material.card.MaterialCardView>
 
 
@@ -67,45 +81,48 @@
                     android:gravity="center"
                     android:text="@string/label_password_sekarang"
                     android:textColor="@color/grey"
-                    android:textSize="@dimen/font_normal" />
+                    android:textSize="@dimen/font_normal"
+                    android:drawablePadding="@dimen/small"
+                    app:drawableEndCompat="@drawable/ic_required_asterisk"/>
 
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small1"
+                    app:cardBackgroundColor="#1C191A"
                     app:cardCornerRadius="4dp"
                     app:strokeColor="#423B3C"
-                    app:strokeWidth="1dp"
-                    app:cardBackgroundColor="#1C191A">
+                    app:strokeWidth="1dp">
+
                     <androidx.appcompat.widget.AppCompatEditText
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:paddingStart="@dimen/normal"
-                        android:paddingEnd="@dimen/normal"
                         android:background="@color/transparent"
                         android:fontFamily="@font/barlow_semibold"
                         android:inputType="textPassword"
-                        android:textSize="@dimen/font_medium"
+                        android:paddingStart="@dimen/normal"
+                        android:paddingEnd="@dimen/normal"
+                        android:text="12345678"
                         android:textColor="@color/grey"
                         android:textColorHint="@color/grey"
-                        android:text="12345678"/>
+                        android:textSize="@dimen/font_medium" />
                 </com.google.android.material.card.MaterialCardView>
 
 
                 <Button
                     android:id="@+id/bt_forgot_password"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/normal1"
                     android:layout_marginBottom="@dimen/normal"
+                    android:fontFamily="@font/barlow_semibold"
+                    android:text="Lupa Password"
                     android:textAllCaps="false"
                     android:textColor="@color/grey"
-                    android:fontFamily="@font/barlow_semibold"
-                    android:textSize="@dimen/font_normal"
-                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-                    android:text="Lupa Password"/>
+                    android:textSize="@dimen/font_normal" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/bt_login"
@@ -114,6 +131,7 @@
                     app:cardBackgroundColor="@color/secondary"
                     app:cardCornerRadius="50dp"
                     app:cardElevation="5dp">
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
