@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.onboarding.fragments.PageOneFragment">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:background="@color/background">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/c_upload"
+                layout="@layout/registration_upload_photo" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/lbl_full_name"
+                android:layout_below="@id/c_upload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginEnd="@dimen/large"
+                android:fontFamily="@font/barlow_semibold"
+                android:gravity="center"
+                android:text="@string/label_nama_lengkap"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_normal"
+                android:drawablePadding="@dimen/small"
+                app:drawableEndCompat="@drawable/ic_required_asterisk" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_et_full_name"
+                android:layout_below="@+id/lbl_full_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small1"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginEnd="@dimen/large"
+                android:layout_marginBottom="@dimen/normal1"
+                app:cardBackgroundColor="#1C191A"
+                app:cardCornerRadius="8dp"
+                app:strokeColor="#423B3C"
+                app:strokeWidth="1dp">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/barlow_semibold"
+                    android:paddingStart="@dimen/normal"
+                    android:paddingEnd="@dimen/normal"
+                    android:textColor="@color/grey"
+                    android:textColorHint="@color/grey"
+                    android:textSize="@dimen/font_medium" />
+            </com.google.android.material.card.MaterialCardView>
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/lbl_born"
+                android:layout_below="@id/card_et_full_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginEnd="@dimen/large"
+                android:fontFamily="@font/barlow_semibold"
+                android:gravity="center"
+                android:text="@string/label_tanggal_lahir"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_normal"
+                android:drawablePadding="@dimen/small"
+                app:drawableEndCompat="@drawable/ic_required_asterisk" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_et_born"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lbl_born"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginTop="@dimen/small1"
+                android:layout_marginEnd="@dimen/large"
+                android:layout_marginBottom="@dimen/normal1"
+                app:cardBackgroundColor="#1C191A"
+                app:cardCornerRadius="8dp"
+                app:strokeColor="#423B3C"
+                app:strokeWidth="1dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_date_born"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_below="@id/card_et_full_name"
+                    android:layout_marginStart="@dimen/normal2"
+                    android:layout_marginEnd="@dimen/normal2"
+                    android:drawablePadding="@dimen/small"
+                    android:fontFamily="@font/barlow_semibold"
+                    android:gravity="center|start"
+                    android:text="@string/dd_mm_yyyy"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/font_normal"
+                    app:drawableEndCompat="@drawable/ic_calendar" />
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/lbl_WA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_et_born"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginEnd="@dimen/large"
+                android:drawablePadding="@dimen/small"
+                android:fontFamily="@font/barlow_semibold"
+                android:gravity="center"
+                android:text="@string/label_nomor_whatsapp"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_normal"
+                app:drawableEndCompat="@drawable/ic_required_asterisk" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_et_WA"
+                android:layout_below="@+id/lbl_WA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small1"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginEnd="@dimen/large"
+                app:cardBackgroundColor="#1C191A"
+                app:cardCornerRadius="8dp"
+                app:strokeColor="#423B3C"
+                app:strokeWidth="1dp">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_wa"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="#021B1818"
+                    android:fontFamily="@font/barlow_semibold"
+                    android:paddingStart="@dimen/normal2"
+                    android:paddingEnd="@dimen/normal2"
+                    android:textColor="@color/grey"
+                    android:textColorHint="#AFAEAE"
+                    android:textSize="@dimen/font_medium"
+                    android:hint="@string/hint_wa_number"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/lbl_WA_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_et_WA"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="@dimen/large"
+                android:layout_marginBottom="@dimen/normal1"
+                android:drawablePadding="@dimen/small"
+                android:fontFamily="@font/ft_barlow_regular"
+                android:gravity="center"
+                android:text="@string/whatsapp_untuk_konfirmasi_pembayaran"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_normal" />
+
+
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/lbl_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lbl_WA_info"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginEnd="@dimen/large"
+                android:drawablePadding="@dimen/small"
+                android:fontFamily="@font/barlow_semibold"
+                android:gravity="center"
+                android:text="@string/label_alamat_email"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_normal"
+                app:drawableEndCompat="@drawable/ic_required_asterisk" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_et_email"
+                android:layout_below="@+id/lbl_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small1"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginEnd="@dimen/large"
+                android:layout_marginBottom="@dimen/normal1"
+                app:cardBackgroundColor="#1C191A"
+                app:cardCornerRadius="8dp"
+                app:strokeColor="#423B3C"
+                app:strokeWidth="1dp">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/barlow_semibold"
+                    android:paddingStart="@dimen/normal2"
+                    android:paddingEnd="@dimen/normal2"
+                    android:textColor="@color/grey"
+                    android:textColorHint="@color/grey"
+                    android:textSize="@dimen/font_medium"
+                    android:hint="@string/cth_name_example_com"/>
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/lbl_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_et_email"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginEnd="@dimen/large"
+                android:drawablePadding="@dimen/small"
+                android:fontFamily="@font/barlow_semibold"
+                android:gravity="center"
+                android:text="@string/label_password"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_normal"
+                app:drawableEndCompat="@drawable/ic_required_asterisk" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_password"
+                android:layout_below="@+id/lbl_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small1"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginEnd="@dimen/large"
+                android:layout_marginBottom="@dimen/normal1"
+                app:cardBackgroundColor="#1C191A"
+                app:cardCornerRadius="8dp"
+                app:strokeColor="#423B3C"
+                app:strokeWidth="1dp">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/barlow_semibold"
+                    android:paddingStart="@dimen/normal2"
+                    android:paddingEnd="@dimen/normal2"
+                    android:textColor="@color/grey"
+                    android:textColorHint="@color/grey"
+                    android:textSize="@dimen/font_medium"
+                    android:hint="@string/hint_minimal_8_karakter"/>
+            </com.google.android.material.card.MaterialCardView>
+
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/lbl_conf_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_password"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginEnd="@dimen/large"
+                android:drawablePadding="@dimen/small"
+                android:fontFamily="@font/barlow_semibold"
+                android:gravity="center"
+                android:text="@string/label_confirm_password"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_normal"
+                app:drawableEndCompat="@drawable/ic_required_asterisk" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_conf_password"
+                android:layout_below="@+id/lbl_conf_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small1"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginEnd="@dimen/large"
+                android:layout_marginBottom="42dp"
+                app:cardBackgroundColor="#1C191A"
+                app:cardCornerRadius="8dp"
+                app:strokeColor="#423B3C"
+                app:strokeWidth="1dp">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_conf_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/barlow_semibold"
+                    android:paddingStart="@dimen/normal2"
+                    android:paddingEnd="@dimen/normal2"
+                    android:textColor="@color/grey"
+                    android:textColorHint="@color/grey"
+                    android:textSize="@dimen/font_medium"
+                    android:hint="@string/hint_ketik_ulang_password"/>
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/bt_next"
+                android:layout_below="@id/card_conf_password"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginBottom="42dp"
+                app:cardBackgroundColor="@color/secondary"
+                app:cardCornerRadius="50dp"
+                app:cardElevation="5dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/large"
+                    android:layout_marginEnd="@dimen/large"
+                    android:fontFamily="@font/barlow_semibold"
+                    android:gravity="center"
+                    android:text="Selanjutnya"
+                    android:textColor="@color/dark"
+                    android:textSize="@dimen/font_normal" />
+            </com.google.android.material.card.MaterialCardView>
+
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

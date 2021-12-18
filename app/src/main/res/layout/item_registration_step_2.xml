@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/normal2"
+        android:orientation="vertical"
+        android:background="@color/background">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_below="@id/c_upload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/normal"
+            android:layout_marginEnd="@dimen/normal"
+            android:layout_marginBottom="@dimen/normal1"
+            android:fontFamily="@font/barlow_semibold"
+            android:gravity="center"
+            android:text="@string/label_nama_lengkap"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/font_normal"
+            android:drawablePadding="@dimen/small"
+            app:drawableEndCompat="@drawable/ic_required_asterisk" />
+
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </RadioGroup>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_et_full_name"
+            android:layout_below="@+id/lbl_full_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small1"
+            android:layout_marginStart="@dimen/large"
+            android:layout_marginEnd="@dimen/large"
+            android:layout_marginBottom="@dimen/normal1"
+            app:cardBackgroundColor="#1C191A"
+            app:cardCornerRadius="8dp"
+            app:strokeColor="#423B3C"
+            app:strokeWidth="1dp">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/transparent"
+                android:fontFamily="@font/barlow_semibold"
+                android:paddingStart="@dimen/medium"
+                android:paddingEnd="@dimen/medium"
+                android:hint="@string/hint_input"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:textSize="@dimen/font_medium" />
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

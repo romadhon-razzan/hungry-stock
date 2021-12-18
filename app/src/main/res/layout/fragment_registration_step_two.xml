@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.onboarding.fragments.PageOneFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:background="@color/background">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="0dp"
+            android:paddingBottom="@dimen/large1"
+            >
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/lbl_info_proof"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recycler_view"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginEnd="@dimen/large"
+                android:layout_marginBottom="@dimen/normal1"
+                android:drawablePadding="@dimen/small"
+                android:fontFamily="@font/ft_barlow_regular"
+                android:text="@string/info_bukti_transfer"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_normal" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/bt_add_photo"
+                android:layout_below="@id/lbl_info_proof"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginStart="19dp"
+                android:layout_marginEnd="@dimen/small"
+                android:layout_marginBottom="56dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/secondary"
+                app:cardBackgroundColor="@color/transparent"
+                app:cardCornerRadius="50dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/medium1"
+                    android:layout_marginEnd="@dimen/medium1"
+                    android:fontFamily="@font/barlow_semibold"
+                    android:gravity="center"
+                    android:text="@string/button_tambahkan_file"
+                    android:textColor="@color/secondary"
+                    android:textSize="@dimen/font_normal"
+                    android:drawablePadding="@dimen/small"
+                    app:drawableStartCompat="@drawable/ic_upload_file"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_below="@+id/bt_add_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/bt_back"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="19dp"
+                    android:layout_marginEnd="@dimen/small"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/secondary"
+                    app:cardBackgroundColor="@color/transparent"
+                    app:cardCornerRadius="50dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/medium1"
+                        android:layout_marginEnd="@dimen/medium1"
+                        android:fontFamily="@font/barlow_semibold"
+                        android:gravity="center"
+                        android:text="@string/button_kembali"
+                        android:textColor="@color/secondary"
+                        android:textSize="@dimen/font_normal"
+                       />
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/bt_register"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="19dp"
+                    android:layout_marginEnd="@dimen/small"
+                    app:cardBackgroundColor="@color/secondary"
+                    app:cardCornerRadius="50dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/medium1"
+                        android:layout_marginEnd="@dimen/medium1"
+                        android:fontFamily="@font/barlow_semibold"
+                        android:gravity="center"
+                        android:text="@string/button_daftar_member"
+                        android:textColor="@color/dark"
+                        android:textSize="@dimen/font_normal"/>
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</layout>

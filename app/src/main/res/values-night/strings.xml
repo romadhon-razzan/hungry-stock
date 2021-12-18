@@ -14,4 +14,22 @@
     <string name="label_daftar_sekarang">Daftar sekarang</string>
     <string name="button_lupa_password"><u>Lupa Password</u></string>
     <string name="label_member_registration">Member Registration</string>
+    <string name="label_upload_foto_profil">Upload foto profil</string>
+    <string name="button_tambahkan_file">Tambahkan File</string>
+    <string name="label_nama_lengkap">Nama Lengkap</string>
+    <string name="hint_input">Input</string>
+    <string name="label_tanggal_lahir">Tanggal Lahir</string>
+    <string name="label_nomor_whatsapp">Nomor WhatsApp</string>
+    <string name="hint_wa_number">0812 - 3456 - 7890</string>
+    <string name="label_alamat_email">Alamat Email</string>
+    <string name="label_password">Password</string>
+    <string name="hint_minimal_8_karakter">Minimal 8 karakter</string>
+    <string name="label_confirm_password">Confirm Password</string>
+    <string name="hint_ketik_ulang_password">Ketik ulang password</string>
+    <string name="whatsapp_untuk_konfirmasi_pembayaran">WhatsApp untuk konfirmasi pembayaran</string>
+
+    <string name="button_kembali">Kembali</string>
+    <string name="button_daftar_member">Daftar Member</string>
+    <string name="info_bukti_transfer">Silahkan upload bukti pembayaran jika sudah melakukan transfer Rp5.000.000 ke Rek. BCA 6080 - 504 - 134 a.n Michael Setia Atmaja \n\n\n (Tulis di kolom keterangan saat transfer: Member HungryStock 2022)</string>
+    <string name="label_halaman_1_dari_n">Halaman %s dari %s</string>
 </resources>
