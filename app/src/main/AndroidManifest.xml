@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NoActionBar">
         <activity
+            android:name=".ui.general.registration.RegistrationActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.onboarding.OnboardActivity"
             android:exported="false" />
         <activity

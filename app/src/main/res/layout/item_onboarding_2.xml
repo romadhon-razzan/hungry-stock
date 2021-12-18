@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/normal2"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/small"
+            android:fontFamily="@font/ft_coolvetica"
+            android:textSize="@dimen/font_normal1"
+            android:textColor="@color/dark"
+            tools:text="Top Up Knowledge and Wisdom"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ft_barlow_regular"
+            android:textSize="@dimen/font_small"
+            android:textColor="@color/dark"
+            tools:text="Belajar mengenai skill, wisdom dan psikologi investasi."/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

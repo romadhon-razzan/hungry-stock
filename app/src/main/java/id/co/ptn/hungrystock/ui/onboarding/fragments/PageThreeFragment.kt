@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseFragment
 
@@ -13,6 +14,7 @@ import id.co.ptn.hungrystock.bases.BaseFragment
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
+@AndroidEntryPoint
 class PageThreeFragment : BaseFragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -31,7 +33,7 @@ class PageThreeFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_page_one, container, false)
+        return inflater.inflate(R.layout.fragment_page_three, container, false)
     }
 
     companion object {

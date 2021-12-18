@@ -7,6 +7,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="@dimen/large"
+        android:paddingBottom="@dimen/large1"
         android:paddingStart="@dimen/normal2"
         android:paddingEnd="@dimen/normal2"
         tools:background="@color/background">
@@ -25,9 +27,9 @@
                 <ImageView
                     android:id="@+id/image"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="400dp"
                     android:layout_marginBottom="@dimen/small1"
-                    tools:src="@drawable/img_onboarding_1"/>
+                    android:src="@drawable/img_onboarding_2" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_title"
@@ -40,7 +42,7 @@
                     android:fontFamily="@font/coolvetica"
                     android:textColor="@color/dark"
                     android:textSize="@dimen/font_large"
-                    tools:text="Webinar Value Investing ala LKH Batch 12" />
+                    android:text="Webinar Value Investing ala LKH Batch 12" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_date"
@@ -53,7 +55,7 @@
                     android:fontFamily="@font/coolvetica"
                     android:textColor="@color/dark"
                     android:textSize="@dimen/font_small"
-                    tools:text="Sabtu, 22 Nov - Minggu, 14 Des 2021" />
+                    android:text="Sabtu, 22 Nov - Minggu, 14 Des 2021" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_speaker"
@@ -66,7 +68,7 @@
                     android:fontFamily="@font/coolvetica"
                     android:textColor="#7C6723"
                     android:textSize="@dimen/font_small"
-                    tools:text="Pembicara: Lukas Setia Atmaja" />
+                    android:text="Pembicara: Lukas Setia Atmaja" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_description"
@@ -79,8 +81,7 @@
                     android:fontFamily="@font/coolvetica"
                     android:textColor="@color/dark"
                     android:textSize="11sp"
-                    tools:text="Ini adalah kelas spesial untuk mempelajari jurus value investing yang diterapkan Pak Lo Kheng Hong untuk mendapatkan saham multi bagger.
-a" />
+                    android:text="Ini adalah kelas spesial untuk mempelajari jurus value investing yang diterapkan Pak Lo Kheng Hong untuk mendapatkan saham multi bagger." />
 
 
             </RelativeLayout>

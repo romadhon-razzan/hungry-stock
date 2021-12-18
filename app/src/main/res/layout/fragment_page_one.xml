@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginBottom="@dimen/medium1"
-            android:src="@drawable/img_onboarding_1"/>
+            android:src="@drawable/img_onboarding_1" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/label"
@@ -63,6 +63,7 @@
             android:layout_height="48dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
+            android:layout_marginBottom="@dimen/large1"
             android:layout_alignParentBottom="true"
             app:cardCornerRadius="50dp"
             app:cardBackgroundColor="@color/secondary">

@@ -31,7 +31,7 @@ open class BaseActivity : AppCompatActivity() {
         val decorView: View = window.decorView
         val wic = WindowInsetsControllerCompat(window, decorView)
         wic.isAppearanceLightStatusBars = true
-        window.statusBarColor = ContextCompat.getColor(this, R.color.white)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.background)
     }
 
     fun setToolbar(toolbar: Toolbar, title: String?) {

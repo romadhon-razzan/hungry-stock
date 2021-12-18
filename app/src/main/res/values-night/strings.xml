@@ -12,4 +12,6 @@
     <string name="label_masuk">Masuk</string>
     <string name="belum_punya_akun">Belum punya akun?</string>
     <string name="label_daftar_sekarang">Daftar sekarang</string>
+    <string name="button_lupa_password"><u>Lupa Password</u></string>
+    <string name="label_member_registration">Member Registration</string>
 </resources>
