@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import id.co.ptn.hungrystock.ui.general.auth.AuthActivity
 import id.co.ptn.hungrystock.ui.general.registration.RegistrationActivity
+import id.co.ptn.hungrystock.ui.general.registration.RegistrationSuccessActivity
 import id.co.ptn.hungrystock.ui.main.MainActivity
 import id.co.ptn.hungrystock.ui.onboarding.OnboardActivity
 import id.co.ptn.hungrystock.ui.reference.ReferenceLayoutActivity
@@ -19,6 +20,10 @@ class Router constructor(private val context: Context) {
 
     fun toRegistration() {
         context.startActivity(Intent(context, RegistrationActivity::class.java))
+    }
+
+    fun toRegistrationSuccess() {
+        context.startActivity(Intent(context, RegistrationSuccessActivity::class.java))
     }
 
     fun toMain() {

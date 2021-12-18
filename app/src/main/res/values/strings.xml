@@ -52,4 +52,7 @@
     <string name="button_daftar_member">Daftar Member</string>
     <string name="info_bukti_transfer">Silahkan upload bukti pembayaran jika sudah melakukan transfer Rp5.000.000 ke Rek. BCA 6080 - 504 - 134 a.n Michael Setia Atmaja \n\n\n (Tulis di kolom keterangan saat transfer: Member HungryStock 2022)</string>
     <string name="label_halaman_1_dari_n">Halaman %s dari %s</string>
+    <string name="title_proses_registrasi_anda_berhasil">Proses Registrasi Anda Berhasil</string>
+    <string name="message_registration_success">Silahkan cek email secara berkala untuk mengetahui apakah status member HungryStock anda sudah aktif.\n\nTim kami sedang memproses registrasi anda.\n\nTerima Kasih.</string>
+    <string name="button_kembali_ke_home">Kembali ke Home</string>
 </resources>

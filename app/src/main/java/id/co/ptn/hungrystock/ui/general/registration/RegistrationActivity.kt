@@ -47,4 +47,9 @@ class RegistrationActivity : BaseActivity() {
         }
         binding.textView3.setText(getString(R.string.label_halaman_1_dari_n,""+(p+1),"2"))
     }
+
+    fun toRegistrationSuccess() {
+        router.toRegistrationSuccess()
+        finish()
+    }
 }

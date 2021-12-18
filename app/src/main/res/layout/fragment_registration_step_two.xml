@@ -62,21 +62,22 @@
             </com.google.android.material.card.MaterialCardView>
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_below="@+id/bt_add_photo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/bt_add_photo"
                 android:orientation="horizontal">
+
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/bt_back"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
-                    android:layout_weight="1"
                     android:layout_marginStart="19dp"
                     android:layout_marginEnd="@dimen/small"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="@color/secondary"
+                    android:layout_weight="1"
                     app:cardBackgroundColor="@color/transparent"
-                    app:cardCornerRadius="50dp">
+                    app:cardCornerRadius="50dp"
+                    app:strokeColor="@color/secondary"
+                    app:strokeWidth="1dp">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
@@ -87,8 +88,7 @@
                         android:gravity="center"
                         android:text="@string/button_kembali"
                         android:textColor="@color/secondary"
-                        android:textSize="@dimen/font_normal"
-                       />
+                        android:textSize="@dimen/font_normal" />
                 </com.google.android.material.card.MaterialCardView>
 
 
@@ -96,9 +96,9 @@
                     android:id="@+id/bt_register"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
-                    android:layout_weight="1"
                     android:layout_marginStart="19dp"
                     android:layout_marginEnd="@dimen/small"
+                    android:layout_weight="1"
                     app:cardBackgroundColor="@color/secondary"
                     app:cardCornerRadius="50dp">
 
@@ -111,7 +111,7 @@
                         android:gravity="center"
                         android:text="@string/button_daftar_member"
                         android:textColor="@color/dark"
-                        android:textSize="@dimen/font_normal"/>
+                        android:textSize="@dimen/font_normal" />
                 </com.google.android.material.card.MaterialCardView>
 
             </androidx.appcompat.widget.LinearLayoutCompat>

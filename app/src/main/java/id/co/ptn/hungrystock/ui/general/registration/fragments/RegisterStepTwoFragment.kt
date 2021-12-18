@@ -32,6 +32,7 @@ class RegisterStepTwoFragment : BaseFragment() {
     private lateinit var binding: FragmentRegistrationStepTwoBinding
     private lateinit var registrationStepTwoAdapter: RegistrationStepTwoAdapter
     private var items: MutableList<MainRegistration> = mutableListOf()
+    private lateinit var activity: RegistrationActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,14 +56,15 @@ class RegisterStepTwoFragment : BaseFragment() {
     }
 
     private fun init() {
+        activity = (requireActivity() as RegistrationActivity)
         initListener()
         initListData()
         initList()
     }
 
     private fun initListener() {
-        binding.btRegister.setOnClickListener { Router(requireContext()).toAuth() }
-        binding.btBack.setOnClickListener { (requireActivity() as RegistrationActivity).changePage(0) }
+        binding.btRegister.setOnClickListener { activity.toRegistrationSuccess() }
+        binding.btBack.setOnClickListener { activity.changePage(0) }
     }
 
     private fun initList() {
