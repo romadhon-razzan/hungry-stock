@@ -17,6 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NoActionBar">
         <activity
+            android:name=".ui.main.MainActivity2"
+            android:exported="false"
+            android:label="@string/title_activity_main2" />
+        <activity
             android:name=".ui.general.registration.RegistrationSuccessActivity"
             android:exported="false" />
         <activity

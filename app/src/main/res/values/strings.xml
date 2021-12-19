@@ -55,4 +55,14 @@
     <string name="title_proses_registrasi_anda_berhasil">Proses Registrasi Anda Berhasil</string>
     <string name="message_registration_success">Silahkan cek email secara berkala untuk mengetahui apakah status member HungryStock anda sudah aktif.\n\nTim kami sedang memproses registrasi anda.\n\nTerima Kasih.</string>
     <string name="button_kembali_ke_home">Kembali ke Home</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="nav_menu_home">Home</string>
+    <string name="title_event_and_agenda"><![CDATA[Event & Agenda]]></string>
+    <string name="nav_menu_learning">Learning</string>
+    <string name="nav_menu_research">Research</string>
+    <string name="nav_menu_engine">Engine</string>
+    <string name="nav_menu_hsro">HSRO</string>
 </resources>
