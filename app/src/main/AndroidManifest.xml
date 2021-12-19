@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NoActionBar">
         <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.MainActivity2"
             android:exported="false"
             android:label="@string/title_activity_main2" />

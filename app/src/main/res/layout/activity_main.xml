@@ -131,7 +131,7 @@
                         android:layout_below="@id/ic_learning"
                         android:layout_centerHorizontal="true"
                         android:text="@string/nav_menu_learning"
-                        android:textColor="@color/white"
+                        android:textColor="@color/white_50"
                         android:textSize="@dimen/font_normal" />
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -163,7 +163,7 @@
                         android:layout_below="@id/ic_research"
                         android:layout_centerHorizontal="true"
                         android:text="@string/nav_menu_research"
-                        android:textColor="@color/white"
+                        android:textColor="@color/white_50"
                         android:textSize="@dimen/font_normal" />
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -195,7 +195,7 @@
                         android:layout_below="@id/ic_engine"
                         android:layout_centerHorizontal="true"
                         android:text="@string/nav_menu_engine"
-                        android:textColor="@color/white"
+                        android:textColor="@color/white_50"
                         android:textSize="@dimen/font_normal" />
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -227,7 +227,7 @@
                         android:layout_below="@id/ic_hsro"
                         android:layout_centerHorizontal="true"
                         android:text="@string/nav_menu_hsro"
-                        android:textColor="@color/white"
+                        android:textColor="@color/white_50"
                         android:textSize="@dimen/font_normal" />
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>

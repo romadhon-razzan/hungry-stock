@@ -9,6 +9,7 @@
     <color name="danger">#E41818</color>
     <color name="grey">#DDDDDD</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white_50">#79FFFFFF</color>
     <color name="transparent">#02FFFFFF</color>
     <color name="background">#231F20</color>
     <color name="secondary">#F8EF22</color>
