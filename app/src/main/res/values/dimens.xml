@@ -17,6 +17,7 @@
     <dimen name="large">24dp</dimen>
     <dimen name="large1">32dp</dimen>
 
+    <dimen name="font_very_small">11sp</dimen>
     <dimen name="font_small">12sp</dimen>
     <dimen name="font_normal">13sp</dimen>
     <dimen name="font_normal1">14sp</dimen>

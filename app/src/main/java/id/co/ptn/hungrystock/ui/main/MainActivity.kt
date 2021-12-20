@@ -13,16 +13,15 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        init(savedInstanceState)
+        changeStatusBar()
+        init()
     }
 
-    private fun init(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) {
-//            supportFragmentManager.commit {
-//                setReorderingAllowed(true)
-//                add<HomeDrinkFragment>(R.id.container)
-//            }
-        }
+    private fun init() {
+        initListener()
+    }
 
+    private fun initListener() {
+        binding.btnProfile.setOnClickListener { router.toProfile() }
     }
 }

@@ -67,4 +67,10 @@
     <string name="nav_menu_hsro">HSRO</string>
     <string name="title_profile">Profile</string>
     <string name="button_simpan_profile">Simpan Profile</string>
+    <string name="button_logout">Logout</string>
+    <string name="hint_ketik_ulang_password_baru">Ketik ulang password baru</string>
+    <string name="label_confirm_password_baru">Confirm Password Baru</string>
+    <string name="hint_buat_password_baru">Buat Password Baru</string>
+    <string name="label_ganti_password">Ganti Password</string>
+    <string name="label_kode_member_nhungrystock">Kode Member \nHungryStock:</string>
 </resources>

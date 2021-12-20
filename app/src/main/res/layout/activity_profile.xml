@@ -61,6 +61,110 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="177dp"
+                    android:layout_marginTop="@dimen/medium"
+                    android:layout_marginStart="@dimen/large"
+                    android:layout_marginEnd="@dimen/large"
+                    android:layout_marginBottom="@dimen/small1"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="@color/secondary">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/img_card_profile"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/normal1">
+                        <ImageView
+                            android:id="@+id/img_logo"
+                            android:layout_width="45dp"
+                            android:layout_height="71dp"
+                            android:src="@drawable/logo_hungry_stock"/>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_photo"
+                            android:layout_width="53dp"
+                            android:layout_height="53dp"
+                            android:layout_alignParentEnd="true"
+                            app:cardBackgroundColor="@color/transparent"
+                            app:cardCornerRadius="50dp"
+                            app:cardElevation="0dp">
+                            <ImageView
+                                android:id="@+id/img_photo"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/logo_hungry_stock"
+                                tools:src="@tools:sample/avatars"/>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/card_photo"
+                            android:layout_toEndOf="@id/img_logo"
+                            android:fontFamily="@font/ft_barlow_semibold"
+                            android:gravity="end"
+                            android:maxLines="1"
+                            android:textColor="@color/dark"
+                            android:textSize="@dimen/font_normal1"
+                            android:text="Devva Maulana" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/lbl_member_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tv_name"
+                            android:layout_marginTop="@dimen/normal1"
+                            android:fontFamily="@font/ft_barlow_semibold"
+                            android:text="@string/label_kode_member_nhungrystock"
+                            android:textColor="@color/dark"
+                            android:textSize="@dimen/font_very_small" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_member_code"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/lbl_member_code"
+                            android:fontFamily="@font/ft_barlow_regular"
+                            android:text="HS001"
+                            android:textColor="@color/dark"
+                            android:textSize="@dimen/font_large1_1" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_valid_until"
+                            android:layout_above="@id/tv_join_date"
+                            android:layout_toEndOf="@id/tv_member_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:fontFamily="@font/ft_barlow_regular"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/font_small"
+                            android:text="Valid Until: 1 Januari 2023"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_join_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_toEndOf="@id/tv_member_code"
+                            android:alpha="0.7"
+                            android:fontFamily="@font/ft_barlow_regular"
+                            android:gravity="end"
+                            android:text="Tanggal Join: 1 Januari 2022"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/font_very_small" />
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/lbl_WA"
                     android:layout_width="wrap_content"
@@ -69,10 +173,10 @@
                     android:layout_marginStart="@dimen/large"
                     android:layout_marginEnd="@dimen/large"
                     android:drawablePadding="@dimen/small"
-                    android:fontFamily="@font/barlow_semibold"
+                    android:fontFamily="@font/ft_barlow_semibold"
                     android:gravity="center"
                     android:text="@string/label_nomor_whatsapp"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/white_50"
                     android:textSize="@dimen/font_normal"
                     app:drawableEndCompat="@drawable/ic_required_asterisk" />
 
@@ -94,12 +198,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="#021B1818"
-                        android:fontFamily="@font/barlow_semibold"
+                        android:fontFamily="@font/ft_barlow_semibold"
                         android:hint="@string/hint_wa_number"
                         android:paddingStart="@dimen/normal2"
                         android:paddingEnd="@dimen/normal2"
-                        android:textColor="@color/grey"
-                        android:textColorHint="#AFAEAE"
+                        android:textColor="@color/white_50"
+                        android:textColorHint="@color/white_50"
                         android:textSize="@dimen/font_medium" />
                 </com.google.android.material.card.MaterialCardView>
 
@@ -115,7 +219,7 @@
                     android:fontFamily="@font/ft_barlow_regular"
                     android:gravity="center"
                     android:text="@string/whatsapp_untuk_konfirmasi_pembayaran"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/white_50"
                     android:textSize="@dimen/font_normal" />
 
 
@@ -127,10 +231,10 @@
                     android:layout_marginStart="@dimen/large"
                     android:layout_marginEnd="@dimen/large"
                     android:drawablePadding="@dimen/small"
-                    android:fontFamily="@font/barlow_semibold"
+                    android:fontFamily="@font/ft_barlow_semibold"
                     android:gravity="center"
                     android:text="@string/label_alamat_email"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/white_50"
                     android:textSize="@dimen/font_normal"
                     app:drawableEndCompat="@drawable/ic_required_asterisk" />
 
@@ -153,15 +257,60 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="@color/transparent"
-                        android:fontFamily="@font/barlow_semibold"
+                        android:fontFamily="@font/ft_barlow_semibold"
                         android:hint="@string/cth_name_example_com"
                         android:paddingStart="@dimen/normal2"
                         android:paddingEnd="@dimen/normal2"
-                        android:textColor="@color/grey"
-                        android:textColorHint="@color/grey"
+                        android:textColor="@color/white_50"
+                        android:textColorHint="@color/white_50"
                         android:textSize="@dimen/font_medium" />
                 </com.google.android.material.card.MaterialCardView>
 
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/lbl_password_now"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/card_et_email"
+                    android:layout_marginStart="@dimen/large"
+                    android:layout_marginEnd="@dimen/large"
+                    android:drawablePadding="@dimen/small"
+                    android:fontFamily="@font/ft_barlow_semibold"
+                    android:gravity="center"
+                    android:text="@string/label_password_sekarang"
+                    android:textColor="@color/white_50"
+                    android:textSize="@dimen/font_normal"
+                    app:drawableEndCompat="@drawable/ic_required_asterisk" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_password_now"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lbl_password"
+                    android:layout_marginStart="@dimen/large"
+                    android:layout_marginTop="@dimen/small1"
+                    android:layout_marginEnd="@dimen/large"
+                    android:layout_marginBottom="@dimen/normal1"
+                    app:cardBackgroundColor="#1C191A"
+                    app:cardCornerRadius="8dp"
+                    app:strokeColor="#423B3C"
+                    app:strokeWidth="1dp">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_password_now"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@color/transparent"
+                        android:fontFamily="@font/ft_barlow_semibold"
+                        android:inputType="textPassword"
+                        android:paddingStart="@dimen/normal2"
+                        android:paddingEnd="@dimen/normal2"
+                        android:letterSpacing="0.3"
+                        android:textColor="@color/white_50"
+                        android:textColorHint="@color/white_50"
+                        android:textSize="@dimen/font_medium"
+                        android:text="*******"/>
+                </com.google.android.material.card.MaterialCardView>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/lbl_password"
@@ -171,10 +320,10 @@
                     android:layout_marginStart="@dimen/large"
                     android:layout_marginEnd="@dimen/large"
                     android:drawablePadding="@dimen/small"
-                    android:fontFamily="@font/barlow_semibold"
+                    android:fontFamily="@font/ft_barlow_semibold"
                     android:gravity="center"
-                    android:text="@string/label_password"
-                    android:textColor="@color/grey"
+                    android:text="@string/label_ganti_password"
+                    android:textColor="@color/white_50"
                     android:textSize="@dimen/font_normal"
                     app:drawableEndCompat="@drawable/ic_required_asterisk" />
 
@@ -197,13 +346,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="@color/transparent"
-                        android:fontFamily="@font/barlow_semibold"
-                        android:hint="@string/hint_minimal_8_karakter"
+                        android:fontFamily="@font/ft_barlow_semibold"
+                        android:hint="@string/hint_buat_password_baru"
                         android:inputType="textPassword"
                         android:paddingStart="@dimen/normal2"
                         android:paddingEnd="@dimen/normal2"
-                        android:textColor="@color/grey"
-                        android:textColorHint="@color/grey"
+                        android:textColor="@color/white_50"
+                        android:textColorHint="@color/white_50"
                         android:textSize="@dimen/font_medium" />
                 </com.google.android.material.card.MaterialCardView>
 
@@ -216,10 +365,10 @@
                     android:layout_marginStart="@dimen/large"
                     android:layout_marginEnd="@dimen/large"
                     android:drawablePadding="@dimen/small"
-                    android:fontFamily="@font/barlow_semibold"
+                    android:fontFamily="@font/ft_barlow_semibold"
                     android:gravity="center"
-                    android:text="@string/label_confirm_password"
-                    android:textColor="@color/grey"
+                    android:text="@string/label_confirm_password_baru"
+                    android:textColor="@color/white_50"
                     android:textSize="@dimen/font_normal"
                     app:drawableEndCompat="@drawable/ic_required_asterisk" />
 
@@ -242,13 +391,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="@color/transparent"
-                        android:fontFamily="@font/barlow_semibold"
-                        android:hint="@string/hint_ketik_ulang_password"
+                        android:fontFamily="@font/ft_barlow_semibold"
+                        android:hint="@string/hint_ketik_ulang_password_baru"
                         android:inputType="textPassword"
                         android:paddingStart="@dimen/normal2"
                         android:paddingEnd="@dimen/normal2"
-                        android:textColor="@color/grey"
-                        android:textColorHint="@color/grey"
+                        android:textColor="@color/white_50"
+                        android:textColorHint="@color/white_50"
                         android:textSize="@dimen/font_medium" />
                 </com.google.android.material.card.MaterialCardView>
 
@@ -259,7 +408,8 @@
                     android:layout_height="48dp"
                     android:layout_below="@id/card_conf_password"
                     android:layout_marginStart="@dimen/large"
-                    android:layout_marginBottom="42dp"
+                    android:layout_marginEnd="@dimen/large"
+                    android:layout_marginBottom="18dp"
                     app:cardBackgroundColor="@color/secondary"
                     app:cardCornerRadius="50dp"
                     app:cardElevation="5dp">
@@ -269,7 +419,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/large"
                         android:layout_marginEnd="@dimen/large"
-                        android:fontFamily="@font/barlow_semibold"
+                        android:fontFamily="@font/ft_barlow_semibold"
                         android:gravity="center"
                         android:text="@string/button_simpan_profile"
                         android:textColor="@color/dark"
@@ -283,21 +433,23 @@
                     android:layout_height="48dp"
                     android:layout_below="@id/card_conf_password"
                     android:layout_marginStart="@dimen/large"
+                    android:layout_marginEnd="@dimen/large"
                     android:layout_marginBottom="42dp"
                     app:cardBackgroundColor="@color/transparent"
                     app:cardCornerRadius="50dp"
                     app:cardElevation="0dp"
-                    app:strokeColor="@color/grey">
+                    app:strokeColor="@color/red"
+                    app:strokeWidth="1dp">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/large"
                         android:layout_marginEnd="@dimen/large"
-                        android:fontFamily="@font/barlow_semibold"
+                        android:fontFamily="@font/ft_barlow_semibold"
                         android:gravity="center"
-                        android:text="@string/button_simpan_profile"
-                        android:textColor="@color/dark"
+                        android:text="@string/button_logout"
+                        android:textColor="@color/red"
                         android:textSize="@dimen/font_normal" />
                 </com.google.android.material.card.MaterialCardView>
 

@@ -7,6 +7,7 @@ import id.co.ptn.hungrystock.ui.general.registration.RegistrationActivity
 import id.co.ptn.hungrystock.ui.general.registration.RegistrationSuccessActivity
 import id.co.ptn.hungrystock.ui.main.MainActivity
 import id.co.ptn.hungrystock.ui.onboarding.OnboardActivity
+import id.co.ptn.hungrystock.ui.profile.ProfileActivity
 import id.co.ptn.hungrystock.ui.reference.ReferenceLayoutActivity
 
 class Router constructor(private val context: Context) {
@@ -28,6 +29,10 @@ class Router constructor(private val context: Context) {
 
     fun toMain() {
         context.startActivity(Intent(context, MainActivity::class.java))
+    }
+
+    fun toProfile() {
+        context.startActivity(Intent(context, ProfileActivity::class.java))
     }
 
     fun toReference() {

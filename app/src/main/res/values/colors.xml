@@ -14,4 +14,5 @@
     <color name="background">#231F20</color>
     <color name="secondary">#F8EF22</color>
     <color name="dark">#231F20</color>
+    <color name="red">#FF0000</color>
 </resources>
