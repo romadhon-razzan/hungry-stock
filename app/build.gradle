@@ -7,14 +7,14 @@ plugins {
 }
 
 android {
-    signingConfigs {
-        debug {
-            storeFile file('D:\\Projects\\PlayStore\\Keystore\\KeyStore')
-            storePassword 'sembarang12345'
-            keyPassword 'sembarang12345'
-            keyAlias 'ks'
-        }
-    }
+//    signingConfigs {
+//        debug {
+//            storeFile file('D:\\Projects\\PlayStore\\Keystore\\KeyStore')
+//            storePassword 'sembarang12345'
+//            keyPassword 'sembarang12345'
+//            keyAlias 'ks'
+//        }
+//    }
     compileSdk 31
 
     defaultConfig {

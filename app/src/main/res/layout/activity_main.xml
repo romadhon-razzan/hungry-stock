@@ -2,6 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="vm"
+            type="id.co.ptn.hungrystock.ui.main.viewmodel.MainViewModel" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -74,6 +79,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_nav_home"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -91,7 +97,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="@dimen/small"
-                        android:src="@drawable/ic_menu_home_actived" />
+                        android:src="@{ vm.homePressed ? @drawable/ic_menu_home_actived : @drawable/ic_menu_home_normal }"
+                        tools:src="@drawable/ic_menu_home_actived"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -99,13 +106,15 @@
                         android:layout_below="@id/ic_home"
                         android:layout_centerHorizontal="true"
                         android:text="@string/nav_menu_home"
-                        android:textColor="@color/secondary"
-                        android:textSize="@dimen/font_normal" />
+                        android:textColor="@{ vm.homePressed ? @color/secondary: @color/white_50 }"
+                        android:textSize="@dimen/font_normal"
+                        tools:textColor="@color/secondary"/>
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_nav_learning"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -123,7 +132,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="@dimen/small"
-                        android:src="@drawable/ic_menu_learning_normal" />
+                        android:src="@{ vm.learningPressed ? @drawable/ic_menu_learning_actived : @drawable/ic_menu_learning_normal }"
+                        tools:src="@drawable/ic_menu_learning_normal"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -131,13 +141,15 @@
                         android:layout_below="@id/ic_learning"
                         android:layout_centerHorizontal="true"
                         android:text="@string/nav_menu_learning"
-                        android:textColor="@color/white_50"
-                        android:textSize="@dimen/font_normal" />
+                        android:textColor="@{ vm.learningPressed ? @color/secondary: @color/white_50 }"
+                        android:textSize="@dimen/font_normal"
+                        tools:textColor="@color/white_50"/>
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_nav_research"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -155,7 +167,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="@dimen/small"
-                        android:src="@drawable/ic_menu_research_normal" />
+                        android:src="@{ vm.researchPressed ? @drawable/ic_menu_research_actived : @drawable/ic_menu_research_normal }"
+                        tools:src="@drawable/ic_menu_research_normal"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -163,13 +176,15 @@
                         android:layout_below="@id/ic_research"
                         android:layout_centerHorizontal="true"
                         android:text="@string/nav_menu_research"
-                        android:textColor="@color/white_50"
-                        android:textSize="@dimen/font_normal" />
+                        android:textColor="@{ vm.researchPressed ? @color/secondary: @color/white_50 }"
+                        android:textSize="@dimen/font_normal"
+                        tools:textColor="@color/white_50"/>
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_nav_engine"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -187,7 +202,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="@dimen/small"
-                        android:src="@drawable/ic_menu_engine_normal" />
+                        android:src="@{ vm.enginePressed ? @drawable/ic_menu_engine_actived : @drawable/ic_menu_engine_normal }"
+                        tools:src="@drawable/ic_menu_engine_normal" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -195,13 +211,15 @@
                         android:layout_below="@id/ic_engine"
                         android:layout_centerHorizontal="true"
                         android:text="@string/nav_menu_engine"
-                        android:textColor="@color/white_50"
-                        android:textSize="@dimen/font_normal" />
+                        android:textColor="@{ vm.enginePressed ? @color/secondary : @color/white_50 }"
+                        android:textSize="@dimen/font_normal"
+                        tools:textColor="@color/white_50"/>
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_nav_hsro"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -219,7 +237,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="@dimen/small"
-                        android:src="@drawable/ic_menu_hsro_normal" />
+                        android:src="@{ vm.hsroPressed ? @drawable/ic_menu_hsro_actived : @drawable/ic_menu_hsro_normal }"
+                        tools:src="@drawable/ic_menu_hsro_normal" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -227,8 +246,9 @@
                         android:layout_below="@id/ic_hsro"
                         android:layout_centerHorizontal="true"
                         android:text="@string/nav_menu_hsro"
-                        android:textColor="@color/white_50"
-                        android:textSize="@dimen/font_normal" />
+                        android:textColor="@{ vm.hsroPressed ? @color/secondary : @color/white_50 }"
+                        android:textSize="@dimen/font_normal"
+                        tools:textColor="@color/white_50"/>
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
