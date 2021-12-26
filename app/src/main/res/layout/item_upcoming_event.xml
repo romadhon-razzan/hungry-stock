@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/normal2"
+        android:orientation="vertical"
+        android:background="@color/background">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="14dp">
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:src="@tools:sample/avatars"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small1"
+            android:layout_marginBottom="@dimen/small"
+            android:fontFamily="@font/ft_barlow_regular"
+            android:textSize="@dimen/font_small"
+            android:textColor="@color/white_70"
+            android:text="Event yang akan datang"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/small"
+            android:fontFamily="@font/ft_coolvetica"
+            android:textSize="@dimen/font_large1_1"
+            android:textColor="@color/secondary"
+            android:text="Temu Emiten: BSDE &amp; DMAS"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ft_barlow_regular"
+            android:textSize="@dimen/font_normal1"
+            android:textColor="@color/white"
+            android:text="Sabtu, 22 Nov 2021. 08:45 - 12:00 WIB"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ft_barlow_regular"
+            android:textSize="@dimen/font_normal1"
+            android:textColor="@color/white_70"
+            android:text="Bertemu langsung dengan jajaran direksi dari BSDE &amp; DMAS"/>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btn_join"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="@dimen/large"
+            app:cardBackgroundColor="@color/secondary"
+            app:cardCornerRadius="50dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:fontFamily="@font/ft_barlow_semibold"
+                android:textSize="@dimen/font_normal1"
+                android:textColor="@color/black"
+                android:text="Open Zoom Meeting"/>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

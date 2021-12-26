@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/normal2"
+        android:orientation="vertical"
+        android:background="@color/background">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/large"
+            android:fontFamily="@font/ft_coolvetica"
+            android:textSize="@dimen/font_large1_1"
+            android:textColor="@color/white"
+            android:text="Event yang telah lewat"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/large"
+            android:background="@color/white_10"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/small"
+            android:fontFamily="@font/ft_coolvetica"
+            android:textSize="@dimen/font_medium1"
+            android:textColor="@color/white"
+            android:text="Temu Emiten: BSDE &amp; DMAS"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ft_barlow_regular"
+            android:textSize="@dimen/font_normal1"
+            android:textColor="@color/white"
+            android:text="Selasa, 9 Nov 2021. 18:30 WIB"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/large"
+            android:fontFamily="@font/ft_barlow_regular"
+            android:textSize="@dimen/font_normal1"
+            android:textColor="@color/white_70"
+            android:text="Speakers from HungryStock"/>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white_10"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>
