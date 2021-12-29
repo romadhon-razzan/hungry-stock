@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="id.co.ptn.hungrystock.ui.general.view_model.AuthViewModel" />
+    </data>
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
