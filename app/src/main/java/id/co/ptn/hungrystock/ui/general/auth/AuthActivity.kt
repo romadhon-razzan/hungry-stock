@@ -1,6 +1,7 @@
 package id.co.ptn.hungrystock.ui.general.auth
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,6 +20,7 @@ class AuthActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_auth)
+        binding.viewModel = viewModel
         changeStatusBar()
         init()
     }
@@ -35,7 +37,9 @@ class AuthActivity : BaseActivity() {
 
     private fun initListener() {
         binding.btRegister.setOnClickListener { router.toRegistration() }
-        binding.btForgotPassword.setOnClickListener { }
+        binding.btForgotPassword.setOnClickListener {
+            Toast.makeText(this,"KLIK", Toast.LENGTH_SHORT).show()
+        }
         binding.btLogin.setOnClickListener { loginPressed() }
     }
 
