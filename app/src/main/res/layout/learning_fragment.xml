@@ -1,13 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.main.home.HomeFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="vm"
+            type="id.co.ptn.hungrystock.ui.main.learning.LearningViewModel" />
+    </data>
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        android:paddingStart="@dimen/normal2"
+        android:paddingEnd="@dimen/normal2"
+        android:paddingTop="@dimen/normal2"
+        android:paddingBottom="0dp"
+        android:background="@color/background"
+        tools:context=".ui.main.home.HomeFragment">
 
-</FrameLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_search"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="50dp">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/et_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/normal2"
+                android:paddingEnd="@dimen/normal2"
+                android:background="@color/transparent"
+                android:drawableEnd="@drawable/ic_search_small"
+                android:fontFamily="@font/ft_barlow_regular"
+                android:hint="Cari judul video..."/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bt_sorting"
+            android:layout_below="@id/card_search"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:layout_marginTop="@dimen/normal1"
+            app:cardBackgroundColor="@color/secondary"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="50dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/lbl_sorting"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/normal2"
+                android:paddingEnd="@dimen/normal2"
+                android:background="@color/transparent"
+                android:drawableEnd="@drawable/ic_spinner_down"
+                android:drawablePadding="@dimen/normal"
+                android:gravity="center"
+                android:fontFamily="@font/ft_barlow_semibold"
+                android:textColor="@color/black"
+                android:text="Terbaru"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_below="@id/bt_sorting"
+            android:layout_marginTop="@dimen/large"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </RelativeLayout>
+</layout>

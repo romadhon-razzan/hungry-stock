@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large"
+        android:paddingStart="@dimen/normal2"
+        android:paddingEnd="@dimen/normal2"
+        android:orientation="vertical"
+        android:background="@color/background">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            app:cardCornerRadius="8dp">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:src="@tools:sample/avatars"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="60dp"
+                android:layout_height="26dp"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="@dimen/small1"
+                android:layout_marginBottom="@dimen/small1"
+                app:cardBackgroundColor="@color/black_25"
+                app:cardElevation="0dp"
+                android:alpha="7">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:fontFamily="@font/ft_coolvetica"
+                    android:textSize="@dimen/font_medium1"
+                    android:textColor="@color/white"
+                    android:text="1:02:05"/>
+            </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal1"
+            android:layout_marginBottom="@dimen/small"
+            android:fontFamily="@font/ft_coolvetica"
+            android:textSize="@dimen/font_medium1"
+            android:textColor="@color/white"
+            android:text="This is the item title with supposed a long line"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_sub_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ft_barlow_regular"
+            android:textSize="@dimen/font_normal1"
+            android:textColor="@color/white"
+            android:text="Latest Learning Materials"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>
