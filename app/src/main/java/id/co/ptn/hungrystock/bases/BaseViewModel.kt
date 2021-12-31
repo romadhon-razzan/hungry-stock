@@ -1,5 +1,7 @@
 package id.co.ptn.hungrystock.bases
 
+import android.app.Activity
+import android.app.Application
 import androidx.databinding.Observable
 import androidx.databinding.PropertyChangeRegistry
 import androidx.lifecycle.ViewModel

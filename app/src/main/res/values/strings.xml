@@ -73,4 +73,8 @@
     <string name="hint_buat_password_baru">Buat Password Baru</string>
     <string name="label_ganti_password">Ganti Password</string>
     <string name="label_kode_member_nhungrystock">Kode Member \nHungryStock:</string>
+    <string name="title_learning">Learning</string>
+    <string name="title_research_n_data"><![CDATA[Research & Data]]></string>
+    <string name="title_hungry_stock_engine">HungryStock Engine</string>
+    <string name="title_hsro">HSRO</string>
 </resources>

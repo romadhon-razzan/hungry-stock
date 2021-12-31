@@ -5,7 +5,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/large"
+        android:layout_marginTop="@dimen/normal1"
         android:paddingStart="@dimen/normal2"
         android:paddingEnd="@dimen/normal2"
         android:orientation="vertical"
@@ -59,9 +59,10 @@
             android:id="@+id/tv_sub_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/ft_barlow_regular"
+            android:layout_marginBottom="@dimen/normal"
+            android:fontFamily="@font/ft_barlow_semibold_italic"
             android:textSize="@dimen/font_normal1"
-            android:textColor="@color/white"
+            android:textColor="@color/white_70"
             android:text="Latest Learning Materials"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>

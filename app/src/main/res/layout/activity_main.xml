@@ -32,7 +32,7 @@
                 android:fontFamily="@font/ft_coolvetica"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/font_large1_1"
-                android:text="@string/title_event_and_agenda"
+                android:text="@{ vm.title }"
                 />
             
             <com.google.android.material.card.MaterialCardView

@@ -35,6 +35,7 @@ class MainActivity : BaseActivity() {
         binding.lifecycleOwner = this
         initListener()
         initViewPager()
+        navHomePressed()
     }
 
     private fun initListener() {
@@ -62,27 +63,27 @@ class MainActivity : BaseActivity() {
 
     private fun navHomePressed() {
         setViewPagerPage(HOME_PAGE)
-        viewModel.homePressed()
+        viewModel.homePressed(getString(R.string.title_event_and_agenda))
     }
 
     private fun navLearningPressed() {
         setViewPagerPage(LEARNING_PAGE)
-        viewModel.learningPressed()
+        viewModel.learningPressed(getString(R.string.title_learning))
     }
 
     private fun navResearchPressed() {
         setViewPagerPage(RESEARCH_PAGE)
-        viewModel.researchPressed()
+        viewModel.researchPressed(getString(R.string.title_research_n_data))
     }
 
     private fun navEnginePressed() {
         setViewPagerPage(ENGINE_PAGE)
-        viewModel.enginePressed()
+        viewModel.enginePressed(getString(R.string.title_hungry_stock_engine))
     }
 
     private fun navHsroPressed() {
         setViewPagerPage(HSRO_PAGE)
-        viewModel.hsroPressed()
+        viewModel.hsroPressed(getString(R.string.title_hsro))
     }
 
 
