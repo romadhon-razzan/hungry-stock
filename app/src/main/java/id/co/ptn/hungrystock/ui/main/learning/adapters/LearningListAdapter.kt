@@ -8,7 +8,7 @@ import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.databinding.*
 import id.co.ptn.hungrystock.models.main.learning.Learning
 
-class LearningListAdapter(private val items: MutableList<Learning>):
+class LearningListAdapter(private val items: MutableList<Learning>, private val listener: LearningListener):
     RecyclerView.Adapter<LearningListAdapter.ViewHolder>() {
     class ViewHolder(var binding: ItemLearningBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Learning) {
@@ -24,9 +24,14 @@ class LearningListAdapter(private val items: MutableList<Learning>):
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val element = items[position]
         holder.bind(element)
+        holder.itemView.setOnClickListener { listener.itemClicked(element) }
     }
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    public interface LearningListener {
+        fun itemClicked(learning: Learning)
     }
 }

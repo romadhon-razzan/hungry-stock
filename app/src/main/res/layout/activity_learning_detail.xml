@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="vm"
+            type="id.co.ptn.hungrystock.ui.main.learning.viewmodel.LearningDetailViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        tools:context=".ui.main.learning.LearningDetailActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background"
+                app:titleTextColor="@color/white"/>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/app_bar">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/normal2"
+                android:orientation="vertical">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:cardCornerRadius="14dp">
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ic_home"
+                    android:layout_marginTop="@dimen/normal1"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/ft_barlow_semibold"
+                    tools:text="This is the item title with supposed a long line"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_large1_1"
+                    android:text="@{ vm.title }"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_sub_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small1"
+                    android:layout_marginBottom="@dimen/normal"
+                    android:fontFamily="@font/ft_barlow_semibold_italic"
+                    android:textSize="@dimen/font_normal1"
+                    android:textColor="@color/white_70"
+                    android:text="@{ vm.subTitle }"
+                    tools:text= "Latest Learning Materials"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small1"
+                    android:layout_marginBottom="@dimen/normal"
+                    android:fontFamily="@font/ft_barlow_regular"
+                    android:textSize="@dimen/font_small"
+                    android:textColor="@color/white_70"
+                    android:text="@{ vm.description }"
+                    tools:text="HUNGRYSTOCK adalah komunitas investor saham Indonesia yang didirikan oleh Lukas Setia Atmaja tahun 2019. Visi Hungrystock adalah menciptakan investor saham yang memiliki knowledge, skill, dan wisdom, yang merupakan unci sukses dalam berinvestasi saham. Fokus strategi investasi HUNGRYSTOCK adalah value growth investing."/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ic_home"
+                    android:layout_marginTop="@dimen/normal1"
+                    android:layout_marginBottom="@dimen/medium"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/ft_barlow_bold"
+                    android:text="@string/label_video_terkait"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_large" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_learning"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

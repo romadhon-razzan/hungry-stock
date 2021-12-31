@@ -77,4 +77,6 @@
     <string name="title_research_n_data"><![CDATA[Research & Data]]></string>
     <string name="title_hungry_stock_engine">HungryStock Engine</string>
     <string name="title_hsro">HSRO</string>
+    <string name="label_video_terkait">VIDEO TERKAIT</string>
+    <string name="title_learning_detail">Learning Detail</string>
 </resources>

@@ -1,4 +1,4 @@
-package id.co.ptn.hungrystock.ui.main.learning
+package id.co.ptn.hungrystock.ui.main.learning.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

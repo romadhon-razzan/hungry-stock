@@ -5,7 +5,7 @@
     <data>
         <variable
             name="vm"
-            type="id.co.ptn.hungrystock.ui.main.learning.LearningViewModel" />
+            type="id.co.ptn.hungrystock.ui.main.learning.viewmodel.LearningViewModel" />
     </data>
 
     <RelativeLayout

@@ -108,7 +108,7 @@
                         android:text="@string/nav_menu_home"
                         android:textColor="@{ vm.homePressed ? @color/secondary: @color/white_50 }"
                         android:textSize="@dimen/font_normal"
-                        tools:textColor="@color/secondary"/>
+                        tools:textColor="@color/secondary" />
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
