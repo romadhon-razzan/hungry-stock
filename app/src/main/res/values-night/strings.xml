@@ -55,4 +55,8 @@
     <string name="title_hsro">HSRO</string>
     <string name="label_video_terkait">VIDEO TERKAIT</string>
     <string name="title_learning_detail">Learning Detail</string>
+    <string name="button_filter">FILTER</string>
+    <string name="hint_cari_research">Cari research . . .</string>
+    <string name="title_tab_research_report">Research Report (%s)</string>
+    <string name="title_tab_stock_data">Stock Data (%s)</string>
 </resources>
