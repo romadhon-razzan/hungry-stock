@@ -7,10 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.databinding.FragmentStockDataBinding
 import id.co.ptn.hungrystock.databinding.ResearchFragmentBinding
+import id.co.ptn.hungrystock.models.main.research.*
+import id.co.ptn.hungrystock.ui.main.research.adapters.ResearchReportPageAdapter
+import id.co.ptn.hungrystock.ui.main.research.adapters.StockDataPageAdapter
 import id.co.ptn.hungrystock.ui.main.research.viewmodel.ResearchViewModel
 import id.co.ptn.hungrystock.ui.main.research.viewmodel.StockDataViewModel
 
@@ -23,6 +27,8 @@ class StockDataFragment : Fragment() {
 
     private lateinit var binding: FragmentStockDataBinding
     private val viewModel: StockDataViewModel by viewModels()
+    private lateinit var stockDaPageAdapter: StockDataPageAdapter
+    private var items: MutableList<ResearchPage> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,10 +45,34 @@ class StockDataFragment : Fragment() {
     }
 
     private fun init() {
+        initData()
         initList()
     }
 
     private fun initList() {
+        stockDaPageAdapter = StockDataPageAdapter(items)
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = stockDaPageAdapter
+        }
+    }
 
+    private fun initData() {
+        items.clear()
+        items.add(ResearchPage(ResearchPage.TYPE_SORTING, listOf(), listOf(), listOf(), ResearchSorting("n","Terbaru")))
+
+        val filters: MutableList<ResearchFilter> = mutableListOf()
+        filters.add(ResearchFilter("t","2022"))
+
+        items.add(ResearchPage(ResearchPage.TYPE_FILTER, listOf(), listOf(), listOf(), ResearchSorting("n","Terbaru")))
+        items.add(ResearchPage(ResearchPage.TYPE_FILTER, listOf(), listOf(), filters, ResearchSorting("n","Terbaru")))
+
+        val researchReport: MutableList<StockData> = mutableListOf()
+        researchReport.add(StockData("1","1"))
+        researchReport.add(StockData("1","1"))
+        researchReport.add(StockData("1","1"))
+        researchReport.add(StockData("1","1"))
+        researchReport.add(StockData("1","1"))
+        items.add(ResearchPage(ResearchPage.TYPE_LIST, listOf(), researchReport, filters, ResearchSorting("n","Terbaru")))
     }
 }

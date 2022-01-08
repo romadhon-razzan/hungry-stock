@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/normal"
+        android:layout_marginEnd="@dimen/normal"
+        android:layout_marginTop="@dimen/normal"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="#1A1718">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/flag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small1"
+                android:src="@drawable/ic_flag_research_report"/>
+
+            <ImageView
+                android:id="@+id/icon_file"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/normal1"
+                android:layout_marginTop="@dimen/small1"
+                android:layout_toEndOf="@id/flag"
+                android:src="@drawable/ic_xls" />
+
+            <ImageView
+                android:id="@+id/icon_download"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small1"
+                android:layout_marginEnd="@dimen/medium1"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_download"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/icon_file"
+                android:layout_marginStart="@dimen/normal1"
+                android:layout_marginTop="@dimen/small"
+                android:layout_marginEnd="@dimen/medium1"
+                android:fontFamily="@font/ft_barlow_medium"
+                android:maxLines="2"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"
+                android:text="SRTG_HungryStock_StockData_020921" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_image_file"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@id/flag"
+                android:layout_marginStart="@dimen/small1"
+                android:layout_marginTop="@dimen/small1"
+                android:layout_marginEnd="@dimen/small1"
+                android:layout_marginBottom="@dimen/small1"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/black_25"
+                app:cardCornerRadius="8dp">
+
+            </com.google.android.material.card.MaterialCardView>
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
