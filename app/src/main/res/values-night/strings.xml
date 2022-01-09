@@ -59,4 +59,10 @@
     <string name="hint_cari_research">Cari research . . .</string>
     <string name="title_tab_research_report">Research Report (%s)</string>
     <string name="title_tab_stock_data">Stock Data (%s)</string>
+    <string name="dialog_title_filter_by">FILTER BY:</string>
+    <string name="label_tahun">Tahun</string>
+    <string name="hint_pilih_bulan">Pilih Bulan</string>
+    <string name="label_bulan">Bulan</string>
+    <string name="label_filter_emiten">Filter Emiten:</string>
+    <string name="button_apply_filter">Apply Filter</string>
 </resources>

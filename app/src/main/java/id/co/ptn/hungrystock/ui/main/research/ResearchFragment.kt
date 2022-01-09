@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.databinding.ResearchFragmentBinding
 import id.co.ptn.hungrystock.ui.main.research.adapters.ResearchPageAdapter
+import id.co.ptn.hungrystock.ui.main.research.dialogs.FilterResearchPageDialog
 import id.co.ptn.hungrystock.ui.main.research.fragments.ResearchReportFragment
 import id.co.ptn.hungrystock.ui.main.research.fragments.StockDataFragment
 import id.co.ptn.hungrystock.ui.main.research.viewmodel.ResearchViewModel
@@ -42,7 +43,12 @@ class ResearchFragment : Fragment() {
     }
 
     private fun init() {
+        initListener()
         initPage()
+    }
+
+    private fun initListener() {
+        binding.btFilter.setOnClickListener {  }
     }
 
     private fun initPage() {
@@ -60,5 +66,10 @@ class ResearchFragment : Fragment() {
 
     private fun updateTitle() {
 
+    }
+
+    private fun openFilterDialog() {
+        val dialog = FilterResearchPageDialog()
+        dialog.show(childFragmentManager,"filter_dialog")
     }
 }

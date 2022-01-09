@@ -15,7 +15,8 @@ import id.co.ptn.hungrystock.models.main.home.UpcomingEvent
 import id.co.ptn.hungrystock.models.main.research.ResearchPage
 import id.co.ptn.hungrystock.models.main.research.ResearchReport
 
-class ResearchReportPageAdapter(private val items: MutableList<ResearchPage>):
+class ResearchReportPageAdapter(private val items: MutableList<ResearchPage>,
+private val listener: ResearchReportListener):
     RecyclerView.Adapter<ResearchReportPageAdapter.ViewHolder>() {
     private lateinit var context: Context
 
@@ -81,6 +82,7 @@ class ResearchReportPageAdapter(private val items: MutableList<ResearchPage>):
                }
             ResearchPage.TYPE_FILTER -> {
                 val viewHolder = holder as FilterHolder
+
             }
             else -> {
                 val viewHolder = holder as ListHolder
@@ -91,5 +93,9 @@ class ResearchReportPageAdapter(private val items: MutableList<ResearchPage>):
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    public interface ResearchReportListener {
+        fun onFilterClick()
     }
 }
