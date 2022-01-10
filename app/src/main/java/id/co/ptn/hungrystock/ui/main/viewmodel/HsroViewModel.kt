@@ -1,4 +1,4 @@
-package id.co.ptn.hungrystock.ui.main.hsro
+package id.co.ptn.hungrystock.ui.main.viewmodel
 
 import androidx.lifecycle.ViewModel
 
