@@ -79,6 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="46dp"
                     android:layout_marginTop="@dimen/small1"
+                    app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/black_25">
 
                     <androidx.appcompat.widget.AppCompatTextView

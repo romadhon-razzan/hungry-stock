@@ -48,7 +48,7 @@ class ResearchFragment : Fragment() {
     }
 
     private fun initListener() {
-        binding.btFilter.setOnClickListener {  }
+        binding.btFilter.setOnClickListener { openFilterDialog() }
     }
 
     private fun initPage() {

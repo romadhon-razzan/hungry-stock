@@ -53,7 +53,12 @@ class ResearchReportFragment : Fragment() {
     }
 
     private fun initList() {
-        researchReportPageAdapter = ResearchReportPageAdapter(items)
+        researchReportPageAdapter = ResearchReportPageAdapter(items, object: ResearchReportPageAdapter.ResearchReportListener{
+            override fun onFilterClick() {
+
+            }
+
+        })
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = researchReportPageAdapter

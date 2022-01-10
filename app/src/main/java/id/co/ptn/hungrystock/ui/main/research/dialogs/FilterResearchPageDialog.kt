@@ -1,12 +1,16 @@
 package id.co.ptn.hungrystock.ui.main.research.dialogs
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseBottomSheetModal
 import id.co.ptn.hungrystock.databinding.DialogFilterResearchPageBinding
@@ -30,6 +34,29 @@ class FilterResearchPageDialog: BaseBottomSheetModal() {
         binding = DataBindingUtil.inflate(LayoutInflater.from(requireContext()), R.layout.dialog_filter_research_page, container, false)
         return binding.root
     }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = BottomSheetDialog(requireContext(), theme)
+        dialog.setOnShowListener {
+
+            val bottomSheetDialog = it as BottomSheetDialog
+            val parentLayout =
+                bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            parentLayout?.let { it ->
+                val behaviour = BottomSheetBehavior.from(it)
+                setupFullHeight(it)
+                behaviour.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        }
+        return dialog
+    }
+
+    private fun setupFullHeight(bottomSheet: View) {
+        val layoutParams = bottomSheet.layoutParams
+        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
+        bottomSheet.layoutParams = layoutParams
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -81,11 +108,9 @@ class FilterResearchPageDialog: BaseBottomSheetModal() {
     private fun initDataFilterEmiten() {
         filterEmiten.clear()
         filterEmiten.add("Terbaru")
-        val value = "A"
-        val charValue = value[0].code
-        for (i in 0..21) {
-            val next: String = ((charValue + 1).toString())
-            filterEmiten.add(next)
+        val value = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        for (element in value) {
+            filterEmiten.add(element.toString())
         }
 
     }
