@@ -22,9 +22,8 @@ class SplashScreenActivity : BaseActivity() {
 
     private fun init() {
         Handler(Looper.getMainLooper()).postDelayed({
-            router.toOnboard()
-//            if (sessionManager.token.isEmpty()) toLogin()
-//            else toMain()
+            if (sessionManager.token.isEmpty()) router.toOnboard()
+            else router.toMain()
             finish()
         }, 2000)
     }

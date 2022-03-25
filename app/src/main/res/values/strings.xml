@@ -90,4 +90,5 @@
     <string name="label_filter_emiten">Filter Emiten:</string>
     <string name="button_apply_filter">Apply Filter</string>
     <string name="label_research_terkait">RESEARCH TERKAIT</string>
+    <string name="message_email_password_empty">Email dan password harus diisi</string>
 </resources>

@@ -64,6 +64,7 @@
                     app:strokeWidth="1dp">
 
                     <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_email"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="@color/transparent"
@@ -71,6 +72,7 @@
                         android:hint="@string/cth_name_example_com"
                         android:paddingStart="@dimen/normal"
                         android:paddingEnd="@dimen/normal"
+                        android:text="082110735190"
                         android:textColor="@color/grey"
                         android:textColorHint="@color/grey"
                         android:textSize="@dimen/font_medium" />
@@ -101,6 +103,7 @@
                     app:strokeWidth="1dp">
 
                     <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_password"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="@color/transparent"
@@ -108,7 +111,7 @@
                         android:inputType="textPassword"
                         android:paddingStart="@dimen/normal"
                         android:paddingEnd="@dimen/normal"
-                        android:text="12345678"
+                        android:text="4kbar4nggit"
                         android:textColor="@color/grey"
                         android:textColorHint="@color/grey"
                         android:textSize="@dimen/font_medium" />

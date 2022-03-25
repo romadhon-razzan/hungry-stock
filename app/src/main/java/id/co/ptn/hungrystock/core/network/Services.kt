@@ -1,5 +1,6 @@
 package id.co.ptn.hungrystock.core.network
 
+import id.co.ptn.hungrystock.models.auth.ResponseAuth
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -7,8 +8,13 @@ interface Services {
 //    @GET(GET_DRINK_BY_FIRST_LETTER)
 //    suspend fun getDrinkByFirstLetter(@Query("f") s: String): Response<DrinkResponse>
 //
-//    @GET(GET_POPULAR)
-//    suspend fun getPopular(): Response<DrinkResponse>
+
+    @FormUrlEncoded
+    @POST(AUTH)
+    suspend fun auth(
+    @Field("nomor_telepon") nomor_telepon: String,
+    @Field("password") password: String,
+    ): Response<ResponseAuth>
 //
 //    @GET(GET_RANDOM)
 //    suspend fun getRandom(): Response<DrinkResponse>

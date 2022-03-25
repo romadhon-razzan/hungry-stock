@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 class AppRepository @Inject constructor(private val apiHelper: ApiHelper) {
 //    suspend fun getDrinkByFirstLetter(s: String) =  apiHelper.getDrinkByFirstLetter(s)
-//    suspend fun getPopular() =  apiHelper.getPopular()
+    suspend fun auth(nt: String, p: String) =  apiHelper.auth(nt, p)
 //    suspend fun getRandom() =  apiHelper.getRandom()
 //    suspend fun searchName(s: String) =  apiHelper.searchName(s)
 //    suspend fun detail(s: String) =  apiHelper.detail(s)
