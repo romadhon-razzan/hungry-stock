@@ -1,6 +1,7 @@
 package id.co.ptn.hungrystock.ui.general.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -58,14 +59,16 @@ class AuthActivity : BaseActivity() {
         viewModel.reqAuthResponse().observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.btLogin.stopAnimation()
+                    binding.btLogin.revertAnimation()
                     it.data?.let { d ->
                        d.status.let { s ->
+                           Log.d("statussss", s)
                            if (s == "success") {
                                d.data.token.let { t -> sessionManager.setToken(t) }
                                d.data.user.let { u -> sessionManager.setUser(u) }
                                router.toMain()
                            } else {
+                               Log.d("statussss2", s)
                                d.data.status.let { message ->
                                    showSnackBar(binding.container, message)
                                }
@@ -75,7 +78,12 @@ class AuthActivity : BaseActivity() {
                     }
                 }
                 Status.LOADING -> {binding.btLogin.startAnimation()}
-                Status.ERROR -> {binding.btLogin.stopAnimation()}
+                Status.ERROR -> {
+                    binding.btLogin.revertAnimation()
+                    it.data?.data?.status?.let { s ->
+                        showSnackBar(binding.container, s)
+                    }
+                }
             }
         }
     }

@@ -2,6 +2,8 @@ package id.co.ptn.hungrystock.ui.general.view_model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
@@ -43,7 +45,16 @@ class AuthViewModel @Inject constructor(private val repository: AppRepository): 
                 repository.auth(_username.value,_password.value).let {
                     if (it.isSuccessful){
                         _reqAuthResponse.postValue(Resource.success(it.body()))
-                    } else _reqAuthResponse.postValue(Resource.error(it.errorBody().toString(), null))
+                    } else {
+                        val type = object : TypeToken<ResponseAuth>() {}.type
+                        var errorResponse: ResponseAuth? = null
+                        try {
+                            errorResponse = Gson().fromJson(it.errorBody()?.charStream(), type)
+                        } catch(e: Exception) {
+                            e.printStackTrace()
+                        }
+                        _reqAuthResponse.postValue(Resource.error(it.errorBody().toString(), errorResponse))
+                    }
                 }
             }catch (e: Exception){
                 e.printStackTrace()
