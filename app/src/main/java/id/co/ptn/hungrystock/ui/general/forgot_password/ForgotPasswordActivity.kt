@@ -43,7 +43,7 @@ class ForgotPasswordActivity : BaseActivity() {
         viewModel.reqResetPasswordResponse().observe(this){
             when(it.status){
                 Status.SUCCESS -> {
-                    binding.btSubmit.stopAnimation()
+                    binding.btSubmit.revertAnimation()
                     try {
                         it.data?.let { d ->
                             if (d.status == "success"){
@@ -62,7 +62,10 @@ class ForgotPasswordActivity : BaseActivity() {
                 }
                 Status.ERROR -> {
                     binding.etEmail.setText("")
-                    binding.btSubmit.stopAnimation()
+                    binding.btSubmit.revertAnimation()
+                    it.data?.message?.let { message ->
+                        showSnackBar(binding.container, message)
+                    }
                 }
             }
         }

@@ -2,6 +2,8 @@ package id.co.ptn.hungrystock.ui.general.view_model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
@@ -36,7 +38,16 @@ class ForgotPasswordViewModel @Inject constructor(private val repository: AppRep
                 repository.resetPassword(_email.value).let {
                     if (it.isSuccessful){
                         _reqResetPasswordResponse.postValue(Resource.success(it.body()))
-                    } else _reqResetPasswordResponse.postValue(Resource.error(it.errorBody().toString(), null))
+                    } else {
+                        val type = object : TypeToken<ResponsePassword>() {}.type
+                        var errorResponse: ResponsePassword? = null
+                        try {
+                            errorResponse = Gson().fromJson(it.errorBody()?.charStream(), type)
+                        } catch(e: Exception) {
+                            e.printStackTrace()
+                        }
+                        _reqResetPasswordResponse.postValue(Resource.error(it.errorBody().toString(), errorResponse))
+                    }
                 }
             }catch (e: Exception){
                 e.printStackTrace()
