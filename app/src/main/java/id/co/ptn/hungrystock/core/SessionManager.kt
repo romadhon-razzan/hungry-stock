@@ -37,6 +37,13 @@ class SessionManager private constructor(context: Context) {
         sharedPreferences.edit { putString(KEY_USER, strUser) }
     }
 
+
+    fun destroy() {
+        sharedPreferences.edit{
+            clear()
+        }
+    }
+
     companion object {
         @Volatile
         private var INSTANCE: SessionManager? = null

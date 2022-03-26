@@ -1,6 +1,7 @@
 package id.co.ptn.hungrystock.core.network
 
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
+import id.co.ptn.hungrystock.models.password.ResponsePassword
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -15,6 +16,12 @@ interface Services {
     @Field("nomor_telepon") nomor_telepon: String,
     @Field("password") password: String,
     ): Response<ResponseAuth>
+
+    @FormUrlEncoded
+    @POST(RESET_PASSWORD)
+    suspend fun resetPassword(
+        @Field("email") email: String,
+    ): Response<ResponsePassword>
 //
 //    @GET(GET_RANDOM)
 //    suspend fun getRandom(): Response<DrinkResponse>

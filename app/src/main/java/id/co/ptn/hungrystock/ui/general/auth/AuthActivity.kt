@@ -39,9 +39,7 @@ class AuthActivity : BaseActivity() {
 
     private fun initListener() {
         binding.btRegister.setOnClickListener { router.toRegistration() }
-        binding.btForgotPassword.setOnClickListener {
-            Toast.makeText(this,"KLIK", Toast.LENGTH_SHORT).show()
-        }
+        binding.btForgotPassword.setOnClickListener { router.toForgotPassword() }
         binding.btLogin.setOnClickListener { loginPressed() }
     }
 
@@ -60,14 +58,15 @@ class AuthActivity : BaseActivity() {
         viewModel.reqAuthResponse().observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
+                    binding.btLogin.stopAnimation()
                     it.data?.let { d ->
-                       d.status?.let { s ->
+                       d.status.let { s ->
                            if (s == "success") {
-                               d.data?.token?.let { t -> sessionManager.setToken(t) }
-                               d.data?.user?.let { u -> sessionManager.setUser(u) }
+                               d.data.token.let { t -> sessionManager.setToken(t) }
+                               d.data.user.let { u -> sessionManager.setUser(u) }
                                router.toMain()
                            } else {
-                               d.data?.status?.let { message ->
+                               d.data.status.let { message ->
                                    showSnackBar(binding.container, message)
                                }
                            }
@@ -75,8 +74,8 @@ class AuthActivity : BaseActivity() {
 
                     }
                 }
-                Status.LOADING -> {}
-                Status.ERROR -> {}
+                Status.LOADING -> {binding.btLogin.startAnimation()}
+                Status.ERROR -> {binding.btLogin.stopAnimation()}
             }
         }
     }
