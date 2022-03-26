@@ -27,8 +27,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_alignWithParentIfMissing="true"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toTopOf="@+id/bt_privacy_police"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/logo">
@@ -41,6 +41,25 @@
                 android:gravity="center_vertical" />
         </androidx.viewpager.widget.ViewPager>
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bt_privacy_police"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:cardBackgroundColor="@color/transparent">
+
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/barlow_regular"
+                android:textColor="@color/secondary"
+                android:text="Privacy Police &amp; Term Condition" />
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

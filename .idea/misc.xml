@@ -19,6 +19,8 @@
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.10729166666666666" />
+        <entry key="app/src/main/res/layout/activity_onboarding.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_privacy_police.xml" value="0.18055555555555555" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.18055555555555555" />
         <entry key="app/src/main/res/layout/activity_registration.xml" value="0.2328125" />
         <entry key="app/src/main/res/layout/activity_reset_password_success.xml" value="0.22" />

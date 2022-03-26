@@ -10,12 +10,17 @@ import id.co.ptn.hungrystock.ui.general.registration.RegistrationSuccessActivity
 import id.co.ptn.hungrystock.ui.main.MainActivity
 import id.co.ptn.hungrystock.ui.main.hsro.HsroDetailActivity
 import id.co.ptn.hungrystock.ui.onboarding.OnboardActivity
+import id.co.ptn.hungrystock.ui.privacy_police.PrivacyPoliceActivity
 import id.co.ptn.hungrystock.ui.profile.ProfileActivity
 import id.co.ptn.hungrystock.ui.reference.ReferenceLayoutActivity
 
 class Router constructor(private val context: Context) {
     fun toOnboard() {
         context.startActivity(Intent(context, OnboardActivity::class.java))
+    }
+
+    fun toPrivacyPolice(): Intent {
+        return Intent(context, PrivacyPoliceActivity::class.java)
     }
 
     fun toAuth() {
