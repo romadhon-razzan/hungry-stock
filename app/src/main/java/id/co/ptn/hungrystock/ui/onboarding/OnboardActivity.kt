@@ -15,7 +15,7 @@ import id.co.ptn.hungrystock.ui.onboarding.adapters.OnboardVPAdapter
 @AndroidEntryPoint
 class OnboardActivity : BaseActivity() {
     private lateinit var binding: ActivityOnboardingBinding
-
+    var agree = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_onboarding)
@@ -34,13 +34,14 @@ class OnboardActivity : BaseActivity() {
 
     private fun listener() {
         binding.checkbox.setOnClickListener {
-            binding.checkbox.isChecked = false
+            binding.checkbox.isChecked = agree
             resultLauncher.launch(router.toPrivacyPolice())
         }
     }
 
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == SUCCESS) {
+            agree = true
             binding.checkbox.isChecked = true
         }
     }

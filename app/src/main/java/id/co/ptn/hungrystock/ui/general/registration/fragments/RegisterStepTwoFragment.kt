@@ -1,10 +1,14 @@
 package id.co.ptn.hungrystock.ui.general.registration.fragments
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,6 +25,7 @@ import id.co.ptn.hungrystock.models.registration.RegistrationItem
 import id.co.ptn.hungrystock.router.Router
 import id.co.ptn.hungrystock.ui.general.registration.RegistrationActivity
 import id.co.ptn.hungrystock.ui.general.registration.adapters.RegistrationStepTwoAdapter
+import java.io.File
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -33,6 +38,17 @@ class RegisterStepTwoFragment : BaseFragment() {
     private lateinit var registrationStepTwoAdapter: RegistrationStepTwoAdapter
     private var items: MutableList<MainRegistration> = mutableListOf()
     private lateinit var activity: RegistrationActivity
+
+    companion object {
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            RegisterStepTwoFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
+                }
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +79,7 @@ class RegisterStepTwoFragment : BaseFragment() {
     }
 
     private fun initListener() {
+        binding.btAddPhoto.setOnClickListener { addPhotoButtonPressed() }
         binding.btRegister.setOnClickListener { activity.toRegistrationSuccess() }
         binding.btBack.setOnClickListener { activity.changePage(0) }
     }
@@ -116,14 +133,23 @@ class RegisterStepTwoFragment : BaseFragment() {
         items.add(MainRegistration(PENDIDIKAN,"Ukuran Portfolio Investasi Saham (untuk keperluan temu emiten)",portfolio,""))
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RegisterStepTwoFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private fun setProofPaymentPhoto(uri: Uri) {
+        binding.image.setImageURI(uri)
+        val file = File(uri.path)
+        binding.cardProofPayment.visibility = View.VISIBLE
+    }
+
+    private fun addPhotoButtonPressed() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        resultLauncher.launch(intent)
+    }
+
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result?.data?.data?.let { uri ->
+                setProofPaymentPhoto(uri)
             }
+        }
     }
 }

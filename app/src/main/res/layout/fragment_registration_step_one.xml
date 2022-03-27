@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.onboarding.fragments.PageOneFragment">
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:background="@color/background">
@@ -18,18 +19,26 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/lbl_full_name"
-                android:layout_below="@id/c_upload"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/c_upload"
                 android:layout_marginStart="@dimen/large"
-                android:layout_marginEnd="@dimen/large"
+                android:layout_marginEnd="@dimen/small"
+                android:drawablePadding="@dimen/small"
                 android:fontFamily="@font/barlow_semibold"
                 android:gravity="center"
                 android:text="@string/label_nama_lengkap"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/font_normal"
-                android:drawablePadding="@dimen/small"
                 app:drawableEndCompat="@drawable/ic_required_asterisk" />
+
+            <include
+                android:id="@+id/name_error"
+                layout="@layout/label_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/c_upload"
+                android:layout_toEndOf="@id/lbl_full_name" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_et_full_name"
@@ -46,6 +55,7 @@
                 app:strokeWidth="1dp">
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_full_name"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:background="@color/transparent"
@@ -58,21 +68,28 @@
             </com.google.android.material.card.MaterialCardView>
 
 
-
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/lbl_born"
-                android:layout_below="@id/card_et_full_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/card_et_full_name"
                 android:layout_marginStart="@dimen/large"
-                android:layout_marginEnd="@dimen/large"
+                android:layout_marginEnd="@dimen/small"
+                android:drawablePadding="@dimen/small"
                 android:fontFamily="@font/barlow_semibold"
                 android:gravity="center"
                 android:text="@string/label_tanggal_lahir"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/font_normal"
-                android:drawablePadding="@dimen/small"
                 app:drawableEndCompat="@drawable/ic_required_asterisk" />
+
+            <include
+                android:id="@+id/born_error"
+                layout="@layout/label_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_et_full_name"
+                android:layout_toEndOf="@id/lbl_born" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_et_born"
@@ -98,7 +115,8 @@
                     android:drawablePadding="@dimen/small"
                     android:fontFamily="@font/barlow_semibold"
                     android:gravity="center|start"
-                    android:text="@string/dd_mm_yyyy"
+                    android:textColorHint="@color/grey"
+                    android:hint="@string/dd_mm_yyyy"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/font_normal"
                     app:drawableEndCompat="@drawable/ic_calendar" />
@@ -111,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/card_et_born"
                 android:layout_marginStart="@dimen/large"
-                android:layout_marginEnd="@dimen/large"
+                android:layout_marginEnd="@dimen/small"
                 android:drawablePadding="@dimen/small"
                 android:fontFamily="@font/barlow_semibold"
                 android:gravity="center"
@@ -119,6 +137,14 @@
                 android:textColor="@color/grey"
                 android:textSize="@dimen/font_normal"
                 app:drawableEndCompat="@drawable/ic_required_asterisk" />
+
+            <include
+                android:id="@+id/wa_error"
+                layout="@layout/label_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_et_born"
+                android:layout_toEndOf="@id/lbl_WA" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_et_WA"
@@ -163,16 +189,13 @@
                 android:textSize="@dimen/font_normal" />
 
 
-
-
-
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/lbl_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lbl_WA_info"
                 android:layout_marginStart="@dimen/large"
-                android:layout_marginEnd="@dimen/large"
+                android:layout_marginEnd="@dimen/small"
                 android:drawablePadding="@dimen/small"
                 android:fontFamily="@font/barlow_semibold"
                 android:gravity="center"
@@ -180,6 +203,14 @@
                 android:textColor="@color/grey"
                 android:textSize="@dimen/font_normal"
                 app:drawableEndCompat="@drawable/ic_required_asterisk" />
+
+            <include
+                android:id="@+id/email_error"
+                layout="@layout/label_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lbl_WA_info"
+                android:layout_toEndOf="@id/lbl_email" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_et_email"
@@ -216,7 +247,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/card_et_email"
                 android:layout_marginStart="@dimen/large"
-                android:layout_marginEnd="@dimen/large"
+                android:layout_marginEnd="@dimen/small"
                 android:drawablePadding="@dimen/small"
                 android:fontFamily="@font/barlow_semibold"
                 android:gravity="center"
@@ -224,6 +255,14 @@
                 android:textColor="@color/grey"
                 android:textSize="@dimen/font_normal"
                 app:drawableEndCompat="@drawable/ic_required_asterisk" />
+
+            <include
+                android:id="@+id/password_error"
+                layout="@layout/label_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_et_email"
+                android:layout_toEndOf="@id/lbl_password" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_password"
@@ -255,15 +294,13 @@
             </com.google.android.material.card.MaterialCardView>
 
 
-
-
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/lbl_conf_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/card_password"
                 android:layout_marginStart="@dimen/large"
-                android:layout_marginEnd="@dimen/large"
+                android:layout_marginEnd="@dimen/small"
                 android:drawablePadding="@dimen/small"
                 android:fontFamily="@font/barlow_semibold"
                 android:gravity="center"
@@ -271,6 +308,14 @@
                 android:textColor="@color/grey"
                 android:textSize="@dimen/font_normal"
                 app:drawableEndCompat="@drawable/ic_required_asterisk" />
+
+            <include
+                android:id="@+id/confirm_password_error"
+                layout="@layout/label_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_password"
+                android:layout_toEndOf="@id/lbl_conf_password" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_conf_password"

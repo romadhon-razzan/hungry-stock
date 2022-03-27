@@ -94,5 +94,10 @@
     <string name="hint_forgot_password">Masukkan Email Anda yang terdaftar, untuk melakukan pengaturan ulang kata sandi.</string>
     <string name="message_email_empty">Email harus diisi</string>
     <string name="message_reset_password_success">Password telah direset, silahkan cek email anda</string>
+    <string name="message_need_fill">Harus diisi</string>
+    <string name="message_email_invalid">Email tidak valid</string>
+    <string name="message_min_8_character">Minimal 8 karakter</string>
+    <string name="message_password_not_matches">Kata sandi tidak sama</string>
+    <string name="message_all_field_must_fill">Semua kolom harus diisi</string>
 
 </resources>

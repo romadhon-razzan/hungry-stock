@@ -41,7 +41,7 @@
                 android:layout_height="48dp"
                 android:layout_marginStart="19dp"
                 android:layout_marginEnd="@dimen/small"
-                android:layout_marginBottom="56dp"
+                android:layout_marginBottom="10dp"
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/secondary"
                 app:cardBackgroundColor="@color/transparent"
@@ -61,10 +61,32 @@
                     app:drawableStartCompat="@drawable/ic_upload_file"/>
             </com.google.android.material.card.MaterialCardView>
 
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_proof_payment"
+                android:layout_below="@+id/bt_add_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginEnd="@dimen/large"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:cardElevation="0dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp">
+                    <ImageView
+                        android:id="@+id/image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"/>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/bt_add_photo"
+                android:layout_below="@+id/card_proof_payment"
+                android:layout_marginTop="56dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView

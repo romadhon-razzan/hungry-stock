@@ -2,6 +2,7 @@ package id.co.ptn.hungrystock.ui.general.registration.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,11 +21,25 @@ class RegistrationStepTwoAdapter(private val items: MutableList<MainRegistration
         var binding: ItemRegistrationStep2Binding = binding
         lateinit var registrationItemAdapter: RegistrationItemAdapter
         fun initList(items: MutableList<RegistrationItem>, context: Context) {
-            registrationItemAdapter = RegistrationItemAdapter(items)
+            registrationItemAdapter = RegistrationItemAdapter(context, items, object : RegistrationItemAdapter.Listener{
+                override fun onItemPressed(position: Int) {
+                    items.forEachIndexed { index, registrationItem ->
+                        registrationItem.selected = index == position
+                        registrationItemAdapter.notifyItemChanged(index)
+                    }
+                    if (position == items.size -1)
+                        setOtherField()
+                    else binding.cardEtFullName.visibility = View.GONE
+                }
+            })
             binding.recyclerView.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = registrationItemAdapter
             }
+        }
+
+        fun setOtherField() {
+            binding.cardEtFullName.visibility = View.VISIBLE
         }
     }
 
