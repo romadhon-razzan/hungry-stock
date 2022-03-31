@@ -24,7 +24,8 @@ class NetworkModule {
         return Interceptor { chain ->
             val request =
                 chain.request().newBuilder()
-                    .addHeader("token", TOKEN)
+                    .addHeader("Accept","application/json")
+                    .addHeader("Authorization", "Bearer $TOKEN")
                     .build()
             chain.proceed(request)
         }

@@ -25,10 +25,12 @@
         <entry key="app/src/main/res/layout/activity_registration.xml" value="0.2328125" />
         <entry key="app/src/main/res/layout/activity_reset_password_success.xml" value="0.22" />
         <entry key="app/src/main/res/layout/cocktail_list_fragment.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/dialog_filter_research_page.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/dialog_load_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_registration_step_one.xml" value="0.25806451612903225" />
         <entry key="app/src/main/res/layout/fragment_registration_step_two.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_radio_button.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/item_registration_step_2.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_registration_step_2.xml" value="0.3611111111111111" />
         <entry key="app/src/main/res/layout/label_error.xml" value="0.1" />
         <entry key="app/src/main/res/layout/registration_upload_photo.xml" value="0.1" />
       </map>

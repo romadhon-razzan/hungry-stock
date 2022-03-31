@@ -2,6 +2,9 @@ package id.co.ptn.hungrystock.core.network
 
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
 import id.co.ptn.hungrystock.models.password.ResponsePassword
+import id.co.ptn.hungrystock.models.registration.ResponseRegister
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -22,6 +25,33 @@ interface Services {
     suspend fun resetPassword(
         @Field("email") email: String,
     ): Response<ResponsePassword>
+
+    @Multipart
+    @POST(REGISTER)
+    suspend fun registerStepOne(
+        @Part("step") step: RequestBody,
+        @Part foto_profil: MultipartBody.Part,
+        @Part("nama_lengkap") nama_lengkap: RequestBody,
+        @Part("tanggal_lahir") tanggal_lahir: RequestBody,
+        @Part("nomor_whatsapp") nomor_whatsapp: RequestBody,
+        @Part("email") email: RequestBody,
+        @Part("password") password: RequestBody,
+        @Part("password_confirmation") password_confirmation: RequestBody
+    ): Response<ResponseRegister>
+
+    @Multipart
+    @POST(REGISTER)
+    suspend fun registerStepTwo(
+        @Part("step") step: RequestBody,
+        @Part("bukti_bayar\"; filename=\"bb.png\" ") bukti_bayar: RequestBody,
+        @Part("domisili") domisili: RequestBody,
+        @Part("lama_investasi") lama_investasi: RequestBody,
+        @Part("nomor_whatsapp") nomor_whatsapp: RequestBody,
+        @Part("email") email: RequestBody,
+        @Part("profesi") profesi: RequestBody,
+        @Part("pendidikan") pendidikan: RequestBody,
+        @Part("portofolio") portofolio: RequestBody
+    ): Response<ResponseRegister>
 //
 //    @GET(GET_RANDOM)
 //    suspend fun getRandom(): Response<DrinkResponse>

@@ -1,6 +1,10 @@
 package id.co.ptn.hungrystock.bases
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,9 +32,33 @@ open class BaseFragment: Fragment() {
         Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show()
     }
 
+    fun View.showSnackBar(
+        view: View,
+        msg: String,
+        length: Int,
+        actionMessage: CharSequence?,
+        action: (View) -> Unit
+    ) {
+        val snackBar = Snackbar.make(view, msg, length)
+        if (actionMessage != null) {
+            snackBar.setAction(actionMessage) {
+                action(this)
+            }.show()
+        } else {
+            snackBar.show()
+        }
+    }
+
     fun loading(view: View, loading: Boolean) {
         if (loading) view.visibility = View.VISIBLE
         else view.visibility = View.GONE
+    }
+
+    fun Context.openAppSystemSettings() {
+        startActivity(Intent().apply {
+            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+            data = Uri.fromParts("package", packageName, null)
+        })
     }
 
 }

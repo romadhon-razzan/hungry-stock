@@ -3,7 +3,9 @@ class MainRegistration(
  var id: String,
  var title: String,
  var items: MutableList<RegistrationItem>,
- var value:String
+ var value:String,
+ var error: Boolean,
+ var otherActive: Boolean
 ) {
  companion object {
   const val DOMISILI = "domisili"

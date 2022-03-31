@@ -1,7 +1,6 @@
 package id.co.ptn.hungrystock.ui.general.registration
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import dagger.hilt.android.AndroidEntryPoint
@@ -9,7 +8,6 @@ import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
 import id.co.ptn.hungrystock.databinding.ActivityRegistrationBinding
 import id.co.ptn.hungrystock.ui.general.registration.adapters.RegistrationStepAdapter
-import id.co.ptn.hungrystock.ui.onboarding.adapters.OnboardVPAdapter
 
 @AndroidEntryPoint
 class RegistrationActivity : BaseActivity() {
@@ -39,17 +37,25 @@ class RegistrationActivity : BaseActivity() {
         if (p == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 binding.progressBar2.setProgress(100, true)
-            } else binding.progressBar2.setProgress(100)
+            } else binding.progressBar2.progress = 100
         } else if (p == 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 binding.progressBar2.setProgress(50, true)
-            } else binding.progressBar2.setProgress(50)
+            } else binding.progressBar2.progress = 50
         }
-        binding.textView3.setText(getString(R.string.label_halaman_1_dari_n,""+(p+1),"2"))
+        binding.textView3.text = getString(R.string.label_halaman_1_dari_n,""+(p+1),"2")
     }
 
     fun toRegistrationSuccess() {
         router.toRegistrationSuccess()
         finish()
     }
+
+    override fun onBackPressed() {
+        val currentPage = binding.viewPager2.currentItem
+        if (currentPage == 0)
+            finish()
+        else changePage(0)
+    }
+
 }

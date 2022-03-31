@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/large"
+        android:background="@color/background">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:fontFamily="@font/ft_barlow_semibold"
+            android:text="@string/dialog_title_filter_by"
+            android:textColor="@color/white_70"
+            android:textSize="@dimen/font_normal" />
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bt_close"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            app:cardCornerRadius="50dp"
+            app:cardBackgroundColor="@color/transparent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_close_circle"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll_view"
+            android:layout_above="@id/bt_apply"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tv_title">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/lbl_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ft_barlow_semibold"
+                    android:gravity="center"
+                    android:text="@string/label_tahun"
+                    android:textColor="@color/white_80"
+                    android:textSize="@dimen/font_normal" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_year"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/lbl_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/large"
+                    android:fontFamily="@font/ft_barlow_semibold"
+                    android:gravity="center"
+                    android:text="@string/label_bulan"
+                    android:textColor="@color/white_80"
+                    android:textSize="@dimen/font_normal" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/bt_spinner_month"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:layout_marginTop="@dimen/small1"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/black_25">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center|start"
+                        android:paddingStart="@dimen/medium"
+                        android:paddingEnd="@dimen/medium"
+                        android:text="@string/hint_pilih_bulan"
+                        android:textColor="@color/white_50"
+                        app:drawableEndCompat="@drawable/ic_spinner_down"
+                        app:drawableTint="@color/white_50" />
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/lbl_filter_emiten"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/large"
+                    android:fontFamily="@font/ft_barlow_semibold"
+                    android:gravity="center"
+                    android:text="@string/label_filter_emiten"
+                    android:textColor="@color/white_80"
+                    android:textSize="@dimen/font_normal" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_emiten"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small1" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.core.widget.NestedScrollView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bt_apply"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            app:cardBackgroundColor="@color/secondary"
+            app:cardCornerRadius="50dp"
+            app:cardElevation="5dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginEnd="@dimen/large"
+                android:fontFamily="@font/ft_barlow_semibold"
+                android:gravity="center"
+                android:text="@string/button_apply_filter"
+                android:textColor="@color/dark"
+                android:textSize="@dimen/font_normal" />
+        </com.google.android.material.card.MaterialCardView>
+
+    </RelativeLayout>
+</layout>

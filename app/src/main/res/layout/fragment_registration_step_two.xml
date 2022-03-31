@@ -5,6 +5,7 @@
     tools:context=".ui.onboarding.fragments.PageOneFragment">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:background="@color/background">
@@ -36,36 +37,45 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/bt_add_photo"
-                android:layout_below="@id/lbl_info_proof"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
+                android:layout_below="@id/lbl_info_proof"
                 android:layout_marginStart="19dp"
                 android:layout_marginEnd="@dimen/small"
-                android:layout_marginBottom="10dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="@color/secondary"
                 app:cardBackgroundColor="@color/transparent"
-                app:cardCornerRadius="50dp">
+                app:cardCornerRadius="50dp"
+                app:strokeColor="@color/secondary"
+                app:strokeWidth="1dp">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/medium1"
                     android:layout_marginEnd="@dimen/medium1"
+                    android:drawablePadding="@dimen/small"
                     android:fontFamily="@font/barlow_semibold"
                     android:gravity="center"
                     android:text="@string/button_tambahkan_file"
                     android:textColor="@color/secondary"
                     android:textSize="@dimen/font_normal"
-                    android:drawablePadding="@dimen/small"
-                    app:drawableStartCompat="@drawable/ic_upload_file"/>
+                    app:drawableStartCompat="@drawable/ic_upload_file" />
             </com.google.android.material.card.MaterialCardView>
+
+            <include
+                android:id="@+id/error"
+                android:layout_below="@+id/bt_add_photo"
+                layout="@layout/label_error"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="@dimen/large"
+                android:layout_marginEnd="@dimen/large"/>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_proof_payment"
-                android:layout_below="@+id/bt_add_photo"
+                android:layout_below="@+id/error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal"
                 android:layout_marginStart="@dimen/large"
                 android:layout_marginEnd="@dimen/large"
                 android:visibility="gone"
