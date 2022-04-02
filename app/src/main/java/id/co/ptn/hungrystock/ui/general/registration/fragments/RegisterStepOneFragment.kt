@@ -8,6 +8,8 @@ import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
 import android.util.Log
@@ -19,12 +21,18 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
+import com.techiness.progressdialoglibrary.ProgressDialog
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseFragment
 import id.co.ptn.hungrystock.databinding.FragmentRegistrationStepOneBinding
+import id.co.ptn.hungrystock.models.registration.RequestRegistrationStepOne
+import id.co.ptn.hungrystock.models.registration.ResponseRegisterError
+import id.co.ptn.hungrystock.ui.general.registration.RegistrationActivity
 import id.co.ptn.hungrystock.ui.general.view_model.RegistrationViewModel
 import id.co.ptn.hungrystock.utils.EmailValidation
+import id.co.ptn.hungrystock.utils.Status
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -44,6 +52,7 @@ class RegisterStepOneFragment : BaseFragment() {
     private var param2: String? = null
     private lateinit var binding: FragmentRegistrationStepOneBinding
     private var viewModel: RegistrationViewModel? = null
+    private var dialogLoad: ProgressDialog? = null
 
     var cal = Calendar.getInstance()
     var filePhotoProfile: File? = null
@@ -85,11 +94,11 @@ class RegisterStepOneFragment : BaseFragment() {
     }
 
     private fun init() {
-        binding.etFullName.setText("Akbar")
-        binding.etEmail.setText("akbar@gmail.com")
-        binding.etWa.setText("082110735124")
-        binding.etPassword.setText("12345678")
-        binding.etConfPassword.setText("12345678")
+//        binding.etFullName.setText("Akbar")
+//        binding.etEmail.setText("romadhon28akbar@gmail.com")
+//        binding.etWa.setText("082110735124")
+//        binding.etPassword.setText("12345678")
+//        binding.etConfPassword.setText("12345678")
         setObserve()
         initListener()
     }
@@ -98,7 +107,6 @@ class RegisterStepOneFragment : BaseFragment() {
         binding.cUpload.btAddPhoto.setOnClickListener { addPhotoButtonPressed() }
         binding.tvDateBorn.setOnClickListener { dateButtonPressed() }
         binding.btNext.setOnClickListener {
-//            (requireActivity() as RegistrationActivity).changePage(1)
             nextButtonPressed()
         }
     }
@@ -113,6 +121,7 @@ class RegisterStepOneFragment : BaseFragment() {
 
         filePhotoProfile = File(picturePath!!)
         binding.cUpload.image.setImageURI(uri)
+        binding.cUpload.photoError.text.text = ""
     }
 
     private fun setBirthDate() {
@@ -120,6 +129,7 @@ class RegisterStepOneFragment : BaseFragment() {
         val tz = TimeZone.getTimeZone("Asia/Jakarta")
         formatOutgoing.timeZone = tz
         val s = formatOutgoing.format(cal.time)
+        paramBirtDate = s
         binding.tvDateBorn.text = s
     }
 
@@ -159,55 +169,61 @@ class RegisterStepOneFragment : BaseFragment() {
 
     private fun nextButtonPressed() {
         try {
-            if (binding.etFullName.text.toString().isNotEmpty()){
-                binding.nameError.text.text = ""
-                if (binding.tvDateBorn.text.toString().isNotEmpty()){
-                    binding.bornError.text.text = ""
-                    if (binding.etWa.text.toString().isNotEmpty()){
-                        binding.waError.text.text = ""
-                        if (binding.etEmail.text.toString().isNotEmpty()){
-                            binding.emailError.text.text = ""
-                            if (EmailValidation.check(binding.etEmail.text.toString())){
+            if (filePhotoProfile != null){
+                if (binding.etFullName.text.toString().isNotEmpty()){
+                    binding.nameError.text.text = ""
+                    if (binding.tvDateBorn.text.toString().isNotEmpty()){
+                        binding.bornError.text.text = ""
+                        if (binding.etWa.text.toString().isNotEmpty()){
+                            binding.waError.text.text = ""
+                            if (binding.etEmail.text.toString().isNotEmpty()){
                                 binding.emailError.text.text = ""
-                                if (binding.etPassword.text.toString().isNotEmpty()){
-                                    binding.passwordError.text.text = ""
-                                    if (binding.etPassword.text.toString().length >= 8){
+                                if (EmailValidation.check(binding.etEmail.text.toString())){
+                                    binding.emailError.text.text = ""
+                                    if (binding.etPassword.text.toString().isNotEmpty()){
                                         binding.passwordError.text.text = ""
-                                        if (binding.etConfPassword.text.toString() == binding.etPassword.text.toString()){
-                                            binding.confirmPasswordError.text.text = ""
-                                            apiRegistrationStepOne()
+                                        if (binding.etPassword.text.toString().length >= 8){
+                                            binding.passwordError.text.text = ""
+                                            if (binding.etConfPassword.text.toString() == binding.etPassword.text.toString()){
+                                                binding.confirmPasswordError.text.text = ""
+                                                apiRegistrationStepOne()
+                                            } else {
+                                                showSnackBar(binding.container, requireActivity().getString(R.string.message_password_not_matches))
+                                                binding.confirmPasswordError.text.text = requireActivity().getString(R.string.message_password_not_matches)
+                                            }
                                         } else {
-                                            showSnackBar(binding.container, requireActivity().getString(R.string.message_password_not_matches))
-                                            binding.confirmPasswordError.text.text = requireActivity().getString(R.string.message_password_not_matches)
+                                            showSnackBar(binding.container, requireActivity().getString(R.string.message_min_8_character))
+                                            binding.passwordError.text.text = requireActivity().getString(R.string.message_min_8_character)
                                         }
                                     } else {
-                                        showSnackBar(binding.container, requireActivity().getString(R.string.message_min_8_character))
-                                        binding.passwordError.text.text = requireActivity().getString(R.string.message_min_8_character)
+                                        showSnackBar(binding.container, requireActivity().getString(R.string.message_all_field_must_fill))
+                                        binding.passwordError.text.text = requireActivity().getString(R.string.message_need_fill)
                                     }
                                 } else {
-                                    showSnackBar(binding.container, requireActivity().getString(R.string.message_all_field_must_fill))
-                                    binding.passwordError.text.text = requireActivity().getString(R.string.message_need_fill)
+                                    showSnackBar(binding.container, requireActivity().getString(R.string.message_email_invalid))
+                                    binding.emailError.text.text = requireActivity().getString(R.string.message_email_invalid)
                                 }
                             } else {
-                                showSnackBar(binding.container, requireActivity().getString(R.string.message_email_invalid))
-                                binding.emailError.text.text = requireActivity().getString(R.string.message_email_invalid)
+                                showSnackBar(binding.container, requireActivity().getString(R.string.message_all_field_must_fill))
+                                binding.emailError.text.text = requireActivity().getString(R.string.message_need_fill)
                             }
                         } else {
                             showSnackBar(binding.container, requireActivity().getString(R.string.message_all_field_must_fill))
-                            binding.emailError.text.text = requireActivity().getString(R.string.message_need_fill)
+                            binding.waError.text.text = requireActivity().getString(R.string.message_need_fill)
                         }
                     } else {
                         showSnackBar(binding.container, requireActivity().getString(R.string.message_all_field_must_fill))
-                        binding.waError.text.text = requireActivity().getString(R.string.message_need_fill)
+                        binding.bornError.text.text = requireActivity().getString(R.string.message_need_fill)
                     }
                 } else {
                     showSnackBar(binding.container, requireActivity().getString(R.string.message_all_field_must_fill))
-                    binding.bornError.text.text = requireActivity().getString(R.string.message_need_fill)
+                    binding.nameError.text.text = requireActivity().getString(R.string.message_need_fill)
                 }
             } else {
-                showSnackBar(binding.container, requireActivity().getString(R.string.message_all_field_must_fill))
-                binding.nameError.text.text = requireActivity().getString(R.string.message_need_fill)
+                showSnackBar(binding.container, requireActivity().getString(R.string.message_profile_photo_empty))
+                binding.cUpload.photoError.text.text = requireActivity().getString(R.string.message_profile_photo_empty)
             }
+
         }catch (e: Exception){
             e.printStackTrace()
         }
@@ -218,9 +234,6 @@ class RegisterStepOneFragment : BaseFragment() {
             cal.set(Calendar.YEAR, year)
             cal.set(Calendar.MONTH, monthOfYear)
             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            var month = ""
-            month = if (monthOfYear < 10) "0$monthOfYear" else monthOfYear.toString()
-            paramBirtDate = "$year-$month-$dayOfMonth"
             setBirthDate()
         }
 
@@ -250,9 +263,53 @@ class RegisterStepOneFragment : BaseFragment() {
         }
     }
 
+    private fun setErrorFromApi(errors: ResponseRegisterError) {
+
+        try {
+            if (errors.foto_profil.isNotEmpty()){
+                binding.cUpload.photoError.text.text = errors.foto_profil[0]
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
+            binding.cUpload.photoError.text.text = ""
+        }
+
+        try {
+            if (errors.email.isNotEmpty()){
+                binding.emailError.text.text = errors.email[0]
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
+            binding.emailError.text.text = ""
+        }
+
+        try {
+            if (errors.nomor_whatsapp.isNotEmpty()){
+                binding.waError.text.text = errors.nomor_whatsapp[0]
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
+            binding.waError.text.text = ""
+        }
+    }
+
     private fun setObserve() {
         viewModel?.reqRegisterResponse()?.observe(viewLifecycleOwner){
-
+            when (it.status) {
+                Status.SUCCESS -> {
+                    (requireActivity() as RegistrationActivity).changePage(1)
+                    dialogLoad?.dismiss()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    dialogLoad?.dismiss()
+                    it.data?.errors?.let { e->
+                        Log.d("ERROR", Gson().toJson(e))
+                        setErrorFromApi(e)
+                        showSnackBar(binding.container, "Registrasi gagal")
+                    }
+                }
+            }
         }
     }
     /**
@@ -260,23 +317,35 @@ class RegisterStepOneFragment : BaseFragment() {
      * */
 
     private fun apiRegistrationStepOne() {
-        val file = filePhotoProfile
-        val requestFile: RequestBody? = file?.let { it.asRequestBody("multipart/form-data".toMediaTypeOrNull()) }
-        val fp = MultipartBody.Part.createFormData("foto_profil", file?.name!!, requestFile!!)
-        val name = binding.etFullName.text.toString()
-            .toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val tl = paramBirtDate.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val nw =
-            binding.etWa.text.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val e =
-            binding.etEmail.text.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val p = binding.etPassword.text.toString()
-            .toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val cp = binding.etConfPassword.text.toString()
-            .toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val s = "1".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+        dialogLoad = dialogLoading()
+        dialogLoad?.show()
+        Handler(Looper.getMainLooper()).postDelayed({
+            val file = filePhotoProfile
+            val requestFile: RequestBody? = file?.let { it.asRequestBody("multipart/form-data".toMediaTypeOrNull()) }
+            var fp: MultipartBody.Part? = null
+            if (file != null)
+            fp = MultipartBody.Part.createFormData("foto_profil", file.name, requestFile!!)
 
-        viewModel?.apiRegistration(s,fp, name, tl,nw,e,p, cp)
+            val name = binding.etFullName.text.toString()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val tl = paramBirtDate.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val nw =
+                binding.etWa.text.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val e =
+                binding.etEmail.text.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val p = binding.etPassword.text.toString()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val cp = binding.etConfPassword.text.toString()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val s = "1".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+
+            if (fp != null) {
+                (requireActivity() as RegistrationActivity).requestRegistrationStepOne = RequestRegistrationStepOne(
+                    fp,name,nw,e,tl,p
+                )
+                viewModel?.apiRegistrationStepOne(s,fp, name, tl,nw,e,p, cp)
+            }
+        }, 1000)
     }
 
 

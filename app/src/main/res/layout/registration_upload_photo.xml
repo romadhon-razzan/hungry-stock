@@ -38,6 +38,14 @@
             android:textSize="@dimen/font_normal"
             app:drawableEndCompat="@drawable/ic_required_asterisk" />
 
+        <include
+            android:id="@+id/photo_error"
+            layout="@layout/label_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/label"
+            android:layout_marginStart="10dp"/>
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/bt_add_photo"
             android:layout_toEndOf="@id/card_image"

@@ -20,6 +20,20 @@ interface ApiHelper {
         e: RequestBody,
         p: RequestBody,
         cp: RequestBody): Response<ResponseRegister>
+    suspend fun registerStepTwo(
+        s: RequestBody,
+        fp: MultipartBody.Part,
+        bb: MultipartBody.Part,
+        nl: RequestBody,
+        nw: RequestBody,
+        e: RequestBody,
+        tl: RequestBody,
+        p: RequestBody,
+        dm: RequestBody,
+        li: RequestBody,
+        pf: RequestBody,
+        pd: RequestBody,
+        pr: RequestBody): Response<ResponseRegister>
 //    suspend fun getRandom(): Response<DrinkResponse>
 //    suspend fun searchName(s: String): Response<DrinkResponse>
 //    suspend fun detail(s: String): Response<DrinkResponse>

@@ -7,11 +7,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
 import id.co.ptn.hungrystock.databinding.ActivityRegistrationBinding
+import id.co.ptn.hungrystock.models.registration.RequestRegistrationStepOne
 import id.co.ptn.hungrystock.ui.general.registration.adapters.RegistrationStepAdapter
 
 @AndroidEntryPoint
 class RegistrationActivity : BaseActivity() {
     private lateinit var binding: ActivityRegistrationBinding
+    var requestRegistrationStepOne: RequestRegistrationStepOne? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_registration)

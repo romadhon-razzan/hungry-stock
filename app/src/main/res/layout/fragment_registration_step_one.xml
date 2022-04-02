@@ -235,7 +235,7 @@
                     android:paddingStart="@dimen/normal2"
                     android:paddingEnd="@dimen/normal2"
                     android:textColor="@color/grey"
-                    android:textColorHint="@color/grey"
+                    android:textColorHint="#AFAEAE"
                     android:textSize="@dimen/font_medium"
                     android:hint="@string/cth_name_example_com"/>
             </com.google.android.material.card.MaterialCardView>
@@ -288,7 +288,7 @@
                     android:paddingEnd="@dimen/normal2"
                     android:inputType="textPassword"
                     android:textColor="@color/grey"
-                    android:textColorHint="@color/grey"
+                    android:textColorHint="#AFAEAE"
                     android:textSize="@dimen/font_medium"
                     android:hint="@string/hint_minimal_8_karakter"/>
             </com.google.android.material.card.MaterialCardView>
@@ -341,7 +341,7 @@
                     android:paddingEnd="@dimen/normal2"
                     android:inputType="textPassword"
                     android:textColor="@color/grey"
-                    android:textColorHint="@color/grey"
+                    android:textColorHint="#AFAEAE"
                     android:textSize="@dimen/font_medium"
                     android:hint="@string/hint_ketik_ulang_password"/>
             </com.google.android.material.card.MaterialCardView>

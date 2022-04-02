@@ -43,11 +43,15 @@ interface Services {
     @POST(REGISTER)
     suspend fun registerStepTwo(
         @Part("step") step: RequestBody,
-        @Part("bukti_bayar\"; filename=\"bb.png\" ") bukti_bayar: RequestBody,
-        @Part("domisili") domisili: RequestBody,
-        @Part("lama_investasi") lama_investasi: RequestBody,
+        @Part foto_profil: MultipartBody.Part,
+        @Part bukti_bayar:  MultipartBody.Part,
+        @Part("nama_lengkap") nama_lengkap: RequestBody,
         @Part("nomor_whatsapp") nomor_whatsapp: RequestBody,
         @Part("email") email: RequestBody,
+        @Part("tanggal_lahir") tanggal_lahir: RequestBody,
+        @Part("password") password: RequestBody,
+        @Part("domisili") domisili: RequestBody,
+        @Part("lama_investasi") lama_investasi: RequestBody,
         @Part("profesi") profesi: RequestBody,
         @Part("pendidikan") pendidikan: RequestBody,
         @Part("portofolio") portofolio: RequestBody

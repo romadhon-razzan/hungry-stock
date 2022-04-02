@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import com.techiness.progressdialoglibrary.ProgressDialog
 import id.co.ptn.hungrystock.router.Router
 
 open class BaseFragment: Fragment() {
@@ -52,6 +53,10 @@ open class BaseFragment: Fragment() {
     fun loading(view: View, loading: Boolean) {
         if (loading) view.visibility = View.VISIBLE
         else view.visibility = View.GONE
+    }
+
+    fun dialogLoading(): ProgressDialog {
+        return ProgressDialog(requireContext())
     }
 
     fun Context.openAppSystemSettings() {

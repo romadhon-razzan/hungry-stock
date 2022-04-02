@@ -62,13 +62,11 @@ class AuthActivity : BaseActivity() {
                     binding.btLogin.revertAnimation()
                     it.data?.let { d ->
                        d.status.let { s ->
-                           Log.d("statussss", s)
                            if (s == "success") {
                                d.data.token.let { t -> sessionManager.setToken(t) }
                                d.data.user.let { u -> sessionManager.setUser(u) }
                                router.toMain()
                            } else {
-                               Log.d("statussss2", s)
                                d.data.status.let { message ->
                                    showSnackBar(binding.container, message)
                                }

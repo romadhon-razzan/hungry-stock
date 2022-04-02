@@ -21,7 +21,7 @@ class RegistrationViewModel @Inject constructor(private val repository: AppRepos
     private var _reqRegisterResponse: MutableLiveData<Resource<ResponseRegister>> = MutableLiveData()
     fun reqRegisterResponse(): MutableLiveData<Resource<ResponseRegister>> = _reqRegisterResponse
 
-    fun apiRegistration(
+    fun apiRegistrationStepOne(
         s: RequestBody,
         fp: MultipartBody.Part,
         nl: RequestBody,
@@ -35,6 +35,45 @@ class RegistrationViewModel @Inject constructor(private val repository: AppRepos
             try {
                 _reqRegisterResponse.postValue(Resource.loading(null))
                 repository.registerStepOne(s,fp, nl, tl, nw, e, p, cp).let {
+                    if (it.isSuccessful){
+                        _reqRegisterResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        val type = object : TypeToken<ResponseRegister>() {}.type
+                        var errorResponse: ResponseRegister? = null
+                        try {
+                            errorResponse = Gson().fromJson(it.errorBody()?.charStream(), type)
+                        } catch(e: Exception) {
+                            e.printStackTrace()
+                        }
+                        _reqRegisterResponse.postValue(Resource.error(it.errorBody().toString(), errorResponse))
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+
+    fun apiRegistrationStepTwo(
+        s: RequestBody,
+        fp: MultipartBody.Part,
+        bb: MultipartBody.Part,
+        nl: RequestBody,
+        nw: RequestBody,
+        e: RequestBody,
+        tl: RequestBody,
+        p: RequestBody,
+        dm: RequestBody,
+        li: RequestBody,
+        pf: RequestBody,
+        pd: RequestBody,
+        pr: RequestBody
+    ) {
+        viewModelScope.launch {
+            try {
+                _reqRegisterResponse.postValue(Resource.loading(null))
+                repository.registerStepTwo(s,fp,bb,nl,nw, e, tl, p, dm, li, pf, pd, pr).let {
                     if (it.isSuccessful){
                         _reqRegisterResponse.postValue(Resource.success(it.body()))
                     } else {
