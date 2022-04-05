@@ -2,6 +2,8 @@ package id.co.ptn.hungrystock.ui.onboarding
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +28,13 @@ class OnboardActivity : BaseActivity() {
     private fun init() {
         setView()
         listener()
+
+        if (!sessionManager.readPrivacyPolice)
+            Handler(Looper.getMainLooper()).postDelayed({
+                resultLauncher.launch(router.toPrivacyPolice())
+            },1000)
+        else
+            binding.checkbox.isChecked = true
     }
 
     private fun setView() {
@@ -43,6 +52,7 @@ class OnboardActivity : BaseActivity() {
         if (result.resultCode == SUCCESS) {
             agree = true
             binding.checkbox.isChecked = true
+            sessionManager.setReadPrivacyPolice(true)
         }
     }
 

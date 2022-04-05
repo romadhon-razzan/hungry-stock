@@ -4,12 +4,12 @@ import android.content.Context
 import androidx.core.content.edit
 import com.google.gson.Gson
 import id.co.ptn.hungrystock.models.User
-import id.co.ptn.hungrystock.models.auth.ResponseAuth
 
 private const val USER_PREFERENCES_NAME = "user_preferences"
 
 private const val KEY_TOKEN = "token"
 private const val KEY_USER = "user"
+private const val KEY_READ_PRIVACY_POLICE = "read_privacy_police"
 
 class SessionManager private constructor(context: Context) {
     private val sharedPreferences =
@@ -35,6 +35,15 @@ class SessionManager private constructor(context: Context) {
     fun setUser(user: User) {
         val strUser = Gson().toJson(user)
         sharedPreferences.edit { putString(KEY_USER, strUser) }
+    }
+
+    val readPrivacyPolice: Boolean
+        get() {
+            return sharedPreferences.getBoolean(KEY_READ_PRIVACY_POLICE, false)
+        }
+
+    fun setReadPrivacyPolice(value: Boolean){
+        sharedPreferences.edit{ putBoolean(KEY_READ_PRIVACY_POLICE, value) }
     }
 
 

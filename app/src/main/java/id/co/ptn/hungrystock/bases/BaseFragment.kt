@@ -66,4 +66,9 @@ open class BaseFragment: Fragment() {
         })
     }
 
+    fun openUrlPage(uri: String) {
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+        startActivity(browserIntent)
+    }
+
 }

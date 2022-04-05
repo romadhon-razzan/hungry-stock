@@ -47,6 +47,13 @@ class PageFourFragment : BaseFragment() {
     }
 
     private fun initListener() {
+        binding.btBook1.setOnClickListener { openUrlPage("https://www.tokopedia.com/hungrystock/who-wants-to-be-a-smart-investor-lukas-setia-atmaja") }
+        binding.btBook2.setOnClickListener { openUrlPage("https://www.tokopedia.com/hungrystock/bundle-3-buku-lukas-setia-atmaja-dan-thomdean") }
+        binding.btBook3.setOnClickListener { openUrlPage("https://www.tokopedia.com/hungrystock/just-duittology-lukas-setia-atmaja-thomdean") }
+        binding.btBook4.setOnClickListener { openUrlPage("https://www.tokopedia.com/hungrystock/edisi-berwarna-who-wants-to-be-a-smiling-investor-lukas-thomdean") }
+        binding.btBook5.setOnClickListener { openUrlPage("https://www.tokopedia.com/hungrystock/who-wants-to-be-a-wise-investor-lukas-setia-atmaja") }
+        binding.btBook6.setOnClickListener { openUrlPage("https://www.tokopedia.com/hungrystock/who-wants-to-be-rasional-investor-lukas-setia-atmaja") }
+        binding.btBook7.setOnClickListener { openUrlPage("https://www.tokopedia.com/hungrystock/buku-kartun-yuk-nabung-saham-cerdas-berinvestasi-dalam-1-buku") }
         binding.btLoginRegister.setOnClickListener { Router(requireContext()).toAuth() }
     }
 
