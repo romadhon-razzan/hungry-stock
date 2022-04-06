@@ -1,6 +1,7 @@
 package id.co.ptn.hungrystock.core.network
 
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
+import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.registration.ResponseRegister
 import okhttp3.MultipartBody
@@ -56,9 +57,9 @@ interface Services {
         @Part("pendidikan") pendidikan: RequestBody,
         @Part("portofolio") portofolio: RequestBody
     ): Response<ResponseRegister>
-//
-//    @GET(GET_RANDOM)
-//    suspend fun getRandom(): Response<DrinkResponse>
+
+    @GET(EVENT)
+    suspend fun getEvent(): Response<ResponseEvent>
 //
 //    @GET(SEARCH_NAME)
 //    suspend fun searchName( @Query("s") s: String): Response<DrinkResponse>

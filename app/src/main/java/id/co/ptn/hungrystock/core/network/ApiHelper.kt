@@ -1,6 +1,7 @@
 package id.co.ptn.hungrystock.core.network
 
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
+import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.registration.ResponseRegister
 import okhttp3.MultipartBody
@@ -34,7 +35,7 @@ interface ApiHelper {
         pf: RequestBody,
         pd: RequestBody,
         pr: RequestBody): Response<ResponseRegister>
-//    suspend fun getRandom(): Response<DrinkResponse>
+    suspend fun getEvent(): Response<ResponseEvent>
 //    suspend fun searchName(s: String): Response<DrinkResponse>
 //    suspend fun detail(s: String): Response<DrinkResponse>
 //    suspend fun getRecent(): Response<DrinkResponse>

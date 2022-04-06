@@ -48,7 +48,7 @@
                     android:layout_marginTop="@dimen/large"
                     android:fontFamily="@font/barlow_semibold"
                     android:gravity="center"
-                    android:text="@string/label_email_address"
+                    android:text="@string/label_nomor_telepon"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/font_normal"
                     android:drawablePadding="@dimen/small"
@@ -69,10 +69,8 @@
                         android:layout_height="48dp"
                         android:background="@color/transparent"
                         android:fontFamily="@font/barlow_semibold"
-                        android:hint="@string/cth_name_example_com"
                         android:paddingStart="@dimen/normal"
                         android:paddingEnd="@dimen/normal"
-                        android:text="082110735190"
                         android:textColor="@color/grey"
                         android:textColorHint="@color/grey"
                         android:textSize="@dimen/font_medium" />
@@ -111,7 +109,6 @@
                         android:inputType="textPassword"
                         android:paddingStart="@dimen/normal"
                         android:paddingEnd="@dimen/normal"
-                        android:text="4kbar4nggit"
                         android:textColor="@color/grey"
                         android:textColorHint="@color/grey"
                         android:textSize="@dimen/font_medium" />

@@ -102,5 +102,6 @@
     <string name="message_attach_proof_payment_please">Silahkan lampirkan bukti transfer</string>
     <string name="permission_storage_required">Akses Penyimpanan diperlukan untuk menampilkan daftar gambar</string>
     <string name="message_profile_photo_empty">Foto profil harus diisi</string>
+    <string name="label_nomor_telepon">Nomor Telepon</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package id.co.ptn.hungrystock.core.network
 
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
+import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.registration.ResponseRegister
 import okhttp3.MultipartBody
@@ -38,6 +39,8 @@ class ApiHelperImpl @Inject constructor(private val apiService: Services) : ApiH
         pd: RequestBody,
         pr: RequestBody
     ): Response<ResponseRegister> = apiService.registerStepTwo(s,fp,bb,nl,nw,e,tl,p,dm,li,pf,pd,pr)
+
+    override suspend fun getEvent(): Response<ResponseEvent> = apiService.getEvent()
 //    override suspend fun getRandom(): Response<DrinkResponse> = apiService.getRandom()
 //    override suspend fun searchName(s: String): Response<DrinkResponse> = apiService.searchName(s)
 //    override suspend fun detail(s: String): Response<DrinkResponse> = apiService.detail(s)

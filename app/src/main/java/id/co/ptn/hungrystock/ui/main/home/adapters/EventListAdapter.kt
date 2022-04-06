@@ -14,7 +14,8 @@ import id.co.ptn.hungrystock.models.main.home.Event
 import id.co.ptn.hungrystock.models.main.home.PastEvent
 import id.co.ptn.hungrystock.models.main.home.UpcomingEvent
 
-class EventListAdapter(private val items: MutableList<Event>):
+class EventListAdapter(private val items: MutableList<Event>,
+private val listener: Listener):
     RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
     private lateinit var context: Context
 
@@ -27,8 +28,12 @@ class EventListAdapter(private val items: MutableList<Event>):
 
     inner class UpcomingEventHolder(var binding: ItemUpcomingEventListBinding) : ViewHolder(binding.root) {
         private lateinit var upcomingEventListAdapter: UpcomingEventListAdapter
-        fun initList(items: MutableList<UpcomingEvent>, context: Context) {
-            upcomingEventListAdapter = UpcomingEventListAdapter(items)
+        fun initList(items: MutableList<UpcomingEvent>, context: Context, listener: Listener) {
+            upcomingEventListAdapter = UpcomingEventListAdapter(context,items, object : UpcomingEventListAdapter.Listener{
+                override fun openConference(url: String) {
+                    listener.openConference(url)
+                }
+            })
             binding.recyclerView.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = upcomingEventListAdapter
@@ -73,7 +78,7 @@ class EventListAdapter(private val items: MutableList<Event>):
         when(element.type) {
             Event.TYPE_UPCOMING_EVENT -> {
                 val viewHolder = holder as UpcomingEventHolder
-                viewHolder.initList(element.upcomingEvents as MutableList<UpcomingEvent>, context)
+                viewHolder.initList(element.upcomingEvents as MutableList<UpcomingEvent>, context, listener)
             }
             else -> {
                 val viewHolder = holder as PastEventHolder
@@ -84,5 +89,9 @@ class EventListAdapter(private val items: MutableList<Event>):
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    public interface Listener {
+        fun openConference(url: String)
     }
 }
