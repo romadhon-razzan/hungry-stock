@@ -57,6 +57,7 @@
             android:fontFamily="@font/ft_barlow_regular"
             android:textSize="@dimen/font_normal1"
             android:textColor="@color/white_70"
+            android:singleLine="true"
             android:text="Bertemu langsung dengan jajaran direksi dari BSDE &amp; DMAS"/>
 
 

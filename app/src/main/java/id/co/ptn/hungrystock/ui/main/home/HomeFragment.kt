@@ -67,12 +67,14 @@ class HomeFragment : BaseFragment() {
             val upe: MutableList<UpcomingEvent>  = mutableListOf()
             upe.add(0,
                 UpcomingEvent(
-                    headlineEvent.title!!,
-                    headlineEvent.content!!,
-                    headlineEvent.speaker!!,
-                    "Selasa, 9 Nov 2021. 18:30 WIB",
-                    headlineEvent.photo_url!!,
-                    headlineEvent.zoom_link!!))
+                    headlineEvent.title.toString(),
+                    headlineEvent.content.toString(),
+                    headlineEvent.speaker.toString(),
+                    headlineEvent.event_date.toString(),
+                    headlineEvent.event_hour_start.toString(),
+                    headlineEvent.event_hour_end.toString(),
+                    headlineEvent.photo_url.toString(),
+                    headlineEvent.zoom_link.toString()))
             viewModel.setUpcomingEvents(upe)
         }catch (e: Exception){
             e.printStackTrace()
@@ -81,7 +83,13 @@ class HomeFragment : BaseFragment() {
         try {
             val pe: MutableList<PastEvent>  = mutableListOf()
             data.events.data.forEachIndexed { index, eventData ->
-                pe.add(index, PastEvent(eventData.title!!, eventData.speaker!!, "Selasa, 9 Nov 2021. 18:30 WIB", eventData.zoom_link!!))
+                pe.add(index, PastEvent(
+                    eventData.title.toString(),
+                    eventData.speaker.toString(),
+                    eventData.event_date.toString(),
+                    eventData.event_hour_start.toString(),
+                    eventData.event_hour_end.toString(),
+                    eventData.zoom_link.toString()))
             }
             viewModel.setPastEvents(pe)
         }catch (e: Exception){
@@ -112,6 +120,7 @@ class HomeFragment : BaseFragment() {
                 }
                 Status.ERROR -> {
                     binding.progressBar.visibility = View.GONE
+                    showSnackBar(binding.container,"Something wrong")
                 }
             }
         }

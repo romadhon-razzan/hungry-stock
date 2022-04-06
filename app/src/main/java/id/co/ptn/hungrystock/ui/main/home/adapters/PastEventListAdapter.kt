@@ -13,12 +13,26 @@ import id.co.ptn.hungrystock.models.OnboardPageTwo
 import id.co.ptn.hungrystock.models.main.home.PastEvent
 import id.co.ptn.hungrystock.models.registration.MainRegistration
 import id.co.ptn.hungrystock.models.registration.RegistrationItem
+import id.co.ptn.hungrystock.utils.getDateMMMMddyyyy
 
 class PastEventListAdapter(private val items: MutableList<PastEvent>):
     RecyclerView.Adapter<PastEventListAdapter.ViewHolder>() {
     class ViewHolder(var binding: ItemPastEventBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: PastEvent) {
             item.title.let { binding.tvTitle.text = it }
+            item.date.let {
+                binding.tvDate.text = getDateMMMMddyyyy(it)
+                try {
+                    binding.tvDate.append(" ")
+                    binding.tvDate.append(item.startAt)
+                    binding.tvDate.append(" - ")
+                    binding.tvDate.append(item.endAt)
+                    binding.tvDate.append(" WIB")
+                }catch (e: Exception){
+                    e.printStackTrace()
+                }
+            }
+            item.speaker.let { binding.tvSpeaker.text = "Bersama ${it}" }
         }
     }
 
