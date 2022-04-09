@@ -51,6 +51,9 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun initListener() {
+        binding.swipeRefresh.setOnRefreshListener {
+            apiGetHome()
+        }
         binding.btNext.setOnClickListener { apiGetNextEvent() }
     }
 
@@ -144,6 +147,7 @@ class HomeFragment : BaseFragment() {
             when(it.status){
                 Status.SUCCESS -> {
                     binding.progressBar.visibility = View.GONE
+                    binding.swipeRefresh.isRefreshing = false
                     it.data?.data?.let { data ->
                         data.events.next_page_url?.let { _ ->
                             data.events.current_page?.let { cp -> viewModel.setNextPage((cp+1).toString()) }
@@ -157,6 +161,7 @@ class HomeFragment : BaseFragment() {
                 }
                 Status.ERROR -> {
                     binding.progressBar.visibility = View.GONE
+                    binding.swipeRefresh.isRefreshing = false
                     showSnackBar(binding.container,"Something wrong")
                 }
             }
