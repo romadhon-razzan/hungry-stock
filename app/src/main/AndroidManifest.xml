@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NoActionBar">
         <activity
+            android:name=".ui.main.home.event.EventDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.general.forgot_password.ResetPasswordSuccessActivity"
             android:exported="false" />
         <activity
@@ -71,11 +74,10 @@
             android:name="com.onesignal.NotificationServiceExtension"
             android:value="id.co.ptn.hungrystock.notification.NotificationServiceExtension" />
     </application>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

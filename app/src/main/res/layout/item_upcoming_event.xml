@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/normal2"
+        android:paddingTop="@dimen/normal2"
+        android:paddingBottom="@dimen/normal2"
         android:orientation="vertical"
         android:background="@color/background">
 
@@ -17,6 +19,8 @@
                 android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/normal2"
+                android:layout_marginEnd="@dimen/normal2"
                 android:scaleType="centerCrop"
                 tools:src="@drawable/img_sample_event"/>
         </com.google.android.material.card.MaterialCardView>
@@ -26,6 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small1"
             android:layout_marginBottom="@dimen/small"
+            android:paddingStart="@dimen/normal2"
+            android:paddingEnd="@dimen/normal2"
             android:fontFamily="@font/ft_barlow_regular"
             android:textSize="@dimen/font_small"
             android:textColor="@color/white_70"
@@ -36,6 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/small"
+            android:paddingStart="@dimen/normal2"
+            android:paddingEnd="@dimen/normal2"
             android:fontFamily="@font/ft_coolvetica"
             android:textSize="@dimen/font_large1_1"
             android:textColor="@color/secondary"
@@ -45,6 +53,8 @@
             android:id="@+id/tv_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="@dimen/normal2"
+            android:paddingEnd="@dimen/normal2"
             android:fontFamily="@font/ft_barlow_regular"
             android:textSize="@dimen/font_normal1"
             android:textColor="@color/white"
@@ -58,7 +68,15 @@
             android:textSize="@dimen/font_normal1"
             android:textColor="@color/white_70"
             android:singleLine="true"
+            android:visibility="gone"
             android:text="Bertemu langsung dengan jajaran direksi dari BSDE &amp; DMAS"/>
+
+        <FrameLayout
+            android:id="@+id/frame_web"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small1"
+            android:layout_marginEnd="@dimen/small1"/>
 
 
         <com.google.android.material.card.MaterialCardView
@@ -66,6 +84,8 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="@dimen/large"
+            android:layout_marginStart="@dimen/normal2"
+            android:layout_marginEnd="@dimen/normal2"
             app:cardBackgroundColor="@color/secondary"
             app:cardCornerRadius="50dp">
 

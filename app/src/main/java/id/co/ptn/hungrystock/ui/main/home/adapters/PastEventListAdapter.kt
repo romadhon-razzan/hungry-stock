@@ -15,10 +15,11 @@ import id.co.ptn.hungrystock.models.registration.MainRegistration
 import id.co.ptn.hungrystock.models.registration.RegistrationItem
 import id.co.ptn.hungrystock.utils.getDateMMMMddyyyy
 
-class PastEventListAdapter(private val items: MutableList<PastEvent>):
+class PastEventListAdapter(private val items: MutableList<PastEvent>,
+private val listener: Listener):
     RecyclerView.Adapter<PastEventListAdapter.ViewHolder>() {
     class ViewHolder(var binding: ItemPastEventBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: PastEvent) {
+        fun bind(item: PastEvent, listener: Listener) {
             item.title.let { binding.tvTitle.text = it }
             item.date.let {
                 binding.tvDate.text = getDateMMMMddyyyy(it)
@@ -33,6 +34,7 @@ class PastEventListAdapter(private val items: MutableList<PastEvent>):
                 }
             }
             item.speaker.let { binding.tvSpeaker.text = "Bersama ${it}" }
+            binding.btnJoin.setOnClickListener { listener.openDetailPastEvent(item) }
         }
     }
 
@@ -43,10 +45,14 @@ class PastEventListAdapter(private val items: MutableList<PastEvent>):
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val element = items[position]
-        holder.bind(element)
+        holder.bind(element, listener)
     }
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    public interface Listener{
+        fun openDetailPastEvent(event: PastEvent)
     }
 }

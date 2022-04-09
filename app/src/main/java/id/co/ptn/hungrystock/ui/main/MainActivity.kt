@@ -3,9 +3,11 @@ package id.co.ptn.hungrystock.ui.main
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
+import id.co.ptn.hungrystock.config.ASSET_URL
 import id.co.ptn.hungrystock.databinding.ActivityMainBinding
 import id.co.ptn.hungrystock.ui.main.adapters.MainVPAdapter
 import id.co.ptn.hungrystock.ui.main.viewmodel.MainViewModel
@@ -33,9 +35,19 @@ class MainActivity : BaseActivity() {
     private fun init() {
         binding.vm = viewModel
         binding.lifecycleOwner = this
+        setView()
         initListener()
         initViewPager()
         navHomePressed()
+    }
+
+    private fun setView() {
+        try {
+            Glide.with(this).load("${ASSET_URL}${sessionManager.user.photo}").into(binding.imgProfile)
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+
     }
 
     private fun initListener() {

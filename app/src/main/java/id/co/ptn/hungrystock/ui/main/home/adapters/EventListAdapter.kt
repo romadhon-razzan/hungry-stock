@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import id.co.ptn.hungrystock.R
@@ -15,6 +16,7 @@ import id.co.ptn.hungrystock.models.main.home.PastEvent
 import id.co.ptn.hungrystock.models.main.home.UpcomingEvent
 
 class EventListAdapter(private val items: MutableList<Event>,
+                       private val fragmentManager: FragmentManager,
 private val listener: Listener):
     RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
     private lateinit var context: Context
@@ -28,10 +30,14 @@ private val listener: Listener):
 
     inner class UpcomingEventHolder(var binding: ItemUpcomingEventListBinding) : ViewHolder(binding.root) {
         private lateinit var upcomingEventListAdapter: UpcomingEventListAdapter
-        fun initList(items: MutableList<UpcomingEvent>, context: Context, listener: Listener) {
-            upcomingEventListAdapter = UpcomingEventListAdapter(context,items, object : UpcomingEventListAdapter.Listener{
+        fun initList(items: MutableList<UpcomingEvent>, context: Context, fragmentManager: FragmentManager, listener: Listener) {
+            upcomingEventListAdapter = UpcomingEventListAdapter(context,items, fragmentManager, object : UpcomingEventListAdapter.Listener{
                 override fun openConference(url: String) {
                     listener.openConference(url)
+                }
+
+                override fun openDetailUpcomingEvent(event: UpcomingEvent) {
+                    listener.openDetailUpcomingEvent(event)
                 }
             })
             binding.recyclerView.apply {
@@ -44,7 +50,11 @@ private val listener: Listener):
     inner class PastEventHolder(var binding: ItemPastEventListBinding) : ViewHolder(binding.root) {
         private lateinit var pastEventListAdapter: PastEventListAdapter
         fun initList(items: MutableList<PastEvent>, context: Context) {
-            pastEventListAdapter = PastEventListAdapter(items)
+            pastEventListAdapter = PastEventListAdapter(items, object : PastEventListAdapter.Listener{
+                override fun openDetailPastEvent(event: PastEvent) {
+                    openDetailPastEvent(event)
+                }
+            })
             binding.recyclerView.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = pastEventListAdapter
@@ -78,7 +88,7 @@ private val listener: Listener):
         when(element.type) {
             Event.TYPE_UPCOMING_EVENT -> {
                 val viewHolder = holder as UpcomingEventHolder
-                viewHolder.initList(element.upcomingEvents as MutableList<UpcomingEvent>, context, listener)
+                viewHolder.initList(element.upcomingEvents as MutableList<UpcomingEvent>, context, fragmentManager, listener)
             }
             else -> {
                 val viewHolder = holder as PastEventHolder
@@ -93,5 +103,7 @@ private val listener: Listener):
 
     public interface Listener {
         fun openConference(url: String)
+        fun openDetailUpcomingEvent(event: UpcomingEvent)
+        fun openDetailPastEvent(event: PastEvent)
     }
 }

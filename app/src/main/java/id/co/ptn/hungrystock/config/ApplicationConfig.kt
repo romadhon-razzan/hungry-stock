@@ -3,6 +3,7 @@ package id.co.ptn.hungrystock.config
 const val API_VERSION = "v2"
 const val KEY = "9973533"
 const val API_URL = "https://hungrystock.com/api/"
+const val ASSET_URL = "https://hungrystock.sgp1.digitaloceanspaces.com/"
 var TOKEN = ""
 
 const val DEBUG = true

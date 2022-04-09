@@ -50,9 +50,17 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun initList() {
-        eventListAdapter = EventListAdapter(viewModel.getEvents(), object : EventListAdapter.Listener{
+        eventListAdapter = EventListAdapter(viewModel.getEvents(), childFragmentManager, object : EventListAdapter.Listener{
             override fun openConference(url: String) {
                 openUrlPage(url)
+            }
+
+            override fun openDetailUpcomingEvent(event: UpcomingEvent) {
+                showSnackBar(binding.container," Open Detail")
+            }
+
+            override fun openDetailPastEvent(event: PastEvent) {
+                
             }
         })
         binding.recyclerView.apply {
