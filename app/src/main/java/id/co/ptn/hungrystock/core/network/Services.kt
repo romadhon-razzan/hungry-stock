@@ -60,6 +60,9 @@ interface Services {
 
     @GET(EVENT)
     suspend fun getEvent(): Response<ResponseEvent>
+
+    @GET(EVENT)
+    suspend fun getNextEvent(@Query("page") p: String): Response<ResponseEvent>
 //
 //    @GET(SEARCH_NAME)
 //    suspend fun searchName( @Query("s") s: String): Response<DrinkResponse>

@@ -36,6 +36,7 @@ interface ApiHelper {
         pd: RequestBody,
         pr: RequestBody): Response<ResponseRegister>
     suspend fun getEvent(): Response<ResponseEvent>
+    suspend fun getNextEvent(p: String): Response<ResponseEvent>
 //    suspend fun searchName(s: String): Response<DrinkResponse>
 //    suspend fun detail(s: String): Response<DrinkResponse>
 //    suspend fun getRecent(): Response<DrinkResponse>

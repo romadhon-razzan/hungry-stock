@@ -35,6 +35,7 @@ class AppRepository @Inject constructor(private val apiHelper: ApiHelper) {
         pr: RequestBody
     ) = apiHelper.registerStepTwo(s,fp,bb,nl,nw, e, tl, p, dm, li, pf, pd, pr)
     suspend fun getEvent() =  apiHelper.getEvent()
+    suspend fun getNextEvent(p: String) =  apiHelper.getNextEvent(p)
 //    suspend fun searchName(s: String) =  apiHelper.searchName(s)
 //    suspend fun detail(s: String) =  apiHelper.detail(s)
 //    suspend fun getRecent() =  apiHelper.getRecent()

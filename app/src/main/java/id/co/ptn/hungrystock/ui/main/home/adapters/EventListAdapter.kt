@@ -20,10 +20,17 @@ class EventListAdapter(private val items: MutableList<Event>,
 private val listener: Listener):
     RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
     private lateinit var context: Context
+    private lateinit var  pastEventListAdapter: PastEventListAdapter
+    private lateinit var pastEventHolder: PastEventHolder
 
     companion object {
         const val TYPE_UPCOMING_EVENT = 0
         const val TYPE_PAST_EVENT = 1
+    }
+
+    fun updatePastEvent(positionStart: Int, total: Int) {
+        pastEventListAdapter.notifyItemInserted(positionStart)
+//        pastEventHolder.binding.recyclerView.smoothScrollToPosition(positionStart+2)
     }
 
     open inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -48,7 +55,7 @@ private val listener: Listener):
     }
 
     inner class PastEventHolder(var binding: ItemPastEventListBinding) : ViewHolder(binding.root) {
-        private lateinit var pastEventListAdapter: PastEventListAdapter
+        var pastEventListAdapter: PastEventListAdapter? = null
         fun initList(items: MutableList<PastEvent>, context: Context) {
             pastEventListAdapter = PastEventListAdapter(items, object : PastEventListAdapter.Listener{
                 override fun openDetailPastEvent(event: PastEvent) {
@@ -92,7 +99,9 @@ private val listener: Listener):
             }
             else -> {
                 val viewHolder = holder as PastEventHolder
+                pastEventHolder = viewHolder
                 viewHolder.initList(element.pastEvents as MutableList<PastEvent>, context)
+                viewHolder.pastEventListAdapter?.let { pa -> pastEventListAdapter = pa }
             }
         }
     }

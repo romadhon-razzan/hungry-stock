@@ -41,6 +41,7 @@ class ApiHelperImpl @Inject constructor(private val apiService: Services) : ApiH
     ): Response<ResponseRegister> = apiService.registerStepTwo(s,fp,bb,nl,nw,e,tl,p,dm,li,pf,pd,pr)
 
     override suspend fun getEvent(): Response<ResponseEvent> = apiService.getEvent()
+    override suspend fun getNextEvent(p: String): Response<ResponseEvent> = apiService.getNextEvent(p)
 //    override suspend fun getRandom(): Response<DrinkResponse> = apiService.getRandom()
 //    override suspend fun searchName(s: String): Response<DrinkResponse> = apiService.searchName(s)
 //    override suspend fun detail(s: String): Response<DrinkResponse> = apiService.detail(s)

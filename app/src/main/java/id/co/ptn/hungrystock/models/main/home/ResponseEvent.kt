@@ -2,7 +2,8 @@ package id.co.ptn.hungrystock.models.main.home
 
 import com.google.gson.annotations.SerializedName
 
-data class ResponseEvent (
+data class
+ResponseEvent (
     @SerializedName("status"  ) var status  : String,
     @SerializedName("message" ) var message : String,
     @SerializedName("data"    ) var data    : ResponseEventData

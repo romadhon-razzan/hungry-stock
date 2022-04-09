@@ -45,8 +45,13 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun init() {
+        initListener()
         setObserve()
         apiGetHome()
+    }
+
+    private fun initListener() {
+        binding.btNext.setOnClickListener { apiGetNextEvent() }
     }
 
     private fun initList() {
@@ -115,12 +120,36 @@ class HomeFragment : BaseFragment() {
         viewModel.setEvents(h)
     }
 
+    private fun setNextData(data: ResponseEventData) {
+        try {
+            val pe: MutableList<PastEvent>  = mutableListOf()
+            data.events.data.forEachIndexed { index, eventData ->
+                pe.add(index, PastEvent(
+                    eventData.title.toString(),
+                    eventData.speaker.toString(),
+                    eventData.event_date.toString(),
+                    eventData.event_hour_start.toString(),
+                    eventData.event_hour_end.toString(),
+                    eventData.zoom_link.toString()))
+            }
+            viewModel.getPastEvents().addAll(pe)
+            eventListAdapter.updatePastEvent(eventListAdapter.itemCount, viewModel.getEvents().size)
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
     private fun setObserve() {
         viewModel.reqHomeResponse().observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {
                     binding.progressBar.visibility = View.GONE
-                    it.data?.data?.let { data -> initData(data) }
+                    it.data?.data?.let { data ->
+                        data.events.next_page_url?.let { _ ->
+                            data.events.current_page?.let { cp -> viewModel.setNextPage((cp+1).toString()) }
+                            viewModel.setCanLoadNext(true)
+                        } ?: viewModel.setCanLoadNext(false)
+                        initData(data) }
                     initList()
                 }
                 Status.LOADING -> {
@@ -128,6 +157,28 @@ class HomeFragment : BaseFragment() {
                 }
                 Status.ERROR -> {
                     binding.progressBar.visibility = View.GONE
+                    showSnackBar(binding.container,"Something wrong")
+                }
+            }
+        }
+
+        viewModel.reqNextEventResponse().observe(viewLifecycleOwner){
+            when(it.status){
+                Status.SUCCESS -> {
+                    viewModel.setLoadingNext(false)
+                    it.data?.data?.let { data ->
+                        data.events.next_page_url?.let { _ ->
+                            data.events.current_page?.let { cp -> viewModel.setNextPage((cp+1).toString()) }
+                            viewModel.setCanLoadNext(true)
+                        } ?: viewModel.setCanLoadNext(false)
+                        setNextData(data) }
+                }
+                Status.LOADING -> {
+                    viewModel.setLoadingNext(true)
+                    viewModel.setCanLoadNext(false)
+                }
+                Status.ERROR -> {
+                    viewModel.setLoadingNext(false)
                     showSnackBar(binding.container,"Something wrong")
                 }
             }
@@ -140,6 +191,10 @@ class HomeFragment : BaseFragment() {
 
     private fun apiGetHome() {
         viewModel.apiGetHome()
+    }
+
+    private fun apiGetNextEvent() {
+        viewModel.apiGetNextEvent(viewModel.getNextPage())
     }
 
 }

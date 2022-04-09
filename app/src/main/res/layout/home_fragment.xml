@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View"/>
         <variable
             name="vm"
             type="id.co.ptn.hungrystock.ui.main.home.HomeViewModel" />
@@ -36,7 +37,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_margin="@dimen/normal2"
-                        android:visibility="gone"/>
+                        android:visibility="@{vm.loadingNext ? View.VISIBLE : View.GONE }"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/bt_next"
@@ -44,7 +45,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
+                        android:visibility="@{vm.canLoadNext ? View.VISIBLE : View.GONE }"
                         android:padding="@dimen/normal"
                         android:fontFamily="@font/barlow_medium"
                         android:textColor="@color/white_70"
