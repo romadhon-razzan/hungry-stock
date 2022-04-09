@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
+import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.databinding.ActivityProfileBinding
 import id.co.ptn.hungrystock.ui.profile.view_model.ProfileViewModel
 
@@ -69,6 +70,7 @@ class ProfileActivity : BaseActivity() {
 
     private fun setListener() {
         binding.btExit.setOnClickListener {
+            TOKEN = ""
             sessionManager.destroy()
             router.toExit()
             finish()

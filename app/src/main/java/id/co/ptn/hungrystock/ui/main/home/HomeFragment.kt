@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseFragment
@@ -68,11 +69,13 @@ class HomeFragment : BaseFragment() {
             }
 
             override fun openDetailUpcomingEvent(event: UpcomingEvent) {
-                showSnackBar(binding.container," Open Detail")
+
             }
 
             override fun openDetailPastEvent(event: PastEvent) {
-                
+                val intent =  router.toLearningDetail()
+                intent.putExtra("event", Gson().toJson(event))
+                requireContext().startActivity(intent)
             }
         })
         binding.recyclerView.apply {
@@ -104,6 +107,7 @@ class HomeFragment : BaseFragment() {
             val pe: MutableList<PastEvent>  = mutableListOf()
             data.events.data.forEachIndexed { index, eventData ->
                 pe.add(index, PastEvent(
+                    eventData.slug.toString(),
                     eventData.title.toString(),
                     eventData.speaker.toString(),
                     eventData.event_date.toString(),
@@ -132,6 +136,7 @@ class HomeFragment : BaseFragment() {
             val pe: MutableList<PastEvent>  = mutableListOf()
             data.events.data.forEachIndexed { index, eventData ->
                 pe.add(index, PastEvent(
+                    eventData.slug.toString(),
                     eventData.title.toString(),
                     eventData.speaker.toString(),
                     eventData.event_date.toString(),

@@ -11,6 +11,7 @@ import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.router.Router
 import androidx.core.view.WindowInsetsControllerCompat
 import id.co.ptn.hungrystock.R
+import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.helper.Keyboard
 
 
@@ -24,6 +25,7 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         sessionManager = SessionManager.getInstance(this)
         router = Router(this)
+        TOKEN = sessionManager.token
     }
 
     fun changeStatusBar() {

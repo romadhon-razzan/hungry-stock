@@ -81,9 +81,9 @@ class HsroDetailActivity : BaseActivity() {
 
     private fun initVideoData() {
         learnings.clear()
-        learnings.add(0, Learning("This is the item title with supposed a long line","1:02:05"))
-        learnings.add(1, Learning("This is the item title with supposed a long line","1:02:05"))
-        learnings.add(2, Learning("This is the item title with supposed a long line","1:02:05"))
+//        learnings.add(0, Learning("This is the item title with supposed a long line","1:02:05"))
+//        learnings.add(1, Learning("This is the item title with supposed a long line","1:02:05"))
+//        learnings.add(2, Learning("This is the item title with supposed a long line","1:02:05"))
     }
 
     private fun iniVideoList() {

@@ -60,12 +60,12 @@ class LearningFragment : Fragment() {
 
     private fun initData() {
         viewModel.getLearnings().clear()
-        viewModel.getLearnings().add(0, Learning("This is the item title with supposed a long line","1:02:05"))
-        viewModel.getLearnings().add(1, Learning("This is the item title with supposed a long line","1:02:05"))
-        viewModel.getLearnings().add(2, Learning("This is the item title with supposed a long line","1:02:05"))
-        viewModel.getLearnings().add(3, Learning("This is the item title with supposed a long line","1:02:05"))
-        viewModel.getLearnings().add(4, Learning("This is the item title with supposed a long line","1:02:05"))
-        viewModel.getLearnings().add(5, Learning("This is the item title with supposed a long line","1:02:05"))
+//        viewModel.getLearnings().add(0, Learning("This is the item title with supposed a long line","1:02:05"))
+//        viewModel.getLearnings().add(1, Learning("This is the item title with supposed a long line","1:02:05"))
+//        viewModel.getLearnings().add(2, Learning("This is the item title with supposed a long line","1:02:05"))
+//        viewModel.getLearnings().add(3, Learning("This is the item title with supposed a long line","1:02:05"))
+//        viewModel.getLearnings().add(4, Learning("This is the item title with supposed a long line","1:02:05"))
+//        viewModel.getLearnings().add(5, Learning("This is the item title with supposed a long line","1:02:05"))
     }
 
 }

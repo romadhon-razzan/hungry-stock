@@ -2,6 +2,7 @@ package id.co.ptn.hungrystock.core.network
 
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
+import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.registration.ResponseRegister
 import okhttp3.MultipartBody
@@ -10,9 +11,6 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface Services {
-//    @GET(GET_DRINK_BY_FIRST_LETTER)
-//    suspend fun getDrinkByFirstLetter(@Query("f") s: String): Response<DrinkResponse>
-//
 
     @FormUrlEncoded
     @POST(AUTH)
@@ -63,28 +61,8 @@ interface Services {
 
     @GET(EVENT)
     suspend fun getNextEvent(@Query("page") p: String): Response<ResponseEvent>
-//
-//    @GET(SEARCH_NAME)
-//    suspend fun searchName( @Query("s") s: String): Response<DrinkResponse>
-//
-//    @GET(GET_DETAIL)
-//    suspend fun detail( @Query("i") s: String): Response<DrinkResponse>
-//
-//    @GET(GET_RECENT)
-//    suspend fun getRecent(): Response<DrinkResponse>
-//
-//    @GET(GET_CATEGORIES)
-//    suspend fun getCategories(): Response<CategoryResponse>
-//
-//    @GET(GET_GLASSES)
-//    suspend fun getGlasses(): Response<GlassesResponse>
-//
-//    @GET(GET_INGREDIENTS)
-//    suspend fun getIngredients(): Response<IngredientResponse>
-//
-//    @GET(GET_ALCOHOLIC)
-//    suspend fun getAlcoholic(): Response<AlcoholicResponse>
-//
-//    @GET(FILTER)
-//    suspend fun filter(@QueryMap params: Map<String, String>): Response<DrinkResponse>
+
+    @GET("${LEARNING}/{suffix}")
+    suspend fun getLearningDetail(@Path(value = "suffix", encoded = true) suffix: String): Response<ResponseLearningDetail>
+
 }

@@ -56,10 +56,10 @@ private val listener: Listener):
 
     inner class PastEventHolder(var binding: ItemPastEventListBinding) : ViewHolder(binding.root) {
         var pastEventListAdapter: PastEventListAdapter? = null
-        fun initList(items: MutableList<PastEvent>, context: Context) {
+        fun initList(items: MutableList<PastEvent>, context: Context, listener: Listener) {
             pastEventListAdapter = PastEventListAdapter(items, object : PastEventListAdapter.Listener{
                 override fun openDetailPastEvent(event: PastEvent) {
-                    openDetailPastEvent(event)
+                    listener.openDetailPastEvent(event)
                 }
             })
             binding.recyclerView.apply {
@@ -100,7 +100,7 @@ private val listener: Listener):
             else -> {
                 val viewHolder = holder as PastEventHolder
                 pastEventHolder = viewHolder
-                viewHolder.initList(element.pastEvents as MutableList<PastEvent>, context)
+                viewHolder.initList(element.pastEvents as MutableList<PastEvent>, context, listener)
                 viewHolder.pastEventListAdapter?.let { pa -> pastEventListAdapter = pa }
             }
         }

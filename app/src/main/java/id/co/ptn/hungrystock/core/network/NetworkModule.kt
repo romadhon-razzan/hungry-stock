@@ -43,6 +43,7 @@ class NetworkModule {
             .build()
     } else OkHttpClient
         .Builder()
+        .addInterceptor(getHeader())
         .build()
 
     @Provides

@@ -2,7 +2,7 @@ package id.co.ptn.hungrystock.models.main.learning
 
 import com.google.gson.annotations.SerializedName
 
-data class Learning(
+data class SimiliarLearnings (
     @SerializedName("id"               ) var id             : Int?              = null,
     @SerializedName("title"            ) var title          : String?           = null,
     @SerializedName("slug"             ) var slug           : String?           = null,

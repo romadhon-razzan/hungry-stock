@@ -9,6 +9,7 @@ import id.co.ptn.hungrystock.ui.general.registration.RegistrationActivity
 import id.co.ptn.hungrystock.ui.general.registration.RegistrationSuccessActivity
 import id.co.ptn.hungrystock.ui.main.MainActivity
 import id.co.ptn.hungrystock.ui.main.hsro.HsroDetailActivity
+import id.co.ptn.hungrystock.ui.main.learning.LearningDetailActivity
 import id.co.ptn.hungrystock.ui.onboarding.OnboardActivity
 import id.co.ptn.hungrystock.ui.privacy_police.PrivacyPoliceActivity
 import id.co.ptn.hungrystock.ui.profile.ProfileActivity
@@ -65,5 +66,9 @@ class Router constructor(private val context: Context) {
 
     fun toHsroDetail() {
         context.startActivity(Intent(context, HsroDetailActivity::class.java))
+    }
+
+    fun toLearningDetail():Intent {
+        return Intent(context, LearningDetailActivity::class.java)
     }
 }

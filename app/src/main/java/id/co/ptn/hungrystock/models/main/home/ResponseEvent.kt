@@ -34,7 +34,7 @@ data class HeadlineEvent (
     @SerializedName("category"         ) var category       : String? = null,
     @SerializedName("photo_url"        ) var photo_url       : String? = null,
     @SerializedName("video_url"        ) var video_url       : String? = null,
-    @SerializedName("other_file_url"   ) var other_file_url   : String? = null
+    @SerializedName("other_file_url"   ) var other_file_url   :  List<String>
 
 )
 
