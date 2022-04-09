@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseFragment
+import id.co.ptn.hungrystock.bases.EmptyStateFragment
 import id.co.ptn.hungrystock.databinding.HomeFragmentBinding
 import id.co.ptn.hungrystock.models.main.home.Event
 import id.co.ptn.hungrystock.models.main.home.PastEvent
@@ -58,6 +61,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun initList() {
+        binding.frameContainer.visibility = View.GONE
         eventListAdapter = EventListAdapter(viewModel.getEvents(), childFragmentManager, object : EventListAdapter.Listener{
             override fun openConference(url: String) {
                 openUrlPage(url)
@@ -142,6 +146,18 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+    private fun emptyState() {
+        binding.frameContainer.visibility = View.VISIBLE
+        childFragmentManager.commit {
+            setReorderingAllowed(true)
+            val bundle = Bundle()
+            bundle.putString("title","Event belum ditemukan")
+            bundle.putString("message","")
+            add<EmptyStateFragment>(R.id.frame_container, "", bundle)
+        }
+
+    }
+
     private fun setObserve() {
         viewModel.reqHomeResponse().observe(viewLifecycleOwner){
             when(it.status){
@@ -153,8 +169,9 @@ class HomeFragment : BaseFragment() {
                             data.events.current_page?.let { cp -> viewModel.setNextPage((cp+1).toString()) }
                             viewModel.setCanLoadNext(true)
                         } ?: viewModel.setCanLoadNext(false)
-                        initData(data) }
-                    initList()
+                        initData(data)
+                        initList()
+                    } ?: emptyState()
                 }
                 Status.LOADING -> {
                     binding.progressBar.visibility = View.VISIBLE
@@ -162,6 +179,7 @@ class HomeFragment : BaseFragment() {
                 Status.ERROR -> {
                     binding.progressBar.visibility = View.GONE
                     binding.swipeRefresh.isRefreshing = false
+                    emptyState()
                     showSnackBar(binding.container,"Something wrong")
                 }
             }

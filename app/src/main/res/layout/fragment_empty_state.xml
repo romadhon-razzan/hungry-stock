@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/container"
+        android:background="@color/background"
+        android:orientation="vertical"
+        android:gravity="center"
+        style="@style/LayoutMatchParent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_below="@id/empty_image"
+            style="@style/LayoutMatchParentWrapContent"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/large"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:fontFamily="@font/ft_barlow_medium"
+            android:textColor="@color/white_70"
+            android:textSize="@dimen/font_medium"
+            tools:text="Title"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_message"
+            android:layout_below="@id/empty_image"
+            style="@style/LayoutMatchParentWrapContent"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/large"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:fontFamily="@font/ft_barlow_regular"
+            android:textSize="@dimen/font_normal"
+            android:textColor="@color/white_70"
+            tools:text="Message"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>
