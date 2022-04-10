@@ -10,6 +10,7 @@ import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.databinding.*
 import id.co.ptn.hungrystock.models.main.learning.Learning
 import id.co.ptn.hungrystock.models.main.learning.SimiliarLearnings
+import id.co.ptn.hungrystock.utils.getDateMMMMddyyyy
 
 class SimillarLearningListAdapter(private val items: MutableList<SimiliarLearnings>, private val listener: LearningListener):
     RecyclerView.Adapter<SimillarLearningListAdapter.ViewHolder>() {
@@ -18,6 +19,9 @@ class SimillarLearningListAdapter(private val items: MutableList<SimiliarLearnin
         fun bind(item: SimiliarLearnings) {
             item.photo_url.let { Glide.with(context).load(it).into(binding.image) }
             item.title.let { binding.tvTitle.text = it }
+            item.event_date?.let {
+                binding.tvSubTitle.text = getDateMMMMddyyyy(it)
+            }
         }
     }
 

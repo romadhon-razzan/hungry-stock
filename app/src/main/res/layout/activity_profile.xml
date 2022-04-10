@@ -30,7 +30,7 @@
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedScrollView"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
@@ -78,6 +78,7 @@
                                     android:id="@+id/img_photo"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
+                                    android:scaleType="centerCrop"
                                     android:src="@drawable/logo_hungry_stock"
                                     tools:src="@tools:sample/avatars"/>
                             </com.google.android.material.card.MaterialCardView>
@@ -313,6 +314,7 @@
                         android:text="@string/label_ganti_password"
                         android:textColor="@color/white_50"
                         android:textSize="@dimen/font_normal"
+                        android:visibility="gone"
                         app:drawableEndCompat="@drawable/ic_required_asterisk" />
 
                     <com.google.android.material.card.MaterialCardView
@@ -327,7 +329,8 @@
                         app:cardBackgroundColor="#1C191A"
                         app:cardCornerRadius="8dp"
                         app:strokeColor="#423B3C"
-                        app:strokeWidth="1dp">
+                        app:strokeWidth="1dp"
+                        android:visibility="gone">
 
                         <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/et_password"
@@ -358,6 +361,7 @@
                         android:text="@string/label_confirm_password_baru"
                         android:textColor="@color/white_50"
                         android:textSize="@dimen/font_normal"
+                        android:visibility="gone"
                         app:drawableEndCompat="@drawable/ic_required_asterisk" />
 
                     <com.google.android.material.card.MaterialCardView
@@ -372,7 +376,8 @@
                         app:cardBackgroundColor="#1C191A"
                         app:cardCornerRadius="8dp"
                         app:strokeColor="#423B3C"
-                        app:strokeWidth="1dp">
+                        app:strokeWidth="1dp"
+                        android:visibility="gone">
 
                         <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/et_conf_password"
@@ -400,7 +405,8 @@
                         android:layout_marginBottom="18dp"
                         app:cardBackgroundColor="@color/secondary"
                         app:cardCornerRadius="50dp"
-                        app:cardElevation="5dp">
+                        app:cardElevation="5dp"
+                        android:visibility="gone">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="match_parent"

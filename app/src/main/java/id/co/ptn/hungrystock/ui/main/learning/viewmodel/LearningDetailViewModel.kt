@@ -8,8 +8,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
-import id.co.ptn.hungrystock.models.main.home.ResponseEvent
-import id.co.ptn.hungrystock.models.main.learning.Learning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
 import id.co.ptn.hungrystock.models.main.learning.SimiliarLearnings
 import id.co.ptn.hungrystock.repositories.AppRepository

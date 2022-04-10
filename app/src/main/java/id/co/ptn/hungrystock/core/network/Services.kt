@@ -2,6 +2,7 @@ package id.co.ptn.hungrystock.core.network
 
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
+import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.registration.ResponseRegister
@@ -64,5 +65,13 @@ interface Services {
 
     @GET("${LEARNING}/{suffix}")
     suspend fun getLearningDetail(@Path(value = "suffix", encoded = true) suffix: String): Response<ResponseLearningDetail>
+
+    @GET(LEARNING)
+    suspend fun getLearnings(
+        @Query("keyword") k: String,
+        @Query("category") c: String,
+        @Query("year") y: String,
+        @Query("month") m: String,
+        @Query("order_type") ot: String): Response<ResponseLearning>
 
 }

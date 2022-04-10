@@ -2,6 +2,7 @@ package id.co.ptn.hungrystock.core.network
 
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
+import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.registration.ResponseRegister
@@ -39,6 +40,7 @@ interface ApiHelper {
     suspend fun getEvent(): Response<ResponseEvent>
     suspend fun getNextEvent(p: String): Response<ResponseEvent>
     suspend fun getLearningDetail(s: String): Response<ResponseLearningDetail>
+    suspend fun getLearnings(k: String, c: String, y: String, m: String, ot: String): Response<ResponseLearning>
 //    suspend fun searchName(s: String): Response<DrinkResponse>
 //    suspend fun detail(s: String): Response<DrinkResponse>
 //    suspend fun getRecent(): Response<DrinkResponse>

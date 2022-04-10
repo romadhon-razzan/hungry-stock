@@ -31,6 +31,7 @@
                 android:layout_marginBottom="@dimen/small1"
                 app:cardBackgroundColor="@color/black_25"
                 app:cardElevation="0dp"
+                android:visibility="gone"
                 android:alpha="7">
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_duration"
@@ -41,7 +42,7 @@
                     android:fontFamily="@font/ft_coolvetica"
                     android:textSize="@dimen/font_medium1"
                     android:textColor="@color/white"
-                    android:text="1:02:05"/>
+                    tools:text="1:02:05"/>
             </com.google.android.material.card.MaterialCardView>
         </com.google.android.material.card.MaterialCardView>
 

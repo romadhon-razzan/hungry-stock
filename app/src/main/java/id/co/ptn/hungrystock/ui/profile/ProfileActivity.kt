@@ -3,9 +3,11 @@ package id.co.ptn.hungrystock.ui.profile
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
+import id.co.ptn.hungrystock.config.ASSET_URL
 import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.databinding.ActivityProfileBinding
 import id.co.ptn.hungrystock.ui.profile.view_model.ProfileViewModel
@@ -30,6 +32,14 @@ class ProfileActivity : BaseActivity() {
     }
 
     private fun setView() {
+        binding.etEmail.isEnabled = false
+        binding.etWa.isEnabled = false
+        try {
+            Glide.with(this).load("$ASSET_URL${sessionManager.user.photo}").into(binding.imgPhoto)
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+
         try {
             viewModel.setUserId(sessionManager.user.id.toString())
         }catch (e: Exception){
