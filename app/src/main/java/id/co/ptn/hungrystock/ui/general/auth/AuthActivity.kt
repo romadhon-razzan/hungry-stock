@@ -66,6 +66,7 @@ class AuthActivity : BaseActivity() {
                                d.data.token.let { t -> sessionManager.setToken(t) }
                                d.data.user.let { u -> sessionManager.setUser(u) }
                                router.toMain()
+                               finishAffinity()
                            } else {
                                d.data.status.let { message ->
                                    showSnackBar(binding.container, message)

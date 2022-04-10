@@ -73,7 +73,7 @@ class ProfileActivity : BaseActivity() {
             TOKEN = ""
             sessionManager.destroy()
             router.toExit()
-            finish()
+            finishAffinity()
         }
     }
 }
