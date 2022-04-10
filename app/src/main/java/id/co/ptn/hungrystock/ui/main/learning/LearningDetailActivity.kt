@@ -1,7 +1,7 @@
 package id.co.ptn.hungrystock.ui.main.learning
 
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.add
@@ -12,20 +12,21 @@ import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
+import id.co.ptn.hungrystock.bases.PlayVideoFragment
 import id.co.ptn.hungrystock.bases.WebViewFragment
 import id.co.ptn.hungrystock.databinding.ActivityLearningDetailBinding
 import id.co.ptn.hungrystock.models.main.home.PastEvent
-import id.co.ptn.hungrystock.models.main.learning.Learning
 import id.co.ptn.hungrystock.models.main.learning.SimiliarLearnings
-import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningListAdapter
 import id.co.ptn.hungrystock.ui.main.learning.adapters.SimillarLearningListAdapter
 import id.co.ptn.hungrystock.ui.main.learning.viewmodel.LearningDetailViewModel
+import id.co.ptn.hungrystock.utils.PLAYBACK_POSITION
 import id.co.ptn.hungrystock.utils.Status
 
 @AndroidEntryPoint
 class LearningDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityLearningDetailBinding
     private val viewModel: LearningDetailViewModel by viewModels()
+
     private lateinit var learningListAdapter: SimillarLearningListAdapter
 
     private var event: PastEvent? = null
@@ -55,6 +56,7 @@ class LearningDetailActivity : BaseActivity() {
        }
 
     private fun setView() {
+
         viewModel.reqLearningDetailResponse().value?.data?.data?.let { v ->
             v.learning.photo_url.let { p ->
                 Glide.with(this@LearningDetailActivity).load(p).into(binding.image)
@@ -64,6 +66,13 @@ class LearningDetailActivity : BaseActivity() {
                     val intent = router.toPlayVideo()
                     intent.putExtra("url", url)
                     startActivity(intent)
+//                    viewModel.setPlayed(true)
+//                    supportFragmentManager.commit {
+//                        val bundle = Bundle()
+//                        bundle.putString("url", url)
+//                        bundle.putLong("paramPlayBackPosition", PLAYBACK_POSITION.toLong())
+//                        add<PlayVideoFragment>(R.id.frame_video, null, bundle)
+//                    }
                 }
             }
             v.learning.title?.let { t -> viewModel.setTitle(t)}

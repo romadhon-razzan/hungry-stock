@@ -20,6 +20,13 @@ import javax.inject.Inject
 @HiltViewModel
 class LearningDetailViewModel @Inject constructor(private val repository: AppRepository) : BaseViewModel() {
 
+    private val _played = MutableLiveData(false)
+    val played: LiveData<Boolean> = _played
+
+    fun setPlayed(value: Boolean) {
+        _played.value = value
+    }
+
     private val _title = MutableLiveData("")
     val title: LiveData<String> = _title
     fun setTitle(title: String) {
