@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
@@ -15,7 +16,9 @@ import id.co.ptn.hungrystock.bases.WebViewFragment
 import id.co.ptn.hungrystock.databinding.ActivityLearningDetailBinding
 import id.co.ptn.hungrystock.models.main.home.PastEvent
 import id.co.ptn.hungrystock.models.main.learning.Learning
+import id.co.ptn.hungrystock.models.main.learning.SimiliarLearnings
 import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningListAdapter
+import id.co.ptn.hungrystock.ui.main.learning.adapters.SimillarLearningListAdapter
 import id.co.ptn.hungrystock.ui.main.learning.viewmodel.LearningDetailViewModel
 import id.co.ptn.hungrystock.utils.Status
 
@@ -23,7 +26,7 @@ import id.co.ptn.hungrystock.utils.Status
 class LearningDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityLearningDetailBinding
     private val viewModel: LearningDetailViewModel by viewModels()
-    private lateinit var learningListAdapter: LearningListAdapter
+    private lateinit var learningListAdapter: SimillarLearningListAdapter
 
     private var event: PastEvent? = null
 
@@ -41,7 +44,6 @@ class LearningDetailActivity : BaseActivity() {
         initIntent()
         apiGetLearningDetail()
         setObserve()
-        initList()
     }
 
     private fun initIntent() {
@@ -54,6 +56,7 @@ class LearningDetailActivity : BaseActivity() {
 
     private fun setView() {
         viewModel.reqLearningDetailResponse().value?.data?.data?.let { v ->
+            v.learning.photo_url.let { p -> Glide.with(this@LearningDetailActivity).load(p).into(binding.image) }
             v.learning.title?.let { t -> viewModel.setTitle(t)}
             v.learning.speaker?.let { sp -> viewModel.setSubTitle("Bersama $sp")  }
             v.learning.content?.let { c ->
@@ -63,12 +66,17 @@ class LearningDetailActivity : BaseActivity() {
                     add<WebViewFragment>(R.id.frame_desc, null, bundle)
                 }
             }
+            v.similiarLearnings.let { sl ->
+                viewModel.getLearnings().clear()
+                viewModel.getLearnings().addAll(sl)
+                initList()
+            }
         }
     }
 
     private fun initList() {
-        learningListAdapter = LearningListAdapter(viewModel.getLearnings(), object : LearningListAdapter.LearningListener{
-            override fun itemClicked(learning: Learning) {
+        learningListAdapter = SimillarLearningListAdapter(viewModel.getLearnings(), object : SimillarLearningListAdapter.LearningListener{
+            override fun itemClicked(learning: SimiliarLearnings) {
 
             }
         })
@@ -94,6 +102,8 @@ class LearningDetailActivity : BaseActivity() {
             }
         }
     }
+
+
     /**
      * Api
      * */

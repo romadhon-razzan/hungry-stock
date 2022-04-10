@@ -11,6 +11,7 @@ import id.co.ptn.hungrystock.bases.BaseViewModel
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.main.learning.Learning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
+import id.co.ptn.hungrystock.models.main.learning.SimiliarLearnings
 import id.co.ptn.hungrystock.repositories.AppRepository
 import id.co.ptn.hungrystock.utils.Resource
 import kotlinx.coroutines.launch
@@ -37,13 +38,13 @@ class LearningDetailViewModel @Inject constructor(private val repository: AppRep
         _loadingReqDetail.value = value
     }
 
-    private var learnings: MutableList<Learning> = mutableListOf()
+    private var learnings: MutableList<SimiliarLearnings> = mutableListOf()
 
-    fun setLearnings(learnings: MutableList<Learning>) {
+    fun setLearnings(learnings: MutableList<SimiliarLearnings>) {
         this.learnings = learnings
     }
 
-    fun getLearnings(): MutableList<Learning> {
+    fun getLearnings(): MutableList<SimiliarLearnings> {
         return learnings
     }
 
