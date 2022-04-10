@@ -14,6 +14,7 @@ import id.co.ptn.hungrystock.ui.onboarding.OnboardActivity
 import id.co.ptn.hungrystock.ui.privacy_police.PrivacyPoliceActivity
 import id.co.ptn.hungrystock.ui.profile.ProfileActivity
 import id.co.ptn.hungrystock.ui.reference.ReferenceLayoutActivity
+import id.co.ptn.hungrystock.ui.video_player.VideoPlayerActivity
 
 class Router constructor(private val context: Context) {
     fun toOnboard() {
@@ -70,5 +71,9 @@ class Router constructor(private val context: Context) {
 
     fun toLearningDetail():Intent {
         return Intent(context, LearningDetailActivity::class.java)
+    }
+
+    fun toPlayVideo():Intent {
+        return Intent(context, VideoPlayerActivity::class.java)
     }
 }

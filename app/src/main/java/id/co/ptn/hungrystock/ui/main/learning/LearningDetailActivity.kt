@@ -56,7 +56,16 @@ class LearningDetailActivity : BaseActivity() {
 
     private fun setView() {
         viewModel.reqLearningDetailResponse().value?.data?.data?.let { v ->
-            v.learning.photo_url.let { p -> Glide.with(this@LearningDetailActivity).load(p).into(binding.image) }
+            v.learning.photo_url.let { p ->
+                Glide.with(this@LearningDetailActivity).load(p).into(binding.image)
+            }
+            v.learning.video_url.let { url ->
+                binding.imagePlay.setOnClickListener {
+                    val intent = router.toPlayVideo()
+                    intent.putExtra("url", url)
+                    startActivity(intent)
+                }
+            }
             v.learning.title?.let { t -> viewModel.setTitle(t)}
             v.learning.speaker?.let { sp -> viewModel.setSubTitle("Bersama $sp")  }
             v.learning.content?.let { c ->
