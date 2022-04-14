@@ -80,5 +80,20 @@
     <string name="message_profile_photo_empty">Foto profil harus diisi</string>
     <string name="label_nomor_telepon">Nomor Telepon</string>
     <string name="message_system_wrong">Maaf ada kesalahan sistem</string>
+    <string name="sorting_terbaru">Terbaru</string>
+    <string name="sorting_top_up_knowledge_amp_wisdom"><![CDATA[Top Up Knowledge & Wisdom]]></string>
+    <string name="sorting_temu_emiten">Temu Emiten</string>
+    <string name="sorting_bedah_emiten">Bedah Emiten</string>
+    <string name="sorting_stockscope">Stock Scope</string>
+    <string name="sorting_belajar_invest_bareng">Belajar Invest Bareng</string>
+
+    <string-array name="sort_learning">
+        <item>Terbaru</item>
+        <item>Top Up Knowledge &amp; Wisdom</item>
+        <item>Temu Emiten</item>
+        <item>Bedah Emiten</item>
+        <item>StockScope</item>
+        <item>Belajar Invest Bareng</item>
+    </string-array>
 
 </resources>

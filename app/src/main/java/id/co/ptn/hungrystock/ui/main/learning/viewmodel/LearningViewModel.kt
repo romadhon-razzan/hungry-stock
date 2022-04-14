@@ -1,5 +1,6 @@
 package id.co.ptn.hungrystock.ui.main.learning.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,6 +18,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LearningViewModel @Inject constructor(private val repository: AppRepository) : BaseViewModel() {
+    private val _sortingLabel = MutableLiveData("")
+    val sortingLabel: LiveData<String> = _sortingLabel
+    fun setSortingLabel(title: String) {
+        _sortingLabel.value = title
+    }
+
     private var learnings: MutableList<Learning> = mutableListOf()
 
     fun setLearnings(learnings: MutableList<Learning>) {
@@ -25,6 +32,12 @@ class LearningViewModel @Inject constructor(private val repository: AppRepositor
 
     fun getLearnings(): MutableList<Learning> {
         return learnings
+    }
+
+    private var category = ""
+    fun getCategory(): String = category
+    fun setCategory(c: String) {
+        category = c
     }
 
     private var _reqLearningResponse: MutableLiveData<Resource<ResponseLearning>> = MutableLiveData()
