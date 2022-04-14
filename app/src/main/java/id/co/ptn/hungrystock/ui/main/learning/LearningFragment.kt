@@ -19,6 +19,7 @@ import id.co.ptn.hungrystock.models.main.home.PastEvent
 import id.co.ptn.hungrystock.models.main.learning.Learning
 import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningListAdapter
 import id.co.ptn.hungrystock.ui.main.learning.viewmodel.LearningViewModel
+import id.co.ptn.hungrystock.ui.main.research.dialogs.FilterResearchPageDialog
 import id.co.ptn.hungrystock.utils.Status
 
 @AndroidEntryPoint
@@ -55,9 +56,8 @@ class LearningFragment : BaseFragment() {
     }
 
     private fun initListener() {
-        binding.btSorting.setOnClickListener {
-            sortingPressed()
-        }
+        binding.btSorting.setOnClickListener { sortingPressed() }
+        binding.btFilter.setOnClickListener { filterPressed() }
     }
 
     private fun initList() {
@@ -145,6 +145,11 @@ class LearningFragment : BaseFragment() {
 
         popup.show()
 
+    }
+
+    private fun filterPressed() {
+        val dialog = FilterResearchPageDialog()
+        dialog.show(childFragmentManager,"filter_dialog")
     }
 
 
