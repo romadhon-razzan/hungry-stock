@@ -14,13 +14,13 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="264dp"
+            android:layout_marginStart="@dimen/medium"
+            android:layout_marginEnd="@dimen/medium"
             app:cardCornerRadius="14dp">
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/normal2"
-                android:layout_marginEnd="@dimen/normal2"
                 android:scaleType="centerCrop"
                 tools:src="@drawable/img_sample_event"/>
         </com.google.android.material.card.MaterialCardView>

@@ -95,7 +95,22 @@ class LearningDetailActivity : BaseActivity() {
     private fun initList() {
         learningListAdapter = SimillarLearningListAdapter(viewModel.getLearnings(), object : SimillarLearningListAdapter.LearningListener{
             override fun itemClicked(learning: SimiliarLearnings) {
-
+                try {
+                    val event = PastEvent(
+                        learning.slug.toString(),
+                        learning.title.toString(),
+                        learning.speaker.toString(),
+                        learning.event_date.toString(),
+                        learning.event_hour_start.toString(),
+                        learning.event_hour_end.toString(),
+                        learning.zoom_link.toString())
+                    val intent = router.toLearningDetail()
+                    intent.putExtra("event", Gson().toJson(event))
+                    startActivity(intent)
+                }catch (e: Exception){
+                    e.printStackTrace()
+                    showSnackBar(binding.container, resources.getString(R.string.message_system_wrong))
+                }
             }
         })
         binding.recyclerView.apply {
