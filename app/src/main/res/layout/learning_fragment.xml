@@ -52,7 +52,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/lbl_sorting"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:paddingStart="@dimen/normal2"
                     android:paddingEnd="@dimen/normal2"
@@ -62,7 +62,8 @@
                     android:gravity="center"
                     android:fontFamily="@font/ft_barlow_semibold"
                     android:textColor="@color/black"
-                    android:text="Terbaru"/>
+                    android:text="@{vm.sortingLabel}"
+                    tools:text="Terbaru"/>
             </com.google.android.material.card.MaterialCardView>
 
             <androidx.recyclerview.widget.RecyclerView
