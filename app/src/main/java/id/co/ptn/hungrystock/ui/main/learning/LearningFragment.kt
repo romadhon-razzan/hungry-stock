@@ -18,6 +18,7 @@ import id.co.ptn.hungrystock.databinding.LearningFragmentBinding
 import id.co.ptn.hungrystock.models.main.home.PastEvent
 import id.co.ptn.hungrystock.models.main.learning.Learning
 import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningListAdapter
+import id.co.ptn.hungrystock.ui.main.learning.dialogs.FilteLearningPageDialog
 import id.co.ptn.hungrystock.ui.main.learning.viewmodel.LearningViewModel
 import id.co.ptn.hungrystock.ui.main.research.dialogs.FilterResearchPageDialog
 import id.co.ptn.hungrystock.utils.Status
@@ -148,7 +149,17 @@ class LearningFragment : BaseFragment() {
     }
 
     private fun filterPressed() {
-        val dialog = FilterResearchPageDialog()
+        val dialog = FilteLearningPageDialog(object : FilteLearningPageDialog.Listener{
+            override fun onFilter(year: String, month: String, abjad: String) {
+                viewModel.setYear(year)
+                viewModel.setMonth(month)
+                viewModel.setAbjad(abjad)
+                apiGetLearnings()
+            }
+        })
+        dialog.setYearSelected(viewModel.getYear())
+        dialog.setMontSelected(viewModel.getMonth())
+        dialog.setAbjadSelected(viewModel.getAbjad())
         dialog.show(childFragmentManager,"filter_dialog")
     }
 
@@ -174,7 +185,7 @@ class LearningFragment : BaseFragment() {
      * */
 
     private fun apiGetLearnings() {
-        viewModel.apiGetLearnings("",viewModel.getCategory(),"","","")
+        viewModel.apiGetLearnings("",viewModel.getCategory(),viewModel.getYear(),viewModel.getMonth(),viewModel.getAbjad())
     }
 
 }
