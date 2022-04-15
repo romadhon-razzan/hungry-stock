@@ -27,6 +27,7 @@ class FilteLearningPageDialog(private val listener: Listener): BaseBottomSheetMo
     private var years: MutableList<Int> = mutableListOf()
     private var yearSelected = "1900"
     private var monthSelected = ""
+    private var monthIdSelected = ""
     private var abjadSelected = ""
     private lateinit var filterEmitenListAdapter: FilterEmitenListAdapter
     private var filterEmiten: MutableList<String> = mutableListOf()
@@ -35,8 +36,9 @@ class FilteLearningPageDialog(private val listener: Listener): BaseBottomSheetMo
         yearSelected = year
     }
 
-    fun setMontSelected(month: String) {
+    fun setMontSelected(month: String, id: String) {
         monthSelected = month
+        monthIdSelected = id
     }
 
     fun setAbjadSelected(abjad: String) {
@@ -82,16 +84,20 @@ class FilteLearningPageDialog(private val listener: Listener): BaseBottomSheetMo
 
     private fun init() {
         initListener()
-
         initYearData()
         initListYear()
-
-
+        if (monthSelected.isNotEmpty())
+            binding.tvMonth.text = monthSelected
+        if (abjadSelected.isNotEmpty())
+            binding.tvAbjad.text = abjadSelected
     }
 
     private fun initListener() {
         binding.btClose.setOnClickListener { dismiss() }
-        binding.btApply.setOnClickListener { listener.onFilter(yearSelected, monthSelected, abjadSelected) }
+        binding.btApply.setOnClickListener {
+            listener.onFilter(yearSelected, monthSelected, monthIdSelected, abjadSelected)
+            dismiss()
+        }
         binding.btSpinnerMonth.setOnClickListener { monthPressed() }
         binding.btSpinnerAbjad.setOnClickListener { abjadPressed() }
     }
@@ -127,8 +133,9 @@ class FilteLearningPageDialog(private val listener: Listener): BaseBottomSheetMo
 
     private fun monthPressed() {
         val monthPopup = MonthPopupMenu(requireContext(), object : MonthPopupMenu.Listener{
-            override fun onSelected(month: String) {
+            override fun onSelected(month: String, id: String) {
                 monthSelected = month
+                monthIdSelected = id
                 binding.tvMonth.text = month
             }
         })
@@ -147,6 +154,6 @@ class FilteLearningPageDialog(private val listener: Listener): BaseBottomSheetMo
 
 
     public interface Listener{
-        fun onFilter(year: String, month: String, abjad: String)
+        fun onFilter(year: String, month: String, monthId: String, abjad: String)
     }
 }

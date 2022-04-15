@@ -9,3 +9,9 @@ fun getDateMMMMddyyyy(strDate: String): String {
     val simpleDateFormat = SimpleDateFormat("MMMM, dd yyyy", Locale.getDefault() )
     return simpleDateFormat.format(stringToDate)
 }
+
+fun currentYear() : String {
+    val calendar = Calendar.getInstance()
+    val year = calendar[Calendar.YEAR]
+    return year.toString()
+}

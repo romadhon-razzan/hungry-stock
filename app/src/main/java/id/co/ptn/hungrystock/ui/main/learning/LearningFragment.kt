@@ -150,15 +150,16 @@ class LearningFragment : BaseFragment() {
 
     private fun filterPressed() {
         val dialog = FilteLearningPageDialog(object : FilteLearningPageDialog.Listener{
-            override fun onFilter(year: String, month: String, abjad: String) {
+            override fun onFilter(year: String, month: String, monthId: String, abjad: String) {
                 viewModel.setYear(year)
                 viewModel.setMonth(month)
+                viewModel.setMonthId(monthId)
                 viewModel.setAbjad(abjad)
                 apiGetLearnings()
             }
         })
         dialog.setYearSelected(viewModel.getYear())
-        dialog.setMontSelected(viewModel.getMonth())
+        dialog.setMontSelected(viewModel.getMonth(), viewModel.getMonthId())
         dialog.setAbjadSelected(viewModel.getAbjad())
         dialog.show(childFragmentManager,"filter_dialog")
     }
@@ -185,7 +186,7 @@ class LearningFragment : BaseFragment() {
      * */
 
     private fun apiGetLearnings() {
-        viewModel.apiGetLearnings("",viewModel.getCategory(),viewModel.getYear(),viewModel.getMonth(),viewModel.getAbjad())
+        viewModel.apiGetLearnings("",viewModel.getCategory(),viewModel.getYear(),viewModel.getMonthId(),viewModel.getAbjad())
     }
 
 }
