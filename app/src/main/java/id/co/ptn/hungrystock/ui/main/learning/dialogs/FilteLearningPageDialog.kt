@@ -1,4 +1,4 @@
-package id.co.ptn.hungrystock.ui.main.research.dialogs
+package id.co.ptn.hungrystock.ui.main.learning.dialogs
 
 import android.app.Dialog
 import android.os.Bundle
@@ -12,28 +12,35 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseBottomSheetModal
+import id.co.ptn.hungrystock.bases.popup.AbjadPopupMenu
 import id.co.ptn.hungrystock.bases.popup.MonthPopupMenu
+import id.co.ptn.hungrystock.databinding.DialogFilterLearningPageBinding
 import id.co.ptn.hungrystock.databinding.DialogFilterResearchPageBinding
 import id.co.ptn.hungrystock.ui.main.research.adapters.FilterEmitenListAdapter
 import id.co.ptn.hungrystock.ui.main.research.adapters.FilterYearListAdapter
 import java.util.*
 
-class FilterResearchPageDialog: BaseBottomSheetModal() {
+class FilteLearningPageDialog(private val listener: Listener): BaseBottomSheetModal() {
 
-    private lateinit var binding: DialogFilterResearchPageBinding
+    private lateinit var binding: DialogFilterLearningPageBinding
     private lateinit var filterYearListAdapter: FilterYearListAdapter
     private var years: MutableList<Int> = mutableListOf()
     private var yearSelected = "1900"
     private var monthSelected = ""
+    private var abjadSelected = ""
     private lateinit var filterEmitenListAdapter: FilterEmitenListAdapter
     private var filterEmiten: MutableList<String> = mutableListOf()
 
-    private fun setYearSelected(year: String) {
+    fun setYearSelected(year: String) {
         yearSelected = year
     }
 
-    private fun setMontSelected(month: String) {
+    fun setMontSelected(month: String) {
         monthSelected = month
+    }
+
+    fun setAbjadSelected(abjad: String) {
+        abjadSelected = abjad
     }
 
     override fun onCreateView(
@@ -41,7 +48,7 @@ class FilterResearchPageDialog: BaseBottomSheetModal() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(requireContext()), R.layout.dialog_filter_research_page, container, false)
+        binding = DataBindingUtil.inflate(LayoutInflater.from(requireContext()), R.layout.dialog_filter_learning_page, container, false)
         return binding.root
     }
 
@@ -79,16 +86,14 @@ class FilterResearchPageDialog: BaseBottomSheetModal() {
         initYearData()
         initListYear()
 
-        initSpinnerMonth()
 
-        initDataFilterEmiten()
-        initFilterEmiten()
     }
 
     private fun initListener() {
         binding.btClose.setOnClickListener { dismiss() }
-        binding.btApply.setOnClickListener {  }
+        binding.btApply.setOnClickListener { listener.onFilter(yearSelected, monthSelected, abjadSelected) }
         binding.btSpinnerMonth.setOnClickListener { monthPressed() }
+        binding.btSpinnerAbjad.setOnClickListener { abjadPressed() }
     }
 
 
@@ -116,28 +121,6 @@ class FilterResearchPageDialog: BaseBottomSheetModal() {
         }
     }
 
-    private fun initSpinnerMonth() {
-
-    }
-
-    private fun initDataFilterEmiten() {
-        filterEmiten.clear()
-        filterEmiten.add("Terbaru")
-        val value = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        for (element in value) {
-            filterEmiten.add(element.toString())
-        }
-
-    }
-
-    private fun initFilterEmiten() {
-        filterEmitenListAdapter = FilterEmitenListAdapter(filterEmiten)
-        binding.recyclerEmiten.apply {
-            layoutManager = StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
-            adapter = filterEmitenListAdapter
-        }
-    }
-
     /**
      * OnPressed
      * */
@@ -150,5 +133,20 @@ class FilterResearchPageDialog: BaseBottomSheetModal() {
             }
         })
         monthPopup.show(binding.btSpinnerMonth)
+    }
+
+    private fun abjadPressed() {
+        val abjadPopup = AbjadPopupMenu(requireContext(), object : AbjadPopupMenu.Listener{
+            override fun onSelected(abjad: String) {
+                abjadSelected = abjad
+                binding.tvAbjad.text = abjad
+            }
+        })
+        abjadPopup.show(binding.btSpinnerAbjad)
+    }
+
+
+    public interface Listener{
+        fun onFilter(year: String, month: String, abjad: String)
     }
 }

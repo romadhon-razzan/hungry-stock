@@ -110,6 +110,8 @@
     <string name="sorting_bedah_emiten">Bedah Emiten</string>
     <string name="sorting_stockscope">Stock Scope</string>
     <string name="sorting_belajar_invest_bareng">Belajar Invest Bareng</string>
+    <string name="label_tampilkan_berdasarkan_abjad">Tampilkan berdasarkan Abjad</string>
+    <string name="label_pilih">Pilih</string>
 
     <string-array name="sort_learning">
         <item>Terbaru</item>
@@ -118,6 +120,21 @@
         <item>Bedah Emiten</item>
         <item>StockScope</item>
         <item>Belajar Invest Bareng</item>
+    </string-array>
+
+    <string-array name="months">
+        <item>Januari</item>
+        <item>Februari</item>
+        <item>Maret</item>
+        <item>April</item>
+        <item>Mei</item>
+        <item>Juni</item>
+        <item>Juli</item>
+        <item>Agustus</item>
+        <item>September</item>
+        <item>Oktober</item>
+        <item>November</item>
+        <item>Desember</item>
     </string-array>
 
 

@@ -40,6 +40,24 @@ class LearningViewModel @Inject constructor(private val repository: AppRepositor
         category = c
     }
 
+    private var year = ""
+    fun getYear(): String = year
+    fun setYear(y: String) {
+        year = y
+    }
+
+    private var month = ""
+    fun getMonth(): String = month
+    fun setMonth(m: String) {
+        month = m
+    }
+
+    private var abjad = ""
+    fun getAbjad(): String = abjad
+    fun setAbjad(a: String) {
+        abjad = a
+    }
+
     private var _reqLearningResponse: MutableLiveData<Resource<ResponseLearning>> = MutableLiveData()
     fun reqLearningResponse(): MutableLiveData<Resource<ResponseLearning>> = _reqLearningResponse
 
