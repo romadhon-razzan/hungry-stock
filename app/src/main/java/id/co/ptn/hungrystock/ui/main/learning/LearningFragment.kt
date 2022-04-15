@@ -1,6 +1,10 @@
 package id.co.ptn.hungrystock.ui.main.learning
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -20,7 +24,6 @@ import id.co.ptn.hungrystock.models.main.learning.Learning
 import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningListAdapter
 import id.co.ptn.hungrystock.ui.main.learning.dialogs.FilteLearningPageDialog
 import id.co.ptn.hungrystock.ui.main.learning.viewmodel.LearningViewModel
-import id.co.ptn.hungrystock.ui.main.research.dialogs.FilterResearchPageDialog
 import id.co.ptn.hungrystock.utils.Status
 
 @AndroidEntryPoint
@@ -52,6 +55,7 @@ class LearningFragment : BaseFragment() {
     private fun init() {
         viewModel.setSortingLabel(resources.getString(R.string.sorting_terbaru))
         initListener()
+        initSearch()
         setObserve()
         apiGetLearnings()
     }
@@ -59,6 +63,21 @@ class LearningFragment : BaseFragment() {
     private fun initListener() {
         binding.btSorting.setOnClickListener { sortingPressed() }
         binding.btFilter.setOnClickListener { filterPressed() }
+    }
+
+    private fun initSearch() {
+        binding.etSearch.addTextChangedListener( object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.setKeyword(s.toString())
+                Handler(Looper.getMainLooper()).postDelayed({
+                    apiGetLearnings()
+                },3000)
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
     }
 
     private fun initList() {
@@ -155,6 +174,35 @@ class LearningFragment : BaseFragment() {
                 viewModel.setMonth(month)
                 viewModel.setMonthId(monthId)
                 viewModel.setAbjad(abjad)
+
+                binding.tvFilterValue.text = "Filter berdasarkan: "
+                binding.tvFilterValue.visibility = View.VISIBLE
+
+                val filterValues: MutableList<String> = mutableListOf()
+                if (viewModel.getYear().isNotEmpty())
+                    filterValues.add(viewModel.getYear())
+
+                if (viewModel.getMonth().isNotEmpty())
+                    filterValues.add(viewModel.getMonth())
+
+                if (viewModel.getAbjad().isNotEmpty())
+                    filterValues.add(viewModel.getAbjad())
+
+                if (filterValues.size < 1) {
+                    binding.tvFilterValue.visibility = View.GONE
+                    binding.lblFilter.text = requireActivity().resources.getString(R.string.button_filter)
+                }
+                else {
+                    filterValues.forEachIndexed { index, s ->
+                        binding.tvFilterValue.append(s)
+                        if (index < filterValues.size - 1 ) {
+                            binding.tvFilterValue.append(", ")
+                        }
+                    }
+                    binding.lblFilter.text = requireActivity().resources.getString(R.string.button_filter)
+                    binding.lblFilter.append("(${filterValues.size})")
+                }
+
                 apiGetLearnings()
             }
         })
@@ -186,7 +234,7 @@ class LearningFragment : BaseFragment() {
      * */
 
     private fun apiGetLearnings() {
-        viewModel.apiGetLearnings("",viewModel.getCategory(),viewModel.getYear(),viewModel.getMonthId(),viewModel.getAbjad())
+        viewModel.apiGetLearnings(viewModel.getKeyword(),viewModel.getCategory(),viewModel.getYear(),viewModel.getMonthId(),viewModel.getAbjad())
     }
 
 }

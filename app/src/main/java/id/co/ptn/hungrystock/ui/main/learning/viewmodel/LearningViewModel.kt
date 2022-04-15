@@ -36,13 +36,19 @@ class LearningViewModel @Inject constructor(private val repository: AppRepositor
         return learnings
     }
 
+    private var keyword = ""
+    fun getKeyword(): String = keyword
+    fun setKeyword(k: String) {
+        keyword = k
+    }
+
     private var category = ""
     fun getCategory(): String = category
     fun setCategory(c: String) {
         category = c
     }
 
-    private var year = currentYear()
+    private var year = ""
     fun getYear(): String = year
     fun setYear(y: String) {
         year = y

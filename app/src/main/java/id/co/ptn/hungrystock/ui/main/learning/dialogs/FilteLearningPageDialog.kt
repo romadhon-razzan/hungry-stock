@@ -86,8 +86,12 @@ class FilteLearningPageDialog(private val listener: Listener): BaseBottomSheetMo
         initListener()
         initYearData()
         initListYear()
+        if (yearSelected.isNullOrEmpty())
+            yearSelected = "0"
+
         if (monthSelected.isNotEmpty())
             binding.tvMonth.text = monthSelected
+
         if (abjadSelected.isNotEmpty())
             binding.tvAbjad.text = abjadSelected
     }
@@ -95,11 +99,13 @@ class FilteLearningPageDialog(private val listener: Listener): BaseBottomSheetMo
     private fun initListener() {
         binding.btClose.setOnClickListener { dismiss() }
         binding.btApply.setOnClickListener {
+            if (yearSelected == "0") yearSelected = ""
             listener.onFilter(yearSelected, monthSelected, monthIdSelected, abjadSelected)
             dismiss()
         }
         binding.btSpinnerMonth.setOnClickListener { monthPressed() }
         binding.btSpinnerAbjad.setOnClickListener { abjadPressed() }
+        binding.btReset.setOnClickListener { resetPressed() }
     }
 
 
@@ -150,6 +156,16 @@ class FilteLearningPageDialog(private val listener: Listener): BaseBottomSheetMo
             }
         })
         abjadPopup.show(binding.btSpinnerAbjad)
+    }
+
+    private fun resetPressed() {
+        yearSelected = ""
+        initListYear()
+        monthSelected = ""
+        monthIdSelected = ""
+        binding.tvMonth.text = requireActivity().resources.getString(R.string.hint_pilih_bulan)
+        abjadSelected = ""
+        binding.tvAbjad.text = requireActivity().resources.getString(R.string.label_pilih)
     }
 
 

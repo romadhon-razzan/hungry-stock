@@ -112,6 +112,7 @@
     <string name="sorting_belajar_invest_bareng">Belajar Invest Bareng</string>
     <string name="label_tampilkan_berdasarkan_abjad">Tampilkan berdasarkan Abjad</string>
     <string name="label_pilih">Pilih</string>
+    <string name="button_reset">Reset</string>
 
     <string-array name="sort_learning">
         <item>Terbaru</item>
