@@ -52,6 +52,7 @@
                 app:cardCornerRadius="10dp">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/lbl_filter"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:paddingStart="@dimen/normal2"
@@ -68,9 +69,21 @@
                     app:drawableStartCompat="@drawable/ic_filter"/>
             </com.google.android.material.card.MaterialCardView>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_filter_value"
+                android:layout_below="@+id/card_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/normal"
+                android:paddingBottom="0dp"
+                android:fontFamily="@font/ft_barlow_regular"
+                android:textSize="@dimen/font_normal"
+                android:textColor="@color/white"
+                tools:text="Filter berdasarkan : 2022, A-Z dan Januari"/>
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/bt_sorting"
-                android:layout_below="@id/card_search"
+                android:layout_below="@id/tv_filter_value"
                 android:layout_width="wrap_content"
                 android:layout_height="34dp"
                 android:layout_marginTop="@dimen/normal1"
