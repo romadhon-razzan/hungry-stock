@@ -1,5 +1,6 @@
 package id.co.ptn.hungrystock.ui.main.learning.viewmodel
 
+import android.text.format.DateUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,6 +14,7 @@ import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
 import id.co.ptn.hungrystock.repositories.AppRepository
 import id.co.ptn.hungrystock.utils.Resource
+import id.co.ptn.hungrystock.utils.currentYear
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -40,7 +42,7 @@ class LearningViewModel @Inject constructor(private val repository: AppRepositor
         category = c
     }
 
-    private var year = ""
+    private var year = currentYear()
     fun getYear(): String = year
     fun setYear(y: String) {
         year = y
@@ -50,6 +52,12 @@ class LearningViewModel @Inject constructor(private val repository: AppRepositor
     fun getMonth(): String = month
     fun setMonth(m: String) {
         month = m
+    }
+
+    private var monthId = ""
+    fun getMonthId(): String = monthId
+    fun setMonthId(mId: String) {
+        monthId = mId
     }
 
     private var abjad = ""
