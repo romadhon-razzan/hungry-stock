@@ -144,7 +144,7 @@ class FilterResearchPageDialog: BaseBottomSheetModal() {
 
     private fun monthPressed() {
         val monthPopup = MonthPopupMenu(requireContext(), object : MonthPopupMenu.Listener{
-            override fun onSelected(month: String) {
+            override fun onSelected(month: String, id: String) {
                 monthSelected = month
                 binding.tvMonth.text = month
             }

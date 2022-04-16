@@ -73,7 +73,7 @@ class LearningFragment : BaseFragment() {
                 viewModel.setKeyword(s.toString())
                 Handler(Looper.getMainLooper()).postDelayed({
                     apiGetLearnings()
-                },3000)
+                },1500)
             }
 
             override fun afterTextChanged(s: Editable?) {}
