@@ -4,6 +4,7 @@ import id.co.ptn.hungrystock.models.auth.ResponseAuth
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
+import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.registration.ResponseRegister
 import okhttp3.MultipartBody
@@ -73,5 +74,8 @@ interface Services {
         @Query("year") y: String,
         @Query("month") m: String,
         @Query("order_type") ot: String): Response<ResponseLearning>
+
+    @GET(HOME)
+    suspend fun getOnboard(): Response<ResponseOnboard>
 
 }
