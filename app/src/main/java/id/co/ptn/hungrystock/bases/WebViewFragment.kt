@@ -11,9 +11,11 @@ import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.databinding.FragmentWebViewBinding
 
 private const val ARG_PARAM1 = "content"
+private const val ARG_FONT_SIZE = "font_size"
 
 class WebViewFragment : Fragment() {
     private var content: String? = null
+    private var fontSize: String? = null
 
     private var binding: FragmentWebViewBinding? = null
 
@@ -21,6 +23,7 @@ class WebViewFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             content = it.getString(ARG_PARAM1)
+            fontSize = it.getString(ARG_FONT_SIZE)
         }
     }
 
@@ -39,10 +42,16 @@ class WebViewFragment : Fragment() {
     }
 
     private fun setView() {
+        var fSize = "font-size: 12px;"
+        when(fontSize) {
+            "small" -> {fSize = "font-size: 10px;"}
+            "normal" -> {fSize = "font-size: 14px;"}
+        }
+
         content?.let {
             val desc = "<!DOCTYPE html>\n" +
                     "<html>\n" +
-                    "<body style=\"color:grey;\">\n" +
+                    "<body style=\"${fSize}color:grey;\">\n" +
                     "\n" +
                     it +
                     "\n" +

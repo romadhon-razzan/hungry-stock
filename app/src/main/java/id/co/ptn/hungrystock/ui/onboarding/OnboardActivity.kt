@@ -11,7 +11,6 @@ import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
 import id.co.ptn.hungrystock.config.SUCCESS
 import id.co.ptn.hungrystock.databinding.ActivityOnboardingBinding
-import id.co.ptn.hungrystock.router.Router
 import id.co.ptn.hungrystock.ui.onboarding.adapters.OnboardVPAdapter
 
 @AndroidEntryPoint

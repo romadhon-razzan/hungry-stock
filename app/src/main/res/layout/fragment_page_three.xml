@@ -4,6 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.onboarding.fragments.PageOneFragment">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel" />
+    </data>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,9 +33,9 @@
                 <ImageView
                     android:id="@+id/image"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/small1"
-                    android:src="@drawable/img_onboarding_2" />
+                    tools:src="@drawable/img_onboarding_2" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_title"
@@ -42,7 +48,8 @@
                     android:fontFamily="@font/coolvetica"
                     android:textColor="@color/dark"
                     android:textSize="@dimen/font_large"
-                    android:text="Webinar Value Investing ala LKH Batch 12" />
+                    android:text="@{viewModel.title}"
+                    tools:text="Webinar Value Investing ala LKH Batch 12" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_date"
@@ -53,9 +60,10 @@
                     android:layout_marginEnd="24dp"
                     android:layout_marginBottom="@dimen/small"
                     android:fontFamily="@font/coolvetica"
+                    android:text="@{viewModel.date}"
                     android:textColor="@color/dark"
                     android:textSize="@dimen/font_small"
-                    android:text="Sabtu, 22 Nov - Minggu, 14 Des 2021" />
+                    tools:text="Sabtu, 22 Nov - Minggu, 14 Des 2021" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_speaker"
@@ -68,7 +76,8 @@
                     android:fontFamily="@font/coolvetica"
                     android:textColor="#7C6723"
                     android:textSize="@dimen/font_small"
-                    android:text="Pembicara: Lukas Setia Atmaja" />
+                    android:text="@{viewModel.speaker}"
+                    tools:text="Pembicara: Lukas Setia Atmaja" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_description"
@@ -81,9 +90,23 @@
                     android:fontFamily="@font/coolvetica"
                     android:textColor="@color/dark"
                     android:textSize="11sp"
-                    android:text="Ini adalah kelas spesial untuk mempelajari jurus value investing yang diterapkan Pak Lo Kheng Hong untuk mendapatkan saham multi bagger." />
+                    android:text="@{viewModel.content}"
+                    android:visibility="gone"
+                    tools:text="Ini adalah kelas spesial untuk mempelajari jurus value investing yang diterapkan Pak Lo Kheng Hong untuk mendapatkan saham multi bagger." />
 
+                <FrameLayout
+                    android:id="@+id/frame_web"
+                    android:layout_below="@id/tv_speaker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"/>
 
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"/>
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
     </RelativeLayout>
