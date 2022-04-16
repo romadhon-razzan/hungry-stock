@@ -121,6 +121,9 @@ class FilteLearningPageDialog(private val listener: Listener): BaseBottomSheetMo
     }
 
     private fun initListYear() {
+        if (yearSelected == "")
+            yearSelected = "0"
+
         filterYearListAdapter = FilterYearListAdapter(years, yearSelected.toInt(), object : FilterYearListAdapter.Listener{
             override fun onClick(year: String) {
                 yearSelected = year
