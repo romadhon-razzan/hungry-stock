@@ -60,14 +60,14 @@ data class HeadlineWebinar (
     @SerializedName("photo"         ) var photo        : String? = null,
     @SerializedName("content"       ) var content      : String? = null,
     @SerializedName("speaker"       ) var speaker      : String? = null,
-    @SerializedName("date_start"    ) var dateStart    : String? = null,
-    @SerializedName("date_end"      ) var dateEnd      : String? = null,
-    @SerializedName("form_link"     ) var formLink     : String? = null,
-    @SerializedName("is_published"  ) var isPublished  : Int?    = null,
-    @SerializedName("created_at"    ) var createdAt    : String? = null,
-    @SerializedName("updated_at"    ) var updatedAt    : String? = null,
-    @SerializedName("youtube_link"  ) var youtubeLink  : String? = null,
-    @SerializedName("photo_url"     ) var photoUrl     : String? = null,
-    @SerializedName("embed_youtube" ) var embedYoutube : String? = null
+    @SerializedName("date_start"    ) var date_start    : String? = null,
+    @SerializedName("date_end"      ) var date_end      : String? = null,
+    @SerializedName("form_link"     ) var form_link     : String? = null,
+    @SerializedName("is_published"  ) var is_published  : Int?    = null,
+    @SerializedName("created_at"    ) var created_at    : String? = null,
+    @SerializedName("updated_at"    ) var updated_at    : String? = null,
+    @SerializedName("youtube_link"  ) var youtube_link  : String? = null,
+    @SerializedName("photo_url"     ) var photo_url     : String? = null,
+    @SerializedName("embed_youtube" ) var embed_youtube : String? = null
 
 )

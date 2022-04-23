@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import id.co.ptn.hungrystock.R
@@ -58,7 +59,26 @@ class WebViewFragment : Fragment() {
                     "</body>\n" +
                     "</html>"
             binding?.webView?.setBackgroundColor(Color.TRANSPARENT)
+
+            binding?.webView?.webViewClient = WebViewClient()
             binding?.webView?.loadData(desc, "text/html","UTF-8")
         }
     }
+
+    inner class WebViewClient : android.webkit.WebViewClient() {
+
+        // Load the URL
+        @Deprecated("Deprecated in Java")
+        override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+            view.loadUrl(url)
+            return false
+        }
+
+        // ProgressBar will disappear once page is loaded
+        override fun onPageFinished(view: WebView, url: String) {
+            super.onPageFinished(view, url)
+            binding?.progressBar?.visibility = View.GONE
+        }
+    }
+
 }
