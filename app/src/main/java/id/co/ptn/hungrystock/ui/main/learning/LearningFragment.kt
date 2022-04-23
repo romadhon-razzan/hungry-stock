@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -20,6 +21,7 @@ import id.co.ptn.hungrystock.bases.BaseFragment
 import id.co.ptn.hungrystock.bases.EmptyStateFragment
 import id.co.ptn.hungrystock.databinding.LearningFragmentBinding
 import id.co.ptn.hungrystock.models.main.home.PastEvent
+import id.co.ptn.hungrystock.models.main.home.ResponseEventData
 import id.co.ptn.hungrystock.models.main.learning.Learning
 import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningListAdapter
 import id.co.ptn.hungrystock.ui.main.learning.dialogs.FilteLearningPageDialog
@@ -63,6 +65,7 @@ class LearningFragment : BaseFragment() {
     private fun initListener() {
         binding.btSorting.setOnClickListener { sortingPressed() }
         binding.btFilter.setOnClickListener { filterPressed() }
+        binding.btNext.setOnClickListener { apiGetNextLearnings() }
     }
 
     private fun initSearch() {
@@ -109,6 +112,19 @@ class LearningFragment : BaseFragment() {
             } ?: emptyState()
         } ?: emptyState()
         initList()
+    }
+
+    private fun setNextData() {
+        try {
+            viewModel.reqNextLearningResponse().value?.let {
+                it.data?.data?.learnings?.data?.let { learnings ->
+                    viewModel.getLearnings().addAll(learnings)
+                }
+            }
+            learningListAdapter.notifyItemRangeInserted(learningListAdapter.itemCount, viewModel.getLearnings().size)
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 
     private fun emptyState() {
@@ -218,12 +234,43 @@ class LearningFragment : BaseFragment() {
             when(it.status) {
                 Status.SUCCESS ->{
                     binding.progressBar.visibility = View.GONE
-                    initData()
+                    Log.d("NEXT PAGE", "00000")
+                    it.data?.data?.let { data ->
+                        data.learnings.next_page_url?.let { _ ->
+                            data.learnings.current_page?.let { cp -> viewModel.setNextPage((cp+1).toString()) }
+                            viewModel.setCanLoadNext(true)
+                        } ?: viewModel.setCanLoadNext(false)
+                        Log.d("NEXT PAGE", viewModel.getNextPage())
+                        initData()
+                    } ?: emptyState()
                 }
                 Status.LOADING ->{ binding.progressBar.visibility = View.VISIBLE}
                 Status.ERROR ->{
                     binding.progressBar.visibility = View.GONE
                     emptyState()
+                }
+            }
+        }
+
+        viewModel.reqNextLearningResponse().observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS ->{
+                    viewModel.setLoadingNext(false)
+                    it.data?.data?.let { data ->
+                        data.learnings.next_page_url?.let { _ ->
+                            data.learnings.current_page?.let { cp -> viewModel.setNextPage((cp+1).toString()) }
+                            viewModel.setCanLoadNext(true)
+                        } ?: viewModel.setCanLoadNext(false)
+                        setNextData()
+                    }
+                }
+                Status.LOADING ->{
+                    viewModel.setLoadingNext(true)
+                    viewModel.setCanLoadNext(false)
+                }
+                Status.ERROR ->{
+                    viewModel.setLoadingNext(false)
+                    showSnackBar(binding.container,"Something wrong")
                 }
             }
         }
@@ -235,6 +282,10 @@ class LearningFragment : BaseFragment() {
 
     private fun apiGetLearnings() {
         viewModel.apiGetLearnings(viewModel.getKeyword(),viewModel.getCategory(),viewModel.getYear(),viewModel.getMonthId(),viewModel.getAbjad())
+    }
+
+    private fun apiGetNextLearnings() {
+        viewModel.apiGetNextLearnings(viewModel.getNextPage(), viewModel.getKeyword(),viewModel.getCategory(),viewModel.getYear(),viewModel.getMonthId(),viewModel.getAbjad())
     }
 
 }

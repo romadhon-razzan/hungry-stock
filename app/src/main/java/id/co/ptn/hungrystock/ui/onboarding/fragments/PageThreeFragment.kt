@@ -77,8 +77,8 @@ class PageThreeFragment : BaseFragment() {
                     it.data?.data?.latestEvent?.let { event ->
                         event.photo_url?.let { photo ->
                             binding?.image?.let { i -> Glide.with(requireActivity()).load(photo).into(i) }
-                        } ?: throw Exception("Something wrong")
-                        event.title?.let { title -> viewModel?.setTitle(title) } ?: throw Exception("Something wrong")
+                        }
+                        event.title?.let { title -> viewModel?.setTitle(title) }
                         event.event_date?.let { date ->
                             val stringBuilder = StringBuilder()
                             stringBuilder.append(getDateMMMMddyyyy(date))
@@ -88,18 +88,18 @@ class PageThreeFragment : BaseFragment() {
                                 event.event_hour_start?.let { start ->
                                     stringBuilder.append(start)
                                     stringBuilder.append(" - ")
-                                } ?: throw Exception("Something wrong")
+                                }
                                 event.event_hour_end?.let { end ->
                                     stringBuilder.append(end)
                                     stringBuilder.append(" - ")
-                                } ?: throw Exception("Something wrong")
+                                }
                                 stringBuilder.append(" WIB")
                             }catch (e: Exception){
                                 e.printStackTrace()
                             }
                             viewModel?.setDate(stringBuilder.toString())
-                        } ?: throw Exception("Something wrong")
-                        event.speaker?.let { speaker -> viewModel?.setSpeaker(speaker) } ?: throw Exception("Something wrong")
+                        }
+                        event.speaker?.let { speaker -> viewModel?.setSpeaker(speaker) }
                         event.content?.let { content ->
                             childFragmentManager.commit {
                                 val bundle = Bundle()
@@ -107,7 +107,7 @@ class PageThreeFragment : BaseFragment() {
                                 bundle.putString("font_size","small")
                                 add<WebViewFragment>(R.id.frame_web, null, bundle)
                             }
-                        } ?: throw Exception("Something wrong")
+                        }
                     }
                 }
                 Status.LOADING -> {

@@ -75,6 +75,15 @@ interface Services {
         @Query("month") m: String,
         @Query("order_type") ot: String): Response<ResponseLearning>
 
+    @GET(LEARNING)
+    suspend fun getNextLearnings(
+        @Query("page") p: String,
+        @Query("keyword") k: String,
+        @Query("category") c: String,
+        @Query("year") y: String,
+        @Query("month") m: String,
+        @Query("order_type") ot: String): Response<ResponseLearning>
+
     @GET(HOME)
     suspend fun getOnboard(): Response<ResponseOnboard>
 

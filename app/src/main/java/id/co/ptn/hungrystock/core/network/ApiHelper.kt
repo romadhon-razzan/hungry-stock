@@ -42,6 +42,7 @@ interface ApiHelper {
     suspend fun getNextEvent(p: String): Response<ResponseEvent>
     suspend fun getLearningDetail(s: String): Response<ResponseLearningDetail>
     suspend fun getLearnings(k: String, c: String, y: String, m: String, ot: String): Response<ResponseLearning>
+    suspend fun getNextLearnings(p: String, k: String, c: String, y: String, m: String, ot: String): Response<ResponseLearning>
     suspend fun getOnboard(): Response<ResponseOnboard>
 //    suspend fun detail(s: String): Response<DrinkResponse>
 //    suspend fun getRecent(): Response<DrinkResponse>

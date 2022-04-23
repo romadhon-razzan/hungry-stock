@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import com.onesignal.OneSignal
 import dagger.hilt.android.HiltAndroidApp
+import id.co.ptn.hungrystock.config.DEBUG
 import id.co.ptn.hungrystock.config.ONESIGNAL_APP_ID
 
 
@@ -21,6 +22,7 @@ class App: Application() {
         OneSignal.initWithContext(this)
         OneSignal.setAppId(ONESIGNAL_APP_ID)
 
+        if (!DEBUG)
         setupActivityListener()
     }
 
