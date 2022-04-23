@@ -5,11 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseFragment
 import id.co.ptn.hungrystock.databinding.FragmentPageFiveBinding
+import id.co.ptn.hungrystock.models.onboard.Books
 import id.co.ptn.hungrystock.router.Router
+import id.co.ptn.hungrystock.ui.onboarding.adapters.BookListAdapter
+import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -19,6 +24,20 @@ class PageFiveFragment : BaseFragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentPageFiveBinding
+    private var viewModel: OnboardViewModel? = null
+    private var bookListAdapter: BookListAdapter? = null
+
+
+    companion object {
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            PageOneFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
+                }
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,32 +57,33 @@ class PageFiveFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity())[OnboardViewModel::class.java]
+        binding.lifecycleOwner = this
         init()
     }
 
     private fun init() {
+        initList()
         initListener()
     }
 
     private fun initListener() {
-        binding.btBook1.setOnClickListener { openUrlPage("https://www.tokopedia.com/hungrystock/who-wants-to-be-a-smart-investor-lukas-setia-atmaja") }
-        binding.btBook2.setOnClickListener { openUrlPage("https://www.tokopedia.com/hungrystock/bundle-3-buku-lukas-setia-atmaja-dan-thomdean") }
-        binding.btBook3.setOnClickListener { openUrlPage("https://www.tokopedia.com/hungrystock/just-duittology-lukas-setia-atmaja-thomdean") }
-        binding.btBook4.setOnClickListener { openUrlPage("https://www.tokopedia.com/hungrystock/edisi-berwarna-who-wants-to-be-a-smiling-investor-lukas-thomdean") }
-        binding.btBook5.setOnClickListener { openUrlPage("https://www.tokopedia.com/hungrystock/who-wants-to-be-a-wise-investor-lukas-setia-atmaja") }
-        binding.btBook6.setOnClickListener { openUrlPage("https://www.tokopedia.com/hungrystock/who-wants-to-be-rasional-investor-lukas-setia-atmaja") }
-        binding.btBook7.setOnClickListener { openUrlPage("https://www.tokopedia.com/hungrystock/buku-kartun-yuk-nabung-saham-cerdas-berinvestasi-dalam-1-buku") }
         binding.btLoginRegister.setOnClickListener { Router(requireContext()).toAuth() }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PageOneFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun initList() {
+        viewModel?.reqOnboardResponse()?.value?.data?.data?.books?.let { books ->
+            if (books.isNotEmpty()){
+                bookListAdapter = BookListAdapter(books as MutableList<Books>, object : BookListAdapter.Listener{
+                    override fun itemClicked(books: Books) {
+                        books.link_tokopedia?.let { url -> openUrlPage(url) }
+                    }
+                })
+                binding.recyclerView.apply {
+                    layoutManager = GridLayoutManager(requireContext(), 2)
+                    adapter = bookListAdapter
                 }
             }
+        }
     }
 }
