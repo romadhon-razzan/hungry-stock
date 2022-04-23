@@ -41,14 +41,14 @@ data class Books (
     @SerializedName("title"          ) var title         : String? = null,
     @SerializedName("slug"           ) var slug          : String? = null,
     @SerializedName("photo"          ) var photo         : String? = null,
-    @SerializedName("link_tokopedia" ) var linkTokopedia : String? = null,
+    @SerializedName("link_tokopedia" ) var link_tokopedia : String? = null,
     @SerializedName("author"         ) var author        : String? = null,
     @SerializedName("description"    ) var description   : String? = null,
-    @SerializedName("is_banner"      ) var isBanner      : Int?    = null,
-    @SerializedName("is_published"   ) var isPublished   : Int?    = null,
-    @SerializedName("created_at"     ) var createdAt     : String? = null,
-    @SerializedName("updated_at"     ) var updatedAt     : String? = null,
-    @SerializedName("photo_url"      ) var photoUrl      : String? = null
+    @SerializedName("is_banner"      ) var is_banner      : Int?    = null,
+    @SerializedName("is_published"   ) var is_published   : Int?    = null,
+    @SerializedName("created_at"     ) var created_at     : String? = null,
+    @SerializedName("updated_at"     ) var updated_at     : String? = null,
+    @SerializedName("photo_url"      ) var photo_url      : String? = null
 
 )
 
