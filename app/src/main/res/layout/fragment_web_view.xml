@@ -7,5 +7,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".bases.WebViewFragment">
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </WebView>
 </layout>

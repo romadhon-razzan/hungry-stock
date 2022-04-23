@@ -1,7 +1,6 @@
 package id.co.ptn.hungrystock.ui.onboarding.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,67 +64,46 @@ class PageThreeFragment : BaseFragment() {
         viewModel = ViewModelProvider(requireActivity())[OnboardViewModel::class.java]
         binding?.viewModel = viewModel
         binding?.lifecycleOwner = this
-        setObserve()
-        apiGetOnboard()
+        setView()
+
     }
 
-    private fun setObserve() {
-        viewModel?.reqOnboardResponse()?.observe(viewLifecycleOwner){
-            when(it.status) {
-                Status.SUCCESS -> {
-                    binding?.progressBar?.visibility = View.GONE
-                    it.data?.data?.latestEvent?.let { event ->
-                        event.photo_url?.let { photo ->
-                            binding?.image?.let { i -> Glide.with(requireActivity()).load(photo).into(i) }
-                        }
-                        event.title?.let { title -> viewModel?.setTitle(title) }
-                        event.event_date?.let { date ->
-                            val stringBuilder = StringBuilder()
-                            stringBuilder.append(getDateMMMMddyyyy(date))
+    private fun setView() {
+        viewModel?.reqOnboardResponse()?.value?.data?.data?.latestEvent?.let { event ->
+            event.photo_url?.let { photo ->
+                binding?.image?.let { i -> Glide.with(requireActivity()).load(photo).into(i) }
+            }
+            event.title?.let { title -> binding?.tvTitle?.text = title }
+            event.event_date?.let { date ->
+                val stringBuilder = StringBuilder()
+                stringBuilder.append(getDateMMMMddyyyy(date))
 
-                            try {
-                                stringBuilder.append(" ")
-                                event.event_hour_start?.let { start ->
-                                    stringBuilder.append(start)
-                                    stringBuilder.append(" - ")
-                                }
-                                event.event_hour_end?.let { end ->
-                                    stringBuilder.append(end)
-                                    stringBuilder.append(" - ")
-                                }
-                                stringBuilder.append(" WIB")
-                            }catch (e: Exception){
-                                e.printStackTrace()
-                            }
-                            viewModel?.setDate(stringBuilder.toString())
-                        }
-                        event.speaker?.let { speaker -> viewModel?.setSpeaker(speaker) }
-                        event.content?.let { content ->
-                            childFragmentManager.commit {
-                                val bundle = Bundle()
-                                bundle.putString("content", content)
-                                bundle.putString("font_size","small")
-                                add<WebViewFragment>(R.id.frame_web, null, bundle)
-                            }
-                        }
+                try {
+                    stringBuilder.append(" ")
+                    event.event_hour_start?.let { start ->
+                        stringBuilder.append(start)
+                        stringBuilder.append(" - ")
                     }
+                    event.event_hour_end?.let { end ->
+                        stringBuilder.append(end)
+                        stringBuilder.append(" - ")
+                    }
+                    stringBuilder.append(" WIB")
+                }catch (e: Exception){
+                    e.printStackTrace()
                 }
-                Status.LOADING -> {
-
-                }
-                Status.ERROR -> {
-                    binding?.progressBar?.visibility = View.GONE
+                binding?.tvDate?.text = stringBuilder.toString()
+            }
+            event.speaker?.let { speaker -> binding?.tvSpeaker?.text = speaker }
+            event.content?.let { content ->
+                childFragmentManager.commit {
+                    val bundle = Bundle()
+                    bundle.putString("content", content)
+                    bundle.putString("font_size","small")
+                    add<WebViewFragment>(R.id.frame_web, null, bundle)
                 }
             }
         }
-    }
-
-    /**
-     * Api
-     * */
-
-    private fun apiGetOnboard() {
-        viewModel?.apiGetOnboard()
     }
 
 }

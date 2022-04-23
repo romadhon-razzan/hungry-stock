@@ -23,91 +23,86 @@
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/secondary"
             app:cardCornerRadius="14dp">
-            <RelativeLayout
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="24dp"
-                android:paddingBottom="24dp"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/image"
+                android:layout_height="wrap_content">
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/small1"
-                    tools:src="@drawable/img_onboarding_2" />
+                    android:paddingTop="24dp"
+                    android:paddingBottom="24dp"
+                    android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/image"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/coolvetica"
-                    android:textColor="@color/dark"
-                    android:textSize="@dimen/font_large"
-                    android:text="@{viewModel.title}"
-                    tools:text="Webinar Value Investing ala LKH Batch 12" />
+                    <ImageView
+                        android:id="@+id/image"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/small1"
+                        tools:src="@drawable/img_onboarding_2" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_title"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="@dimen/small"
-                    android:fontFamily="@font/coolvetica"
-                    android:text="@{viewModel.date}"
-                    android:textColor="@color/dark"
-                    android:textSize="@dimen/font_small"
-                    tools:text="Sabtu, 22 Nov - Minggu, 14 Des 2021" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/image"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/coolvetica"
+                        android:textColor="@color/dark"
+                        android:textSize="@dimen/font_large"
+                        tools:text="Webinar Value Investing ala LKH Batch 12" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_speaker"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_date"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="@dimen/small1"
-                    android:fontFamily="@font/coolvetica"
-                    android:textColor="#7C6723"
-                    android:textSize="@dimen/font_small"
-                    android:text="@{viewModel.speaker}"
-                    tools:text="Pembicara: Lukas Setia Atmaja" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_title"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="@dimen/small"
+                        android:fontFamily="@font/coolvetica"
+                        android:textColor="@color/dark"
+                        android:textSize="@dimen/font_small"
+                        tools:text="Sabtu, 22 Nov - Minggu, 14 Des 2021" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_speaker"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="22dp"
-                    android:fontFamily="@font/coolvetica"
-                    android:textColor="@color/dark"
-                    android:textSize="11sp"
-                    android:text="@{viewModel.content}"
-                    android:visibility="gone"
-                    tools:text="Ini adalah kelas spesial untuk mempelajari jurus value investing yang diterapkan Pak Lo Kheng Hong untuk mendapatkan saham multi bagger." />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_speaker"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_date"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="@dimen/small1"
+                        android:fontFamily="@font/coolvetica"
+                        android:textColor="#7C6723"
+                        android:textSize="@dimen/font_small"
+                        tools:text="Pembicara: Lukas Setia Atmaja" />
 
-                <FrameLayout
-                    android:id="@+id/frame_web"
-                    android:layout_below="@id/tv_speaker"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"/>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_speaker"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="22dp"
+                        android:fontFamily="@font/coolvetica"
+                        android:textColor="@color/dark"
+                        android:textSize="11sp"
+                        android:visibility="gone"
+                        tools:text="Ini adalah kelas spesial untuk mempelajari jurus value investing yang diterapkan Pak Lo Kheng Hong untuk mendapatkan saham multi bagger." />
 
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"/>
-            </RelativeLayout>
+                    <FrameLayout
+                        android:id="@+id/frame_web"
+                        android:layout_below="@id/tv_speaker"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"/>
+
+                </RelativeLayout>
+            </androidx.core.widget.NestedScrollView>
         </com.google.android.material.card.MaterialCardView>
     </RelativeLayout>
 

@@ -3,14 +3,11 @@ package id.co.ptn.hungrystock.ui.onboarding.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import id.co.ptn.hungrystock.ui.onboarding.fragments.PageFourFragment
-import id.co.ptn.hungrystock.ui.onboarding.fragments.PageOneFragment
-import id.co.ptn.hungrystock.ui.onboarding.fragments.PageThreeFragment
-import id.co.ptn.hungrystock.ui.onboarding.fragments.PageTwoFragment
+import id.co.ptn.hungrystock.ui.onboarding.fragments.*
 
 class OnboardVPAdapter(fm: FragmentManager): FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getCount(): Int {
-        return 4
+        return 5
     }
 
     override fun getItem(position: Int): Fragment {
@@ -24,8 +21,11 @@ class OnboardVPAdapter(fm: FragmentManager): FragmentPagerAdapter(fm, BEHAVIOR_R
             2 -> {
                 PageThreeFragment()
             }
-            else -> {
+            3 -> {
                 PageFourFragment()
+            }
+            else -> {
+                PageFiveFragment()
             }
         }
     }

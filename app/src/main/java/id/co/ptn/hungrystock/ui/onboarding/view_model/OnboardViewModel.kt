@@ -16,6 +16,12 @@ import javax.inject.Inject
 @HiltViewModel
 class OnboardViewModel @Inject constructor(private val repository: AppRepository) : BaseViewModel() {
 
+    private val _showPrivacyPolicy = MutableLiveData(false)
+    val showPrivacyPolicy: LiveData<Boolean> = _showPrivacyPolicy
+    fun setShowPrivacyPolicy(value: Boolean) {
+        _showPrivacyPolicy.value = value
+    }
+
     private val _title = MutableLiveData("")
     val title: LiveData<String> = _title
     fun setTitle(title: String) {
