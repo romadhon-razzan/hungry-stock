@@ -6,9 +6,11 @@
         <variable
             name="vm"
             type="id.co.ptn.hungrystock.ui.main.learning.viewmodel.LearningViewModel" />
+        <import type="android.view.View" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <RelativeLayout
@@ -108,12 +110,40 @@
                     tools:text="Terbaru"/>
             </com.google.android.material.card.MaterialCardView>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_below="@id/bt_sorting"
-                android:layout_marginTop="@dimen/large"
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_below="@id/bt_sorting"
+                android:layout_marginTop="@dimen/large">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <ProgressBar
+                        android:id="@+id/progress_bar_next"
+                        android:layout_below="@id/recycler_view"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerHorizontal="true"
+                        android:visibility="@{vm.loadingNext ? View.VISIBLE : View.GONE }"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/bt_next"
+                        android:layout_below="@id/recycler_view"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{vm.canLoadNext ? View.VISIBLE : View.GONE }"
+                        android:padding="@dimen/normal"
+                        android:fontFamily="@font/barlow_medium"
+                        android:textColor="@color/white_70"
+                        android:text="Lainnya"/>
+                </RelativeLayout>
+            </androidx.core.widget.NestedScrollView>
 
             <ProgressBar
                 android:id="@+id/progress_bar"

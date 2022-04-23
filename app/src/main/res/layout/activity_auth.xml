@@ -71,6 +71,7 @@
                         android:fontFamily="@font/barlow_semibold"
                         android:paddingStart="@dimen/normal"
                         android:paddingEnd="@dimen/normal"
+                        android:inputType="phone"
                         android:textColor="@color/grey"
                         android:textColorHint="@color/grey"
                         android:textSize="@dimen/font_medium" />

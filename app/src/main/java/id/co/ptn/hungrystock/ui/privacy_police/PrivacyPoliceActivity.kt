@@ -8,6 +8,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
 import id.co.ptn.hungrystock.bases.BaseWebViewActivity
+import id.co.ptn.hungrystock.config.PRIVACY_POLICY_URL
 import id.co.ptn.hungrystock.config.SUCCESS
 import id.co.ptn.hungrystock.databinding.ActivityPrivacyPoliceBinding
 import id.co.ptn.hungrystock.ui.privacy_police.view_model.PrivacyPoliceViewModel
@@ -31,7 +32,8 @@ class PrivacyPoliceActivity : BaseActivity() {
 
     private fun setView() {
         binding.webView.webViewClient = WebViewClient()
-        binding.webView.loadData(data(), "text/html", "utf-8")
+        binding.webView.loadUrl(PRIVACY_POLICY_URL)
+//        binding.webView.loadData(data(), "text/html", "utf-8")
     }
 
     private fun setListener() {

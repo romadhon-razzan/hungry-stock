@@ -47,6 +47,7 @@ class ApiHelperImpl @Inject constructor(private val apiService: Services) : ApiH
     override suspend fun getNextEvent(p: String): Response<ResponseEvent> = apiService.getNextEvent(p)
     override suspend fun getLearningDetail(s: String): Response<ResponseLearningDetail> = apiService.getLearningDetail(s)
     override suspend fun getLearnings(k: String, c: String, y: String, m: String, ot: String): Response<ResponseLearning> = apiService.getLearnings(k, c, y, m, ot)
+    override suspend fun getNextLearnings(p: String, k: String, c: String, y: String, m: String, ot: String): Response<ResponseLearning> = apiService.getNextLearnings(p,k, c, y, m, ot)
     override suspend fun getOnboard(): Response<ResponseOnboard> = apiService.getOnboard()
 //    override suspend fun getRandom(): Response<DrinkResponse> = apiService.getRandom()
 //    override suspend fun searchName(s: String): Response<DrinkResponse> = apiService.searchName(s)

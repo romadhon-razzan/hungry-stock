@@ -1,6 +1,7 @@
 package id.co.ptn.hungrystock.ui.main.learning.viewmodel
 
 import android.text.format.DateUtils
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
+import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.main.learning.Learning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
@@ -75,6 +77,27 @@ class LearningViewModel @Inject constructor(private val repository: AppRepositor
     private var _reqLearningResponse: MutableLiveData<Resource<ResponseLearning>> = MutableLiveData()
     fun reqLearningResponse(): MutableLiveData<Resource<ResponseLearning>> = _reqLearningResponse
 
+    private var _reqNextLearningResponse: MutableLiveData<Resource<ResponseLearning>> = MutableLiveData()
+    fun reqNextLearningResponse(): MutableLiveData<Resource<ResponseLearning>> = _reqNextLearningResponse
+
+
+    private val _loadingNext = MutableLiveData(false)
+    val loadingNext: LiveData<Boolean> = _loadingNext
+    fun setLoadingNext(value: Boolean) {
+        _loadingNext.value = value
+    }
+
+    private val _canLoadNext = MutableLiveData(false)
+    val canLoadNext: LiveData<Boolean> = _canLoadNext
+    fun setCanLoadNext(value: Boolean) {
+        _canLoadNext.value = value
+    }
+
+    private var nextPage = ""
+    fun getNextPage(): String = nextPage
+    fun setNextPage(value: String) {
+        nextPage = value
+    }
 
     /**
      * Api
@@ -96,6 +119,30 @@ class LearningViewModel @Inject constructor(private val repository: AppRepositor
                             e.printStackTrace()
                         }
                         _reqLearningResponse.postValue(Resource.error(it.errorBody().toString(), errorResponse))
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun apiGetNextLearnings(p: String, k: String, c: String, y: String, m: String, ot: String) {
+        viewModelScope.launch {
+            try {
+                _reqNextLearningResponse.postValue(Resource.loading(null))
+                repository.getNextLearnings(p, k, c, y, m, ot).let {
+                    if (it.isSuccessful){
+                        _reqNextLearningResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        val type = object : TypeToken<ResponseLearning>() {}.type
+                        var errorResponse: ResponseLearning? = null
+                        try {
+                            errorResponse = Gson().fromJson(it.errorBody()?.charStream(), type)
+                        } catch(e: Exception) {
+                            e.printStackTrace()
+                        }
+                        _reqNextLearningResponse.postValue(Resource.error(it.errorBody().toString(), errorResponse))
                     }
                 }
             }catch (e: Exception){
