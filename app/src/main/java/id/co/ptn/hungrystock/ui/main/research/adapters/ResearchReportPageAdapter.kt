@@ -14,6 +14,7 @@ import id.co.ptn.hungrystock.models.main.home.PastEvent
 import id.co.ptn.hungrystock.models.main.home.UpcomingEvent
 import id.co.ptn.hungrystock.models.main.research.ResearchPage
 import id.co.ptn.hungrystock.models.main.research.ResearchReport
+import java.lang.StringBuilder
 
 class ResearchReportPageAdapter(private val items: MutableList<ResearchPage>,
 private val listener: ResearchReportListener):
@@ -82,7 +83,9 @@ private val listener: ResearchReportListener):
                }
             ResearchPage.TYPE_FILTER -> {
                 val viewHolder = holder as FilterHolder
-
+                val stringBuilder = StringBuilder()
+                element.filter.forEach { stringBuilder.append(it.value).append(", ") }
+                viewHolder.binding.tvValue.text = stringBuilder.toString()
             }
             else -> {
                 val viewHolder = holder as ListHolder

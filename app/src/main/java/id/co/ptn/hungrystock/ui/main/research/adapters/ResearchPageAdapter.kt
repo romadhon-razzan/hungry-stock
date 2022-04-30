@@ -7,6 +7,10 @@ class ResearchPageAdapter(activity: FragmentActivity?) : FragmentStateAdapter(ac
     private val mFragmentList: MutableList<Fragment> = ArrayList()
     private val mFragmentTitleList: MutableList<String> = ArrayList()
 
+    public fun setTabTitle(position: Int, title: String){
+        mFragmentTitleList[position] = title
+    }
+
     public fun getTabTitle(position : Int): String{
         return mFragmentTitleList[position]
     }

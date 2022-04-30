@@ -2,17 +2,9 @@ package id.co.ptn.hungrystock.ui.main.research.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
-import com.google.gson.JsonObject
-import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
-import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseViewModel
-import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.repositories.AppRepository
-import id.co.ptn.hungrystock.utils.Resource
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,4 +31,9 @@ class ResearchViewModel @Inject constructor(val repository: AppRepository) : Bas
         return _titleTabStock
     }
 
+    private var _researchTabTitle: MutableLiveData<String> = MutableLiveData()
+    fun researchTabTitle(): MutableLiveData<String> = _researchTabTitle
+
+    private var _stockTabTitle: MutableLiveData<String> = MutableLiveData()
+    fun stockTabTitle(): MutableLiveData<String> = _stockTabTitle
 }

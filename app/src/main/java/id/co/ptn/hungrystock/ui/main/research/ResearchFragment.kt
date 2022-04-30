@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
@@ -25,7 +25,7 @@ class ResearchFragment : Fragment() {
     }
 
     private lateinit var binding: ResearchFragmentBinding
-    private val viewModel: ResearchViewModel by viewModels()
+    private var viewModel: ResearchViewModel? = null
     private lateinit var researchPageAdapter: ResearchPageAdapter
 
     override fun onCreateView(
@@ -33,16 +33,18 @@ class ResearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(LayoutInflater.from(requireContext()), R.layout.research_fragment, container, false)
-        binding.vm = viewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity())[ResearchViewModel::class.java]
+        binding.vm = viewModel
         init()
     }
 
     private fun init() {
+        setObserve()
         initListener()
         initPage()
     }
@@ -64,12 +66,29 @@ class ResearchFragment : Fragment() {
         }.attach()
     }
 
-    private fun updateTitle() {
+    private fun updateResearchTitle(total: String) {
+        val title = requireActivity().getString(R.string.title_tab_research_report,total)
+        researchPageAdapter.setTabTitle(0, title)
+        researchPageAdapter.notifyItemChanged(0)
+    }
 
+    private fun updateStockTitle(total: String) {
+        val title = requireActivity().getString(R.string.title_tab_stock_data,total)
+        researchPageAdapter.setTabTitle(1, title)
+        researchPageAdapter.notifyItemChanged(1)
     }
 
     private fun openFilterDialog() {
         val dialog = FilterResearchPageDialog()
         dialog.show(childFragmentManager,"filter_dialog")
+    }
+
+    private fun setObserve() {
+        viewModel?.researchTabTitle()?.observe(viewLifecycleOwner){
+            updateResearchTitle(it)
+        }
+        viewModel?.stockTabTitle()?.observe(viewLifecycleOwner){
+            updateStockTitle(it)
+        }
     }
 }

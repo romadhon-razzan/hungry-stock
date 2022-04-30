@@ -7,6 +7,7 @@ import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
+import id.co.ptn.hungrystock.models.main.research.ResearchFilter
 import id.co.ptn.hungrystock.repositories.AppRepository
 import id.co.ptn.hungrystock.utils.Resource
 import kotlinx.coroutines.launch
@@ -48,6 +49,13 @@ class ResearchReportViewModel @Inject constructor(val repository: AppRepository)
     fun getInitial(): String = initial
     fun setInitial(i: String) {
         initial = i
+    }
+
+    private var filters = mutableListOf<ResearchFilter>()
+    fun getFilters(): MutableList<ResearchFilter> = filters
+    fun setFilter(v: MutableList<ResearchFilter>) {
+        filters.clear()
+        filters.addAll(v)
     }
 
     private var _reqResearchResponse: MutableLiveData<Resource<JsonObject>> = MutableLiveData()

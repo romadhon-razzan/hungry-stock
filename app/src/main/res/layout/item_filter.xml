@@ -12,14 +12,16 @@
         android:gravity="center"
         android:background="@color/background">
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingStart="@dimen/medium"
+            android:paddingEnd="@dimen/medium"
             android:textColor="@color/white_50"
             tools:text="DES 2021"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginStart="@dimen/normal"
             android:background="@color/white_10"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
