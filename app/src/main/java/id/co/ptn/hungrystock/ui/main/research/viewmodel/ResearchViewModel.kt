@@ -2,14 +2,21 @@ package id.co.ptn.hungrystock.ui.main.research.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseViewModel
+import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.repositories.AppRepository
+import id.co.ptn.hungrystock.utils.Resource
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ResearchViewModel @Inject constructor(val appRepository: AppRepository) : BaseViewModel() {
+class ResearchViewModel @Inject constructor(val repository: AppRepository) : BaseViewModel() {
     private val _titleTabResearch = MutableLiveData("")
     val titleTabResearch: LiveData<String> = _titleTabResearch
 
@@ -31,4 +38,5 @@ class ResearchViewModel @Inject constructor(val appRepository: AppRepository) : 
     fun getTabTitleTabStockData(): MutableLiveData<String> {
         return _titleTabStock
     }
+
 }

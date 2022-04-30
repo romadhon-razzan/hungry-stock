@@ -1,9 +1,13 @@
 package id.co.ptn.hungrystock.ui.main.research.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.rajat.pdfviewer.PdfViewerActivity
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.databinding.*
 import id.co.ptn.hungrystock.models.OnboardPageTwo
@@ -12,25 +16,44 @@ import id.co.ptn.hungrystock.models.main.research.ResearchReport
 import id.co.ptn.hungrystock.models.registration.MainRegistration
 import id.co.ptn.hungrystock.models.registration.RegistrationItem
 
-class ResearchReportListAdapter(private val items: MutableList<ResearchReport>):
+class ResearchReportListAdapter(
+    private val items: MutableList<ResearchReport>):
     RecyclerView.Adapter<ResearchReportListAdapter.ViewHolder>() {
+    private lateinit var context: Context
     class ViewHolder(var binding: ItemResearchAndDataBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: PastEvent) {
-            item.title.let { binding.tvTitle.text = it }
+        fun bind(item: ResearchReport, context: Context) {
+            var name = ""
+            item.value.let { name = it }
+            binding.tvTitle.text = name
+            item.photo_url.let { Glide.with(context).load(it).into(binding.image) }
+            item.file_url.let { url ->
+                binding.item.setOnClickListener {
+                    context.startActivity(
+                        PdfViewerActivity.launchPdfFromUrl(
+                            context,
+                            url,
+                            name,
+                            "",
+                            enableDownload = false
+                        )
+                    )
+                }
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        context = parent.context
         val binding: ItemResearchAndDataBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_research_and_data, parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        val element = items[position]
-//        holder.bind(element)
+        val element = items[position]
+        holder.bind(element, context)
     }
 
     override fun getItemCount(): Int {
-        return 4
+        return items.size
     }
 }

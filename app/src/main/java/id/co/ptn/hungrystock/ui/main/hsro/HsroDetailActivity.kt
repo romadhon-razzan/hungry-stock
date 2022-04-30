@@ -102,9 +102,9 @@ class HsroDetailActivity : BaseActivity() {
 
     private fun initResearchData() {
         researchReports.clear()
-        researchReports.add(ResearchReport("A","SRTG_HungryStock_StockData_020921"))
-        researchReports.add(ResearchReport("A","SRTG_HungryStock_StockData_020921"))
-        researchReports.add(ResearchReport("A","SRTG_HungryStock_StockData_020921"))
+//        researchReports.add(ResearchReport("A","SRTG_HungryStock_StockData_020921"))
+//        researchReports.add(ResearchReport("A","SRTG_HungryStock_StockData_020921"))
+//        researchReports.add(ResearchReport("A","SRTG_HungryStock_StockData_020921"))
     }
 
     private fun initResearchList() {
