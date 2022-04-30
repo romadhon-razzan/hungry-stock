@@ -40,6 +40,7 @@ class AppRepository @Inject constructor(private val apiHelper: ApiHelper) {
     suspend fun getLearnings(k: String, c: String, y: String, m: String, ot: String) =  apiHelper.getLearnings(k, c, y, m, ot)
     suspend fun getNextLearnings(p: String, k: String, c: String, y: String, m: String, ot: String) =  apiHelper.getNextLearnings(p, k, c, y, m, ot)
     suspend fun getOnBoard() =  apiHelper.getOnboard()
+    suspend fun getResearch(t: String, k: String, c: String, y: String, m: String, i: String) =  apiHelper.getResearch(t, k, c, y, m, i)
 //    suspend fun searchName(s: String) =  apiHelper.searchName(s)
 //    suspend fun detail(s: String) =  apiHelper.detail(s)
 //    suspend fun getRecent() =  apiHelper.getRecent()

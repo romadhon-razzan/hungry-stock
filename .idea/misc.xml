@@ -16,13 +16,13 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/TesESQGroup/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/base_background_bottom_sheet.xml" value="0.1195" />
         <entry key="app/src/main/res/drawable/base_circular_button.xml" value="0.1195" />
-        <entry key="app/src/main/res/layout/activity_auth.xml" value="0.23325635103926096" />
+        <entry key="app/src/main/res/layout/activity_auth.xml" value="0.75" />
         <entry key="app/src/main/res/layout/activity_detail_watch_list.xml" value="0.2328125" />
         <entry key="app/src/main/res/layout/activity_event_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_hsro_detail.xml" value="0.18055555555555555" />
         <entry key="app/src/main/res/layout/activity_learning_detail.xml" value="0.2328125" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.10729166666666666" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.21" />
         <entry key="app/src/main/res/layout/activity_onboarding.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_privacy_police.xml" value="0.18055555555555555" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.18055555555555555" />
@@ -43,6 +43,7 @@
         <entry key="app/src/main/res/layout/fragment_play_video.xml" value="1.0" />
         <entry key="app/src/main/res/layout/fragment_registration_step_one.xml" value="0.25806451612903225" />
         <entry key="app/src/main/res/layout/fragment_registration_step_two.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_research_report.xml" value="0.18055555555555555" />
         <entry key="app/src/main/res/layout/fragment_web_view.xml" value="0.2328125" />
         <entry key="app/src/main/res/layout/home_fragment.xml" value="0.18055555555555555" />
         <entry key="app/src/main/res/layout/item_book.xml" value="0.22" />
@@ -51,6 +52,7 @@
         <entry key="app/src/main/res/layout/item_past_event.xml" value="0.18055555555555555" />
         <entry key="app/src/main/res/layout/item_radio_button.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_registration_step_2.xml" value="0.3611111111111111" />
+        <entry key="app/src/main/res/layout/item_research_and_data.xml" value="0.2328125" />
         <entry key="app/src/main/res/layout/item_upcoming_event.xml" value="0.3611111111111111" />
         <entry key="app/src/main/res/layout/item_upcoming_event_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/label_error.xml" value="0.1" />

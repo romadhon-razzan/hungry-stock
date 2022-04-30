@@ -1,5 +1,6 @@
 package id.co.ptn.hungrystock.core.network
 
+import com.google.gson.JsonObject
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
@@ -86,5 +87,14 @@ interface Services {
 
     @GET(HOME)
     suspend fun getOnboard(): Response<ResponseOnboard>
+
+    @GET(RESEARCH)
+    suspend fun getResearch(
+        @Query("type") t: String,
+        @Query("keyword") k: String,
+        @Query("category") c: String,
+        @Query("year") y: String,
+        @Query("month") m: String,
+        @Query("initital") i: String): Response<JsonObject>
 
 }
