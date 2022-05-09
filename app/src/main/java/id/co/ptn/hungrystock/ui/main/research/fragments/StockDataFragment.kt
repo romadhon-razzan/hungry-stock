@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
+import id.co.ptn.hungrystock.bases.EmptyStateFragment
 import id.co.ptn.hungrystock.databinding.FragmentStockDataBinding
 import id.co.ptn.hungrystock.databinding.ResearchFragmentBinding
 import id.co.ptn.hungrystock.models.main.research.*
@@ -45,8 +48,9 @@ class StockDataFragment : Fragment() {
     }
 
     private fun init() {
-        initData()
-        initList()
+//        initData()
+//        initList()
+        emptyState()
     }
 
     private fun initList() {
@@ -74,5 +78,17 @@ class StockDataFragment : Fragment() {
         researchReport.add(StockData("1","1"))
         researchReport.add(StockData("1","1"))
         items.add(ResearchPage(ResearchPage.TYPE_LIST, listOf(), researchReport, filters, ResearchSorting("n","Terbaru")))
+    }
+
+    private fun emptyState() {
+        binding.frameContainer.visibility = View.VISIBLE
+        childFragmentManager.commit {
+            setReorderingAllowed(true)
+            val bundle = Bundle()
+            bundle.putString("title","Coming soon")
+            bundle.putString("message","")
+            add<EmptyStateFragment>(R.id.frame_container, "", bundle)
+        }
+
     }
 }
