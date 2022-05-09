@@ -56,7 +56,7 @@ class ResearchFragment : Fragment() {
     private fun initPage() {
         researchPageAdapter = ResearchPageAdapter(requireActivity())
         researchPageAdapter.addFragment(ResearchReportFragment(),requireActivity().getString(R.string.title_tab_research_report,"0"))
-        researchPageAdapter.addFragment(StockDataFragment(),requireActivity().getString(R.string.title_tab_stock_data,"2"))
+        researchPageAdapter.addFragment(StockDataFragment(),requireActivity().getString(R.string.title_tab_stock_data,"0"))
 
         binding.viewPager.adapter = researchPageAdapter
         binding.viewPager.currentItem = 0
