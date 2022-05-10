@@ -1,6 +1,8 @@
 package id.co.ptn.hungrystock.ui.main.research.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -73,6 +75,24 @@ class ResearchReportFragment : Fragment() {
 
             }
 
+            override fun onSorting(value: String) {
+                items.forEachIndexed { index, researchPage ->
+                    when(researchPage.type){
+                        ResearchPage.TYPE_SORTING -> {
+                            researchPage.sorting = ResearchSorting(value,value)
+                            researchReportPageAdapter?.notifyItemChanged(index)
+                            viewModel?.setLabelSorting(value)
+                            viewModel?.setType(value)
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                apiGetResearch()
+                            },500)
+
+                        }
+                        else -> {}
+                    }
+                }
+            }
+
         })
         binding?.recyclerView?.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -81,6 +101,7 @@ class ResearchReportFragment : Fragment() {
     }
 
     private fun emptyState() {
+        researchViewModel?.researchTabTitle()?.value = "0"
         binding?.frameContainer?.visibility = View.VISIBLE
         childFragmentManager.commit {
             setReorderingAllowed(true)
@@ -120,7 +141,7 @@ class ResearchReportFragment : Fragment() {
                     try {
                         binding?.frameContainer?.visibility = View.GONE
                         items.clear()
-                        items.add(ResearchPage(ResearchPage.TYPE_SORTING, listOf(), listOf(), listOf(), ResearchSorting("n","Terbaru")))
+                        items.add(ResearchPage(ResearchPage.TYPE_SORTING, listOf(), listOf(), listOf(), ResearchSorting("n",viewModel?.getLabelSorting()!!)))
 //                        items.add(ResearchPage(ResearchPage.TYPE_FILTER, listOf(), listOf(), viewModel?.getFilters()!!, ResearchSorting("n","Terbaru")))
                         val researchReport: MutableList<ResearchReport> = mutableListOf()
                         it.data?.getAsJsonObject("data")?.let { data ->
@@ -192,6 +213,9 @@ class ResearchReportFragment : Fragment() {
 
     private fun apiGetResearch() {
         binding?.progressBar?.visibility = View.VISIBLE
+        if (viewModel?.getType().toString() == "Terbaru")
+            viewModel?.setType("")
+
         viewModel?.apiResearch(
             viewModel?.getType().toString(),
             viewModel?.getKeyword().toString(),

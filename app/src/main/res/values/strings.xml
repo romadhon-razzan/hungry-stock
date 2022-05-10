@@ -113,6 +113,11 @@
     <string name="label_tampilkan_berdasarkan_abjad">Tampilkan berdasarkan Abjad</string>
     <string name="label_pilih">Pilih</string>
     <string name="button_reset">Reset</string>
+    <string name="one_pager">One Pager</string>
+    <string name="stock_discovery">Stock Discovery</string>
+    <string name="takeaway_temu_emiten">Takeaway Temu Emiten</string>
+    <string name="bedah_emiten">Bedah Emiten</string>
+    <string name="understanding_sector">Understanding Sector</string>
 
     <string-array name="sort_learning">
         <item>Terbaru</item>

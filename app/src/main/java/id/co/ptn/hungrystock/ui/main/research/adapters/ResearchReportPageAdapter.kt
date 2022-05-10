@@ -2,8 +2,10 @@ package id.co.ptn.hungrystock.ui.main.research.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,8 +31,53 @@ private val listener: ResearchReportListener):
 
     open inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    inner class SortingHolder(var binding: ItemSortingBinding) : ViewHolder(binding.root) {
+    inner class SortingHolder(var binding: ItemSortingBinding,
+    var context: Context) : ViewHolder(binding.root) {
+        fun sortingPressed( listener: ResearchReportListener) {
+            val popup = PopupMenu(context, binding.btSorting)
+            popup.inflate(R.menu.sorting_research_menu)
+            popup.setOnMenuItemClickListener { item: MenuItem? ->
+                item?.let {
+                    when (it.itemId) {
+                        R.id.terbaru -> {
+                            binding.lblSorting.text = context.resources.getString(R.string.sorting_terbaru)
+//                            viewModel.setSortingLabel(resources.getString(R.string.sorting_terbaru))
+//                            viewModel.setCategory("")
+                        }
+                        R.id.one_pager -> {
+                            binding.lblSorting.text = context.resources.getString(R.string.one_pager)
+//                            viewModel.setSortingLabel(resources.getString(R.string.sorting_top_up_knowledge_amp_wisdom))
+//                            viewModel.setCategory(viewModel.sortingLabel.value.toString())
+                        }
+                        R.id.stock_discovery -> {
+                            binding.lblSorting.text = context.resources.getString(R.string.stock_discovery)
+//                            viewModel.setSortingLabel(resources.getString(R.string.sorting_temu_emiten))
+//                            viewModel.setCategory(viewModel.sortingLabel.value.toString())
+                        }
+                        R.id.takeaway_emiten -> {
+                            binding.lblSorting.text = context.resources.getString(R.string.takeaway_temu_emiten)
+//                            viewModel.setSortingLabel(resources.getString(R.string.sorting_bedah_emiten))
+//                            viewModel.setCategory(viewModel.sortingLabel.value.toString())
+                        }
+                        R.id.bedah_emiten -> {
+                            binding.lblSorting.text = context.resources.getString(R.string.bedah_emiten)
+//                            viewModel.setSortingLabel(resources.getString(R.string.sorting_stockscope))
+//                            viewModel.setCategory(viewModel.sortingLabel.value.toString())
+                        }
+                        R.id.understanding_sector -> {
+                            binding.lblSorting.text = context.resources.getString(R.string.understanding_sector)
+//                            viewModel.setSortingLabel(resources.getString(R.string.sorting_belajar_invest_bareng))
+//                            viewModel.setCategory(viewModel.sortingLabel.value.toString())
+                        }
+                    }
+                }
+                listener.onSorting(binding.lblSorting.text.toString())
+                true
+            }
 
+            popup.show()
+
+        }
     }
 
     inner class FilterHolder(var binding: ItemFilterBinding) : ViewHolder(binding.root) {
@@ -61,7 +108,7 @@ private val listener: ResearchReportListener):
         return when(viewType) {
             TYPE_SORTING -> {
                 val binding: ItemSortingBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_sorting, parent, false)
-                SortingHolder(binding)
+                SortingHolder(binding, context)
             }
             TYPE_FILTER -> {
                 val binding: ItemFilterBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_filter, parent, false)
@@ -80,6 +127,10 @@ private val listener: ResearchReportListener):
         when(element.type) {
             ResearchPage.TYPE_SORTING -> {
                 val viewHolder = holder as SortingHolder
+                viewHolder.binding.lblSorting.text = element.sorting.value
+                viewHolder.binding.btSorting.setOnClickListener {
+                    viewHolder.sortingPressed(listener)
+                }
                }
             ResearchPage.TYPE_FILTER -> {
                 val viewHolder = holder as FilterHolder
@@ -100,5 +151,6 @@ private val listener: ResearchReportListener):
 
     public interface ResearchReportListener {
         fun onFilterClick()
+        fun onSorting(value: String)
     }
 }

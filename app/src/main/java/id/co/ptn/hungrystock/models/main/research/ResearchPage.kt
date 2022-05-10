@@ -5,7 +5,7 @@ class ResearchPage(
     val researchData: List<ResearchReport>,
     val stockData: List<StockData>,
     val filter: List<ResearchFilter>,
-    val sorting: ResearchSorting
+    var sorting: ResearchSorting
 ) {
     companion object {
         const val TYPE_SORTING = 0

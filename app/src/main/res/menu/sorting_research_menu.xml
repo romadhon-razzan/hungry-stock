@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/terbaru"
+        android:title="@string/sorting_terbaru" />
+    <item
+        android:id="@+id/one_pager"
+        android:title="@string/one_pager" />
+    <item
+        android:id="@+id/stock_discovery"
+        android:title="@string/stock_discovery" />
+    <item
+        android:id="@+id/takeaway_emiten"
+        android:title="@string/takeaway_temu_emiten" />
+    <item
+        android:id="@+id/bedah_emiten"
+        android:title="@string/bedah_emiten" />
+    <item
+        android:id="@+id/understanding_sector"
+        android:title="@string/understanding_sector" />
+
+</menu>
