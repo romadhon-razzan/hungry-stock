@@ -39,10 +39,16 @@ class ResearchReportViewModel @Inject constructor(val repository: AppRepository)
         month = m
     }
 
-    private var type = ""
+    private var type = "Terbaru"
     fun getType(): String = type
     fun setType(t: String) {
         type = t
+    }
+
+    private var labelSorting = "Terbaru"
+    fun getLabelSorting(): String = labelSorting
+    fun setLabelSorting(t: String) {
+        labelSorting = t
     }
 
     private var initial = ""
