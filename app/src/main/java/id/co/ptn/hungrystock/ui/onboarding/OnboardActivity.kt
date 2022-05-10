@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
@@ -17,6 +18,7 @@ import id.co.ptn.hungrystock.bases.BaseActivity
 import id.co.ptn.hungrystock.bases.WebViewFragment
 import id.co.ptn.hungrystock.config.SUCCESS
 import id.co.ptn.hungrystock.databinding.ActivityOnboardingBinding
+import id.co.ptn.hungrystock.router.Router
 import id.co.ptn.hungrystock.ui.onboarding.adapters.OnboardVPAdapter
 import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel
 import id.co.ptn.hungrystock.utils.Status
@@ -84,6 +86,7 @@ class OnboardActivity : BaseActivity() {
 
                 }
                 Status.ERROR -> {
+                    router.toAuth()
                     binding.progressBar.visibility = View.GONE
                 }
             }
