@@ -36,4 +36,26 @@ class ResearchViewModel @Inject constructor(val repository: AppRepository) : Bas
 
     private var _stockTabTitle: MutableLiveData<String> = MutableLiveData()
     fun stockTabTitle(): MutableLiveData<String> = _stockTabTitle
+
+
+    private var year = ""
+    fun getYear(): String = year
+    fun setYear(y: String) {
+        year = y
+    }
+
+    private var month = ""
+    fun getMonth(): String = month
+    fun setMonth(m: String) {
+        month = m
+    }
+
+    private var initial = ""
+    fun getInitial(): String = initial
+    fun setInitial(i: String) {
+        initial = i
+    }
+
+    private var _onFilter: MutableLiveData<Boolean> = MutableLiveData()
+    fun onFilter(): MutableLiveData<Boolean> = _onFilter
 }

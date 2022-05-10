@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.databinding.*
-import id.co.ptn.hungrystock.models.main.home.Event
 import id.co.ptn.hungrystock.models.main.home.PastEvent
 import id.co.ptn.hungrystock.models.main.home.UpcomingEvent
 import id.co.ptn.hungrystock.models.main.research.ResearchPage
@@ -38,11 +38,11 @@ private val listener: ResearchReportListener):
     }
 
     inner class ListHolder(var binding: ItemRecyclerViewBinding) : ViewHolder(binding.root) {
-        private lateinit var listAdapter: ResearchReportListAdapter
+        private lateinit var listAdapter: MainResearchReportListAdapter
         fun initList(items: MutableList<ResearchReport>, context: Context) {
-            listAdapter = ResearchReportListAdapter(items)
+            listAdapter = MainResearchReportListAdapter(items)
             binding.recyclerView.apply {
-                layoutManager = GridLayoutManager(context, 2)
+                layoutManager = LinearLayoutManager(context)
                 adapter = listAdapter
             }
         }

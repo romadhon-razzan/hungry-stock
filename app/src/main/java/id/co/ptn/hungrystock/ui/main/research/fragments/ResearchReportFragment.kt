@@ -1,27 +1,26 @@
 package id.co.ptn.hungrystock.ui.main.research.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
+import id.co.ptn.hungrystock.bases.EmptyStateFragment
 import id.co.ptn.hungrystock.databinding.FragmentResearchReportBinding
-import id.co.ptn.hungrystock.models.main.research.ResearchFilter
-import id.co.ptn.hungrystock.models.main.research.ResearchPage
-import id.co.ptn.hungrystock.models.main.research.ResearchReport
-import id.co.ptn.hungrystock.models.main.research.ResearchSorting
+import id.co.ptn.hungrystock.models.main.research.*
 import id.co.ptn.hungrystock.ui.main.research.adapters.ResearchReportPageAdapter
 import id.co.ptn.hungrystock.ui.main.research.viewmodel.ResearchReportViewModel
 import id.co.ptn.hungrystock.ui.main.research.viewmodel.ResearchViewModel
-import id.co.ptn.hungrystock.utils.Status
-import id.co.ptn.hungrystock.utils.currentMonth
-import id.co.ptn.hungrystock.utils.currentYear
-import id.co.ptn.hungrystock.utils.monthLabel
+import id.co.ptn.hungrystock.utils.*
 
 @AndroidEntryPoint
 class ResearchReportFragment : Fragment() {
@@ -47,7 +46,7 @@ class ResearchReportFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         researchViewModel = ViewModelProvider(requireActivity())[ResearchViewModel::class.java]
-        viewModel = ViewModelProvider(this).get(ResearchReportViewModel::class.java)
+        viewModel = ViewModelProvider(this)[ResearchReportViewModel::class.java]
         binding?.vm = viewModel
         init()
     }
@@ -56,7 +55,6 @@ class ResearchReportFragment : Fragment() {
         setObserve()
         initListener()
         viewModel?.setYear(currentYear())
-        viewModel?.setMonth(currentMonth())
         viewModel?.getFilters()?.clear()
         viewModel?.getFilters()?.add(ResearchFilter("","${monthLabel(viewModel?.getMonth()!!)} ${currentYear()}"))
         apiGetResearch()
@@ -81,7 +79,29 @@ class ResearchReportFragment : Fragment() {
         }
     }
 
+    private fun emptyState() {
+        binding?.frameContainer?.visibility = View.VISIBLE
+        childFragmentManager.commit {
+            setReorderingAllowed(true)
+            val bundle = Bundle()
+            bundle.putString("title","Research tidak ditemukan")
+            bundle.putString("message","")
+            add<EmptyStateFragment>(R.id.frame_container, "", bundle)
+        }
+
+    }
+
     private fun setObserve() {
+
+        researchViewModel?.onFilter()?.observe(viewLifecycleOwner){
+            if (it) {
+                researchViewModel?.getYear()?.let { y -> viewModel?.setYear(y) }
+                researchViewModel?.getMonth()?.let { m -> viewModel?.setMonth(m) }
+                researchViewModel?.getInitial()?.let { i -> viewModel?.setInitial(i) }
+                apiGetResearch()
+            }
+        }
+
         viewModel?.reqResearchResponse()?.observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {
@@ -89,46 +109,61 @@ class ResearchReportFragment : Fragment() {
                     binding?.progressBar?.visibility = View.GONE
                     var total = 0
 
-                    items.clear()
-                    items.add(ResearchPage(ResearchPage.TYPE_SORTING, listOf(), listOf(), listOf(), ResearchSorting("n","Terbaru")))
-                    items.add(ResearchPage(ResearchPage.TYPE_FILTER, listOf(), listOf(), viewModel?.getFilters()!!, ResearchSorting("n","Terbaru")))
-                    val researchReport: MutableList<ResearchReport> = mutableListOf()
-                    it.data?.getAsJsonObject("data")?.let { data ->
-                        if (data.has("researchsCount"))
-                        total = data.get("researchsCount").asInt
-                        data.getAsJsonObject("researchs")?.
-                        getAsJsonArray("April 2022")?.forEachIndexed { index, jsonElement ->
-                            var id = ""
-                            var title = ""
-                            var photoUrl = ""
-                            var fileUrl = ""
-                            var extension = ""
+                    try {
+                        binding?.frameContainer?.visibility = View.GONE
+                        items.clear()
+                        items.add(ResearchPage(ResearchPage.TYPE_SORTING, listOf(), listOf(), listOf(), ResearchSorting("n","Terbaru")))
+//                        items.add(ResearchPage(ResearchPage.TYPE_FILTER, listOf(), listOf(), viewModel?.getFilters()!!, ResearchSorting("n","Terbaru")))
+                        val researchReport: MutableList<ResearchReport> = mutableListOf()
+                        it.data?.getAsJsonObject("data")?.let { data ->
+                            if (data.has("researchsCount"))
+                                total = data.get("researchsCount").asInt
 
-                            if (jsonElement.asJsonObject.has("id")){
-                                id = jsonElement.asJsonObject.get("id").toString()
+                            monthList().forEach { month ->
+                                val researchReportData: MutableList<ResearchReportData> = mutableListOf()
+                                data.getAsJsonObject("researchs")?.
+                                getAsJsonArray("$month ${viewModel?.getYear()}")?.forEachIndexed { index, jsonElement ->
+                                    var id = ""
+                                    var title = ""
+                                    var photoUrl = ""
+                                    var fileUrl = ""
+                                    var extension = ""
+
+                                    if (jsonElement.asJsonObject.has("id")){
+                                        id = jsonElement.asJsonObject.get("id").toString()
+                                    }
+
+                                    if (jsonElement.asJsonObject.has("title")){
+                                        title = jsonElement.asJsonObject.get("title").asString
+                                    }
+
+                                    if (jsonElement.asJsonObject.has("photo_url")){
+                                        photoUrl = jsonElement.asJsonObject.get("photo_url").asString
+                                    }
+
+                                    if (jsonElement.asJsonObject.has("file_url")){
+                                        fileUrl = jsonElement.asJsonObject.get("file_url").asString
+                                    }
+
+                                    if (jsonElement.asJsonObject.has("file_extension")){
+                                        extension = jsonElement.asJsonObject.get("file_extension").asString
+                                    }
+                                    researchReportData.add(ResearchReportData(id, title, photoUrl, fileUrl, extension))
+                                }
+                                if (researchReportData.size > 0)
+                                researchReport.add(ResearchReport("$month ${viewModel?.getYear()}", researchReportData))
                             }
 
-                            if (jsonElement.asJsonObject.has("title")){
-                                title = jsonElement.asJsonObject.get("title").asString
-                            }
-
-                            if (jsonElement.asJsonObject.has("photo_url")){
-                                photoUrl = jsonElement.asJsonObject.get("photo_url").asString
-                            }
-
-                            if (jsonElement.asJsonObject.has("file_url")){
-                                fileUrl = jsonElement.asJsonObject.get("file_url").asString
-                            }
-
-                            if (jsonElement.asJsonObject.has("file_extension")){
-                                extension = jsonElement.asJsonObject.get("file_extension").asString
-                            }
-                            researchReport.add(ResearchReport(id, title, photoUrl, fileUrl, extension))
+                            items.add(ResearchPage(ResearchPage.TYPE_LIST, researchReport, listOf(), listOf(), ResearchSorting("n","Terbaru")))
+                            initList()
+                            researchViewModel?.researchTabTitle()?.value = total.toString()
                         }
-                        items.add(ResearchPage(ResearchPage.TYPE_LIST, researchReport, listOf(), listOf(), ResearchSorting("n","Terbaru")))
-                        initList()
-                        researchViewModel?.researchTabTitle()?.value = total.toString()
+                    }catch (e: Exception){
+                        e.printStackTrace()
+                        // empty state
+                        emptyState()
                     }
+
                 }
                 Status.LOADING -> {
                     binding?.progressBar?.visibility = View.VISIBLE
@@ -146,6 +181,7 @@ class ResearchReportFragment : Fragment() {
     * */
 
     private fun apiGetResearch() {
+        binding?.progressBar?.visibility = View.VISIBLE
         viewModel?.apiResearch(
             viewModel?.getType().toString(),
             viewModel?.getKeyword().toString(),

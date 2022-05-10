@@ -13,15 +13,17 @@ import id.co.ptn.hungrystock.databinding.*
 import id.co.ptn.hungrystock.models.OnboardPageTwo
 import id.co.ptn.hungrystock.models.main.home.PastEvent
 import id.co.ptn.hungrystock.models.main.research.ResearchReport
+import id.co.ptn.hungrystock.models.main.research.ResearchReportData
 import id.co.ptn.hungrystock.models.registration.MainRegistration
 import id.co.ptn.hungrystock.models.registration.RegistrationItem
 
 class ResearchReportListAdapter(
-    private val items: MutableList<ResearchReport>):
+    private val items: MutableList<ResearchReportData>
+):
     RecyclerView.Adapter<ResearchReportListAdapter.ViewHolder>() {
     private lateinit var context: Context
     class ViewHolder(var binding: ItemResearchAndDataBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ResearchReport, context: Context) {
+        fun bind(item: ResearchReportData, context: Context) {
             var name = ""
             item.value.let { name = it }
             binding.tvTitle.text = name
