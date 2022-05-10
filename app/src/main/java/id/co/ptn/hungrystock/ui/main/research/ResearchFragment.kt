@@ -1,6 +1,10 @@
 package id.co.ptn.hungrystock.ui.main.research
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -48,6 +52,7 @@ class ResearchFragment : Fragment() {
         setObserve()
         initListener()
         initPage()
+        initSearch()
     }
 
     private fun initListener() {
@@ -67,6 +72,19 @@ class ResearchFragment : Fragment() {
         }.attach()
     }
 
+    private fun initSearch() {
+        binding.etSearch.addTextChangedListener( object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel?.setKeyword(s.toString())
+                viewModel?.onSearch()?.value = true
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
     private fun updateResearchTitle(total: String) {
         val title = requireActivity().getString(R.string.title_tab_research_report,total)
         researchPageAdapter.setTabTitle(0, title)
@@ -82,7 +100,6 @@ class ResearchFragment : Fragment() {
     private fun openFilterDialog() {
         val dialog = FilterResearchPageDialog(object : FilterResearchPageDialog.Listener{
             override fun onFilter(year: String, month: String, monthId: String, abjad: String) {
-                Log.d("FILTER","Year: $year - Month: $month - Month Id: $monthId, Abjad: $abjad")
                 viewModel?.setYear(year)
                 viewModel?.setMonth(monthId)
                 viewModel?.setInitial(abjad)
