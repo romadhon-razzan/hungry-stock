@@ -1,6 +1,5 @@
 package id.co.ptn.hungrystock.ui.main.hsro
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -13,6 +12,7 @@ import id.co.ptn.hungrystock.databinding.ActivityHsroDetailBinding
 import id.co.ptn.hungrystock.models.main.hsro.HsroIndicator
 import id.co.ptn.hungrystock.models.main.learning.Learning
 import id.co.ptn.hungrystock.models.main.research.ResearchReport
+import id.co.ptn.hungrystock.models.main.research.ResearchReportData
 import id.co.ptn.hungrystock.ui.main.hsro.adapters.HsroIndicatorAdapter
 import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningListAdapter
 import id.co.ptn.hungrystock.ui.main.research.adapters.ResearchReportListAdapter
@@ -30,7 +30,7 @@ class HsroDetailActivity : BaseActivity() {
     private var learnings: MutableList<Learning> = mutableListOf()
 
     private lateinit var researchReportListAdapter: ResearchReportListAdapter
-    private var researchReports: MutableList<ResearchReport> = mutableListOf()
+    private var researchReports: MutableList<ResearchReportData> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -18,13 +18,15 @@ import id.co.ptn.hungrystock.ui.main.research.adapters.FilterEmitenListAdapter
 import id.co.ptn.hungrystock.ui.main.research.adapters.FilterYearListAdapter
 import java.util.*
 
-class FilterResearchPageDialog: BaseBottomSheetModal() {
+class FilterResearchPageDialog(private val listener: Listener): BaseBottomSheetModal() {
 
     private lateinit var binding: DialogFilterResearchPageBinding
     private lateinit var filterYearListAdapter: FilterYearListAdapter
     private var years: MutableList<Int> = mutableListOf()
     private var yearSelected = "1900"
     private var monthSelected = ""
+    private var monthIdSelected = ""
+    private var abjadSelected = ""
     private lateinit var filterEmitenListAdapter: FilterEmitenListAdapter
     private var filterEmiten: MutableList<String> = mutableListOf()
 
@@ -87,7 +89,10 @@ class FilterResearchPageDialog: BaseBottomSheetModal() {
 
     private fun initListener() {
         binding.btClose.setOnClickListener { dismiss() }
-        binding.btApply.setOnClickListener {  }
+        binding.btApply.setOnClickListener {
+            listener.onFilter(yearSelected, monthSelected, monthIdSelected, abjadSelected)
+            dismiss()
+        }
         binding.btSpinnerMonth.setOnClickListener { monthPressed() }
     }
 
@@ -99,7 +104,8 @@ class FilterResearchPageDialog: BaseBottomSheetModal() {
         var year = startYear
         for (i in 0..( currentYear - startYear )) {
             year += 1
-            years.add( year)
+            if (year <= currentYear)
+                years.add( year)
         }
     }
 
@@ -122,7 +128,6 @@ class FilterResearchPageDialog: BaseBottomSheetModal() {
 
     private fun initDataFilterEmiten() {
         filterEmiten.clear()
-        filterEmiten.add("Terbaru")
         val value = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         for (element in value) {
             filterEmiten.add(element.toString())
@@ -131,7 +136,12 @@ class FilterResearchPageDialog: BaseBottomSheetModal() {
     }
 
     private fun initFilterEmiten() {
-        filterEmitenListAdapter = FilterEmitenListAdapter(filterEmiten)
+        filterEmitenListAdapter = FilterEmitenListAdapter(filterEmiten, abjadSelected, object : FilterEmitenListAdapter.Listener{
+            override fun onItemClick(v: String) {
+                abjadSelected = v
+                initFilterEmiten()
+            }
+        })
         binding.recyclerEmiten.apply {
             layoutManager = StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
             adapter = filterEmitenListAdapter
@@ -146,9 +156,14 @@ class FilterResearchPageDialog: BaseBottomSheetModal() {
         val monthPopup = MonthPopupMenu(requireContext(), object : MonthPopupMenu.Listener{
             override fun onSelected(month: String, id: String) {
                 monthSelected = month
+                monthIdSelected = id
                 binding.tvMonth.text = month
             }
         })
         monthPopup.show(binding.btSpinnerMonth)
+    }
+
+    public interface Listener{
+        fun onFilter(year: String, month: String, monthId: String, abjad: String)
     }
 }

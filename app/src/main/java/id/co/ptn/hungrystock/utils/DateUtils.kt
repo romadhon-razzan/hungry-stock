@@ -43,3 +43,20 @@ fun monthLabel(id: String) : String {
     }
 }
 
+fun monthList(): MutableList<String>{
+    val months: MutableList<String> = mutableListOf()
+    months.add("Januari")
+    months.add("Februari")
+    months.add("Maret")
+    months.add("April")
+    months.add("Mei")
+    months.add("Juni")
+    months.add("Juli")
+    months.add("Agustus")
+    months.add("September")
+    months.add("Oktober")
+    months.add("November")
+    months.add("Desember")
+    return months
+}
+

@@ -85,7 +85,7 @@ class StockDataFragment : Fragment() {
         childFragmentManager.commit {
             setReorderingAllowed(true)
             val bundle = Bundle()
-            bundle.putString("title","Coming soon")
+            bundle.putString("title","Segera hadir")
             bundle.putString("message","")
             add<EmptyStateFragment>(R.id.frame_container, "", bundle)
         }
