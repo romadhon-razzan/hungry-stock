@@ -12,6 +12,7 @@ import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.EmptyStateFragment
@@ -102,6 +103,13 @@ class ResearchReportFragment : Fragment() {
             }
         }
 
+        researchViewModel?.onSearch()?.observe(viewLifecycleOwner){
+            if (it){
+                researchViewModel?.getKeyword()?.let { k -> viewModel?.setKeyword(k) }
+                apiGetResearch()
+            }
+        }
+
         viewModel?.reqResearchResponse()?.observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {
@@ -150,11 +158,13 @@ class ResearchReportFragment : Fragment() {
                                     }
                                     researchReportData.add(ResearchReportData(id, title, photoUrl, fileUrl, extension))
                                 }
-                                if (researchReportData.size > 0)
-                                researchReport.add(ResearchReport("$month ${viewModel?.getYear()}", researchReportData))
+                                if (researchReportData.size > 0) {
+                                    researchReport.add(ResearchReport("$month ${viewModel?.getYear()}", researchReportData))
+                                }
                             }
 
                             items.add(ResearchPage(ResearchPage.TYPE_LIST, researchReport, listOf(), listOf(), ResearchSorting("n","Terbaru")))
+                            Log.d("DATAS", Gson().toJson(researchReport))
                             initList()
                             researchViewModel?.researchTabTitle()?.value = total.toString()
                         }
