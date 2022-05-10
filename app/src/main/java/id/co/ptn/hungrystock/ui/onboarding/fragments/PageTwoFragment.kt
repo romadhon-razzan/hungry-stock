@@ -1,7 +1,10 @@
 package id.co.ptn.hungrystock.ui.onboarding.fragments
 
+import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +13,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseFragment
+import id.co.ptn.hungrystock.config.MEMBERSHIP
 import id.co.ptn.hungrystock.databinding.FragmentPageTwoBinding
 import id.co.ptn.hungrystock.models.OnboardPageTwo
 import id.co.ptn.hungrystock.ui.onboarding.adapters.PageTwoAdapter
+
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -22,7 +27,7 @@ class PageTwoFragment : BaseFragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var binding: FragmentPageTwoBinding
+    private var binding: FragmentPageTwoBinding? = null
     private var items: MutableList<OnboardPageTwo> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,9 +41,9 @@ class PageTwoFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         binding = DataBindingUtil.inflate(LayoutInflater.from(requireContext()), R.layout.fragment_page_two, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,7 +52,16 @@ class PageTwoFragment : BaseFragment() {
     }
 
     private fun init() {
+        val wordToSpan: Spannable =
+            SpannableString("Informasi dan registrasi sebagai member, lebih lanjut bisa melalui www.hungrystock.com/membership")
+        wordToSpan.setSpan(ForegroundColorSpan(Color.BLUE), 67, 97, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        binding?.tvMoreInfo?.text = wordToSpan
+        initListener()
         initList()
+    }
+
+    private fun initListener() {
+        binding?.cardAnnualFee?.setOnClickListener { openUrlPage(MEMBERSHIP) }
     }
 
     private fun initList() {
@@ -60,7 +74,7 @@ class PageTwoFragment : BaseFragment() {
         items.add(OnboardPageTwo("Research & Data", "Mendapatkan tools untuk screening emiten yang layak diinvestasi. File akan diupdate berkala secara periodik."))
 
         val pAdapter = PageTwoAdapter(items)
-        binding.recyclerView.apply {
+        binding?.recyclerView?.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = pAdapter
         }

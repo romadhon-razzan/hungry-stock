@@ -16,7 +16,7 @@
         android:id="@+id/stockScope"
         android:title="@string/sorting_stockscope" />
     <item
-        android:id="@+id/belajarInvest"
-        android:title="@string/sorting_belajar_invest_bareng" />
+        android:id="@+id/stock_discovery"
+        android:title="@string/stock_discovery" />
 
 </menu>

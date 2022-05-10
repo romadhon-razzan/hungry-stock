@@ -169,8 +169,8 @@ class LearningFragment : BaseFragment() {
                         viewModel.setSortingLabel(resources.getString(R.string.sorting_stockscope))
                         viewModel.setCategory(viewModel.sortingLabel.value.toString())
                     }
-                    R.id.belajarInvest -> {
-                        viewModel.setSortingLabel(resources.getString(R.string.sorting_belajar_invest_bareng))
+                    R.id.stock_discovery -> {
+                        viewModel.setSortingLabel(resources.getString(R.string.stock_discovery))
                         viewModel.setCategory(viewModel.sortingLabel.value.toString())
                     }
                 }
