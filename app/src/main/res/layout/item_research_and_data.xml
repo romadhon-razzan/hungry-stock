@@ -29,7 +29,7 @@
                 android:layout_marginStart="@dimen/normal1"
                 android:layout_marginTop="@dimen/small1"
                 android:layout_toEndOf="@id/flag"
-                android:src="@drawable/ic_xls" />
+                android:src="@drawable/ic_pdf" />
 
             <ImageView
                 android:id="@+id/icon_download"

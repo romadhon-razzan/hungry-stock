@@ -148,7 +148,7 @@ class ResearchReportFragment : Fragment() {
                             if (data.has("researchsCount"))
                                 total = data.get("researchsCount").asInt
 
-                            monthList().forEach { month ->
+                            monthListDesc().forEach { month ->
                                 val researchReportData: MutableList<ResearchReportData> = mutableListOf()
                                 data.getAsJsonObject("researchs")?.
                                 getAsJsonArray("$month ${viewModel?.getYear()}")?.forEachIndexed { index, jsonElement ->
@@ -185,7 +185,6 @@ class ResearchReportFragment : Fragment() {
                             }
 
                             items.add(ResearchPage(ResearchPage.TYPE_LIST, researchReport, listOf(), listOf(), ResearchSorting("n","Terbaru")))
-                            Log.d("DATAS", Gson().toJson(researchReport))
                             initList()
                             researchViewModel?.researchTabTitle()?.value = total.toString()
                         }

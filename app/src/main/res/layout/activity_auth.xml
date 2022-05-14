@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/large"
                     android:fontFamily="@font/ft_coolvetica"
-                    android:text="Welcome to \n HUNGRYSTOCK"
+                    android:text="Welcome to \nHUNGRYSTOCK"
                     android:textColor="@color/grey"
                     android:textSize="24sp" />
 
