@@ -10,6 +10,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
+import id.co.ptn.hungrystock.models.Links
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.main.learning.Learning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
@@ -29,13 +30,19 @@ class LearningViewModel @Inject constructor(private val repository: AppRepositor
     }
 
     private var learnings: MutableList<Learning> = mutableListOf()
-
     fun setLearnings(learnings: MutableList<Learning>) {
         this.learnings = learnings
     }
-
     fun getLearnings(): MutableList<Learning> {
         return learnings
+    }
+
+    private var links: MutableList<Links> = mutableListOf()
+    fun setLinks(links: MutableList<Links>) {
+        this.links = links
+    }
+    fun getLinks(): MutableList<Links> {
+        return links
     }
 
     private var keyword = ""
