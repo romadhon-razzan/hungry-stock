@@ -10,20 +10,25 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.*
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseFragment
 import id.co.ptn.hungrystock.bases.EmptyStateFragment
 import id.co.ptn.hungrystock.databinding.LearningFragmentBinding
+import id.co.ptn.hungrystock.models.Links
 import id.co.ptn.hungrystock.models.main.home.PastEvent
 import id.co.ptn.hungrystock.models.main.home.ResponseEventData
 import id.co.ptn.hungrystock.models.main.learning.Learning
 import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningListAdapter
+import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningPaginationAdapter
 import id.co.ptn.hungrystock.ui.main.learning.dialogs.FilteLearningPageDialog
 import id.co.ptn.hungrystock.ui.main.learning.viewmodel.LearningViewModel
 import id.co.ptn.hungrystock.utils.Status
@@ -38,6 +43,7 @@ class LearningFragment : BaseFragment() {
     private lateinit var binding: LearningFragmentBinding
     private val viewModel: LearningViewModel by activityViewModels()
     private lateinit var learningListAdapter: LearningListAdapter
+    private var paginationAdapter: LearningPaginationAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -104,24 +110,41 @@ class LearningFragment : BaseFragment() {
         binding.frameContainer.visibility = View.GONE
     }
 
+    private fun initPagination() {
+        paginationAdapter = LearningPaginationAdapter(viewModel.getLinks(), object : LearningPaginationAdapter.LearningListener{
+            override fun itemClicked(page: Char, position: Int) {
+                viewModel.setNextPage(page.toString())
+                apiGetNextLearnings()
+            }
+        })
+        binding.rvPagination.apply {
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+            adapter = paginationAdapter
+        }
+    }
+
     private fun initData() {
         viewModel.getLearnings().clear()
         viewModel.reqLearningResponse().value?.let {
             it.data?.data?.learnings?.data?.let { learnings ->
                 viewModel.getLearnings().addAll(learnings)
+                initPagination()
             } ?: emptyState()
         } ?: emptyState()
         initList()
     }
 
     private fun setNextData() {
+        viewModel.getLearnings().clear()
         try {
             viewModel.reqNextLearningResponse().value?.let {
                 it.data?.data?.learnings?.data?.let { learnings ->
                     viewModel.getLearnings().addAll(learnings)
                 }
             }
-            learningListAdapter.notifyItemRangeInserted(learningListAdapter.itemCount, viewModel.getLearnings().size)
+            initList()
+            initPagination()
+            binding.nestedScrollView.smoothScrollTo(0,0)
         }catch (e: Exception){
             e.printStackTrace()
         }
@@ -236,6 +259,9 @@ class LearningFragment : BaseFragment() {
                     binding.progressBar.visibility = View.GONE
                     Log.d("NEXT PAGE", "00000")
                     it.data?.data?.let { data ->
+                        data.learnings.links.let { links ->
+                            viewModel.setLinks(links as MutableList<Links>)
+                        }
                         data.learnings.next_page_url?.let { _ ->
                             data.learnings.current_page?.let { cp -> viewModel.setNextPage((cp+1).toString()) }
                             viewModel.setCanLoadNext(true)
@@ -255,21 +281,20 @@ class LearningFragment : BaseFragment() {
         viewModel.reqNextLearningResponse().observe(viewLifecycleOwner){
             when(it.status) {
                 Status.SUCCESS ->{
+                    binding.progressBar.visibility = View.GONE
                     viewModel.setLoadingNext(false)
-                    it.data?.data?.let { data ->
-                        data.learnings.next_page_url?.let { _ ->
-                            data.learnings.current_page?.let { cp -> viewModel.setNextPage((cp+1).toString()) }
-                            viewModel.setCanLoadNext(true)
-                        } ?: viewModel.setCanLoadNext(false)
+                    it.data?.data?.let {data ->
+                        data.learnings.links.let { links ->
+                            viewModel.setLinks(links as MutableList<Links>)
+                        }
                         setNextData()
                     }
                 }
                 Status.LOADING ->{
-                    viewModel.setLoadingNext(true)
-                    viewModel.setCanLoadNext(false)
+                    binding.progressBar.visibility = View.VISIBLE
                 }
                 Status.ERROR ->{
-                    viewModel.setLoadingNext(false)
+                    binding.progressBar.visibility = View.GONE
                     showSnackBar(binding.container,"Something wrong")
                 }
             }

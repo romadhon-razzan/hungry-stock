@@ -1,6 +1,7 @@
 package id.co.ptn.hungrystock.models.main.learning
 
 import com.google.gson.annotations.SerializedName
+import id.co.ptn.hungrystock.models.Links
 
 data class ResponseLearning (
     @SerializedName("status"  ) var status  : String? = null,
@@ -23,6 +24,7 @@ data class Learnings (
     @SerializedName("last_page"      ) var last_page     : Int?             = null,
     @SerializedName("last_page_url"  ) var last_page_url  : String?          = null,
     @SerializedName("next_page_url"  ) var next_page_url  : String?          = null,
+    @SerializedName("links"  ) var links  : List<Links>,
     @SerializedName("path"           ) var path         : String?          = null,
     @SerializedName("per_page"       ) var per_page      : Int?             = null,
     @SerializedName("prev_page_url"  ) var prev_page_url  : String?          = null,
