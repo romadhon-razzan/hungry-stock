@@ -60,3 +60,20 @@ fun monthList(): MutableList<String>{
     return months
 }
 
+fun monthListDesc(): MutableList<String>{
+    val months: MutableList<String> = mutableListOf()
+    months.add("Desember")
+    months.add("November")
+    months.add("Oktober")
+    months.add("September")
+    months.add("Agustus")
+    months.add("Juli")
+    months.add("Juni")
+    months.add("Mei")
+    months.add("April")
+    months.add("Maret")
+    months.add("Februari")
+    months.add("Januari")
+    return months
+}
+
