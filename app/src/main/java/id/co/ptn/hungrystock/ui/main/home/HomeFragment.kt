@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +31,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private lateinit var binding: HomeFragmentBinding
-    private val viewModel: HomeViewModel by activityViewModels()
+    private var viewModel: HomeViewModel? = null
     private lateinit var eventListAdapter: EventListAdapter
 
     override fun onCreateView(
@@ -43,6 +44,7 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
         binding.vm = viewModel
         binding.lifecycleOwner = this
         init()
@@ -63,24 +65,26 @@ class HomeFragment : BaseFragment() {
 
     private fun initList() {
         binding.frameContainer.visibility = View.GONE
-        eventListAdapter = EventListAdapter(viewModel.getEvents(), childFragmentManager, object : EventListAdapter.Listener{
-            override fun openConference(url: String) {
-                openUrlPage(url)
-            }
+        viewModel?.getEvents()?.let { events ->
+            eventListAdapter = EventListAdapter(events, childFragmentManager, object : EventListAdapter.Listener{
+                override fun openConference(url: String) {
+                    openUrlPage(url)
+                }
 
-            override fun openDetailUpcomingEvent(event: UpcomingEvent) {
+                override fun openDetailUpcomingEvent(event: UpcomingEvent) {
 
-            }
+                }
 
-            override fun openDetailPastEvent(event: PastEvent) {
-                val intent =  router.toLearningDetail()
-                intent.putExtra("event", Gson().toJson(event))
-                requireContext().startActivity(intent)
+                override fun openDetailPastEvent(event: PastEvent) {
+                    val intent =  router.toLearningDetail()
+                    intent.putExtra("event", Gson().toJson(event))
+                    requireContext().startActivity(intent)
+                }
+            })
+            binding.recyclerView.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = eventListAdapter
             }
-        })
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = eventListAdapter
         }
     }
 
@@ -98,7 +102,7 @@ class HomeFragment : BaseFragment() {
                     headlineEvent.event_hour_end.toString(),
                     headlineEvent.photo_url.toString(),
                     headlineEvent.zoom_link.toString()))
-            viewModel.setUpcomingEvents(upe)
+            viewModel?.setUpcomingEvents(upe)
         }catch (e: Exception){
             e.printStackTrace()
         }
@@ -115,20 +119,23 @@ class HomeFragment : BaseFragment() {
                     eventData.event_hour_end.toString(),
                     eventData.zoom_link.toString()))
             }
-            viewModel.setPastEvents(pe)
+            viewModel?.setPastEvents(pe)
         }catch (e: Exception){
             e.printStackTrace()
         }
 
         val h: MutableList<Event>  = mutableListOf()
 
-        if (viewModel.getUpcomingEvents().isNotEmpty())
-        h.add(0, Event(Event.TYPE_UPCOMING_EVENT, viewModel.getUpcomingEvents(), mutableListOf()))
+        viewModel?.getUpcomingEvents()?.let { upEvents ->
+            if (upEvents.isNotEmpty())
+                h.add(0, Event(Event.TYPE_UPCOMING_EVENT, upEvents, mutableListOf()))
+        }
 
-        if (viewModel.getPastEvents().isNotEmpty())
-        h.add(1, Event(Event.TYPE_PAST_EVENT, mutableListOf(), viewModel.getPastEvents()))
-
-        viewModel.setEvents(h)
+        viewModel?.getPastEvents()?.let { pEvents ->
+            if (pEvents.isNotEmpty())
+                h.add(1, Event(Event.TYPE_PAST_EVENT, mutableListOf(), pEvents))
+        }
+        viewModel?.setEvents(h)
     }
 
     private fun setNextData(data: ResponseEventData) {
@@ -144,8 +151,10 @@ class HomeFragment : BaseFragment() {
                     eventData.event_hour_end.toString(),
                     eventData.zoom_link.toString()))
             }
-            viewModel.getPastEvents().addAll(pe)
-            eventListAdapter.updatePastEvent(eventListAdapter.itemCount, viewModel.getEvents().size)
+            viewModel?.getPastEvents()?.addAll(pe)
+            viewModel?.getEvents()?.let { events ->
+                eventListAdapter.updatePastEvent(eventListAdapter.itemCount, events.size)
+            }
         }catch (e: Exception){
             e.printStackTrace()
         }
@@ -164,16 +173,16 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setObserve() {
-        viewModel.reqHomeResponse().observe(viewLifecycleOwner){
+        viewModel?.reqHomeResponse()?.observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {
                     binding.progressBar.visibility = View.GONE
                     binding.swipeRefresh.isRefreshing = false
                     it.data?.data?.let { data ->
                         data.events.next_page_url?.let { _ ->
-                            data.events.current_page?.let { cp -> viewModel.setNextPage((cp+1).toString()) }
-                            viewModel.setCanLoadNext(true)
-                        } ?: viewModel.setCanLoadNext(false)
+                            data.events.current_page?.let { cp -> viewModel?.setNextPage((cp+1).toString()) }
+                            viewModel?.setCanLoadNext(true)
+                        } ?: viewModel?.setCanLoadNext(false)
                         initData(data)
                         initList()
                     } ?: emptyState()
@@ -190,23 +199,23 @@ class HomeFragment : BaseFragment() {
             }
         }
 
-        viewModel.reqNextEventResponse().observe(viewLifecycleOwner){
+        viewModel?.reqNextEventResponse()?.observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {
-                    viewModel.setLoadingNext(false)
+                    viewModel?.setLoadingNext(false)
                     it.data?.data?.let { data ->
                         data.events.next_page_url?.let { _ ->
-                            data.events.current_page?.let { cp -> viewModel.setNextPage((cp+1).toString()) }
-                            viewModel.setCanLoadNext(true)
-                        } ?: viewModel.setCanLoadNext(false)
+                            data.events.current_page?.let { cp -> viewModel?.setNextPage((cp+1).toString()) }
+                            viewModel?.setCanLoadNext(true)
+                        } ?: viewModel?.setCanLoadNext(false)
                         setNextData(data) }
                 }
                 Status.LOADING -> {
-                    viewModel.setLoadingNext(true)
-                    viewModel.setCanLoadNext(false)
+                    viewModel?.setLoadingNext(true)
+                    viewModel?.setCanLoadNext(false)
                 }
                 Status.ERROR -> {
-                    viewModel.setLoadingNext(false)
+                    viewModel?.setLoadingNext(false)
                     showSnackBar(binding.container,"Something wrong")
                 }
             }
@@ -218,11 +227,13 @@ class HomeFragment : BaseFragment() {
      * */
 
     private fun apiGetHome() {
-        viewModel.apiGetHome()
+        viewModel?.apiGetHome()
     }
 
     private fun apiGetNextEvent() {
-        viewModel.apiGetNextEvent(viewModel.getNextPage())
+        viewModel?.getNextPage()?.let {
+            viewModel?.apiGetNextEvent(it)
+        }
     }
 
 }

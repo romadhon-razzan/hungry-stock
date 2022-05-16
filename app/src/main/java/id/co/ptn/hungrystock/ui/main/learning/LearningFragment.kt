@@ -14,6 +14,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.*
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,7 +42,7 @@ class LearningFragment : BaseFragment() {
     }
 
     private lateinit var binding: LearningFragmentBinding
-    private val viewModel: LearningViewModel by activityViewModels()
+    private var viewModel: LearningViewModel? = null
     private lateinit var learningListAdapter: LearningListAdapter
     private var paginationAdapter: LearningPaginationAdapter? = null
 
@@ -55,13 +56,14 @@ class LearningFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity())[LearningViewModel::class.java]
         binding.vm = viewModel
         binding.lifecycleOwner = this
         init()
     }
 
     private fun init() {
-        viewModel.setSortingLabel(resources.getString(R.string.sorting_terbaru))
+        viewModel?.setSortingLabel(resources.getString(R.string.sorting_terbaru))
         initListener()
         initSearch()
         setObserve()
@@ -79,7 +81,7 @@ class LearningFragment : BaseFragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.setKeyword(s.toString())
+                viewModel?.setKeyword(s.toString())
                 Handler(Looper.getMainLooper()).postDelayed({
                     apiGetLearnings()
                 },1500)
@@ -90,44 +92,48 @@ class LearningFragment : BaseFragment() {
     }
 
     private fun initList() {
-        learningListAdapter = LearningListAdapter(viewModel.getLearnings(), object : LearningListAdapter.LearningListener{
-            override fun itemClicked(learning: Learning) {
-                val intent =  router.toLearningDetail()
-                try {
-                    val event = PastEvent(learning.slug!!, learning.title!!, learning.speaker!!, learning.event_date!!, learning.event_hour_start!!, learning.event_hour_end!!, learning.video_url!!)
-                    intent.putExtra("event", Gson().toJson(event))
-                }catch (e: Exception){
-                    e.printStackTrace()
+        viewModel?.getLearnings()?.let { learnings ->
+            learningListAdapter = LearningListAdapter(learnings, object : LearningListAdapter.LearningListener{
+                override fun itemClicked(learning: Learning) {
+                    val intent =  router.toLearningDetail()
+                    try {
+                        val event = PastEvent(learning.slug!!, learning.title!!, learning.speaker!!, learning.event_date!!, learning.event_hour_start!!, learning.event_hour_end!!, learning.video_url!!)
+                        intent.putExtra("event", Gson().toJson(event))
+                    }catch (e: Exception){
+                        e.printStackTrace()
+                    }
+                    requireContext().startActivity(intent)
                 }
-                requireContext().startActivity(intent)
-            }
 
-        })
-        binding.recyclerView.apply {
-            layoutManager = GridLayoutManager(requireContext(), 2)
-            adapter = learningListAdapter
+            })
+            binding.recyclerView.apply {
+                layoutManager = GridLayoutManager(requireContext(), 2)
+                adapter = learningListAdapter
+            }
+            binding.frameContainer.visibility = View.GONE
         }
-        binding.frameContainer.visibility = View.GONE
     }
 
     private fun initPagination() {
-        paginationAdapter = LearningPaginationAdapter(viewModel.getLinks(), object : LearningPaginationAdapter.LearningListener{
-            override fun itemClicked(page: Char, position: Int) {
-                viewModel.setNextPage(page.toString())
-                apiGetNextLearnings()
+        viewModel?.getLinks()?.let { links ->
+            paginationAdapter = LearningPaginationAdapter(links, object : LearningPaginationAdapter.LearningListener{
+                override fun itemClicked(page: Char, position: Int) {
+                    viewModel?.setNextPage(page.toString())
+                    apiGetNextLearnings()
+                }
+            })
+            binding.rvPagination.apply {
+                layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+                adapter = paginationAdapter
             }
-        })
-        binding.rvPagination.apply {
-            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-            adapter = paginationAdapter
         }
     }
 
     private fun initData() {
-        viewModel.getLearnings().clear()
-        viewModel.reqLearningResponse().value?.let {
+        viewModel?.getLearnings()?.clear()
+        viewModel?.reqLearningResponse()?.value?.let {
             it.data?.data?.learnings?.data?.let { learnings ->
-                viewModel.getLearnings().addAll(learnings)
+                viewModel?.getLearnings()?.addAll(learnings)
                 initPagination()
             } ?: emptyState()
         } ?: emptyState()
@@ -135,11 +141,11 @@ class LearningFragment : BaseFragment() {
     }
 
     private fun setNextData() {
-        viewModel.getLearnings().clear()
+        viewModel?.getLearnings()?.clear()
         try {
-            viewModel.reqNextLearningResponse().value?.let {
+            viewModel?.reqNextLearningResponse()?.value?.let {
                 it.data?.data?.learnings?.data?.let { learnings ->
-                    viewModel.getLearnings().addAll(learnings)
+                    viewModel?.getLearnings()?.addAll(learnings)
                 }
             }
             initList()
@@ -173,29 +179,30 @@ class LearningFragment : BaseFragment() {
             item?.let {
                 when (it.itemId) {
                     R.id.terbaru -> {
-                        viewModel.setSortingLabel(resources.getString(R.string.sorting_terbaru))
-                        viewModel.setCategory("")
+                        viewModel?.setSortingLabel(resources.getString(R.string.sorting_terbaru))
+                        viewModel?.setCategory("")
                     }
                     R.id.topup -> {
-                        viewModel.setSortingLabel(resources.getString(R.string.sorting_top_up_knowledge_amp_wisdom))
-                        viewModel.setCategory(viewModel.sortingLabel.value.toString())
+                        viewModel?.setSortingLabel(resources.getString(R.string.sorting_top_up_knowledge_amp_wisdom))
+                        viewModel?.setCategory(viewModel?.sortingLabel?.value.toString())
                     }
                     R.id.temu -> {
-                        viewModel.setSortingLabel(resources.getString(R.string.sorting_temu_emiten))
-                        viewModel.setCategory(viewModel.sortingLabel.value.toString())
+                        viewModel?.setSortingLabel(resources.getString(R.string.sorting_temu_emiten))
+                        viewModel?.setCategory(viewModel?.sortingLabel?.value.toString())
                     }
                     R.id.bedah -> {
-                        viewModel.setSortingLabel(resources.getString(R.string.sorting_bedah_emiten))
-                        viewModel.setCategory(viewModel.sortingLabel.value.toString())
+                        viewModel?.setSortingLabel(resources.getString(R.string.sorting_bedah_emiten))
+                        viewModel?.setCategory(viewModel?.sortingLabel?.value.toString())
                     }
                     R.id.stockScope -> {
-                        viewModel.setSortingLabel(resources.getString(R.string.sorting_stockscope))
-                        viewModel.setCategory(viewModel.sortingLabel.value.toString())
+                        viewModel?.setSortingLabel(resources.getString(R.string.sorting_stockscope))
+                        viewModel?.setCategory(viewModel?.sortingLabel?.value.toString())
                     }
                     R.id.stock_discovery -> {
-                        viewModel.setSortingLabel(resources.getString(R.string.stock_discovery))
-                        viewModel.setCategory(viewModel.sortingLabel.value.toString())
+                        viewModel?.setSortingLabel(resources.getString(R.string.stock_discovery))
+                        viewModel?.setCategory(viewModel?.sortingLabel?.value.toString())
                     }
+                    else -> {}
                 }
             }
             apiGetLearnings()
@@ -209,23 +216,29 @@ class LearningFragment : BaseFragment() {
     private fun filterPressed() {
         val dialog = FilteLearningPageDialog(object : FilteLearningPageDialog.Listener{
             override fun onFilter(year: String, month: String, monthId: String, abjad: String) {
-                viewModel.setYear(year)
-                viewModel.setMonth(month)
-                viewModel.setMonthId(monthId)
-                viewModel.setAbjad(abjad)
+                viewModel?.setYear(year)
+                viewModel?.setMonth(month)
+                viewModel?.setMonthId(monthId)
+                viewModel?.setAbjad(abjad)
 
                 binding.tvFilterValue.text = "Filter berdasarkan: "
                 binding.tvFilterValue.visibility = View.VISIBLE
 
                 val filterValues: MutableList<String> = mutableListOf()
-                if (viewModel.getYear().isNotEmpty())
-                    filterValues.add(viewModel.getYear())
+                viewModel?.getYear()?.let { y ->
+                    if (y.isNotEmpty())
+                        filterValues.add(y)
+                }
 
-                if (viewModel.getMonth().isNotEmpty())
-                    filterValues.add(viewModel.getMonth())
+                viewModel?.getMonth()?.let { m ->
+                    if (m.isNotEmpty())
+                        filterValues.add(m)
+                }
 
-                if (viewModel.getAbjad().isNotEmpty())
-                    filterValues.add(viewModel.getAbjad())
+                viewModel?.getAbjad()?.let { a ->
+                    if (a.isNotEmpty())
+                        filterValues.add(a)
+                }
 
                 if (filterValues.size < 1) {
                     binding.tvFilterValue.visibility = View.GONE
@@ -245,28 +258,30 @@ class LearningFragment : BaseFragment() {
                 apiGetLearnings()
             }
         })
-        dialog.setYearSelected(viewModel.getYear())
-        dialog.setMontSelected(viewModel.getMonth(), viewModel.getMonthId())
-        dialog.setAbjadSelected(viewModel.getAbjad())
+        viewModel?.getYear()?.let { y -> dialog.setYearSelected(y) }
+        dialog.setMontSelected(viewModel?.getMonth()!!, viewModel?.getMonthId()!!)
+        viewModel?.getAbjad()?.let { a ->
+            dialog.setAbjadSelected(a)
+        }
         dialog.show(childFragmentManager,"filter_dialog")
     }
 
 
     private fun setObserve() {
-        viewModel.reqLearningResponse().observe(viewLifecycleOwner){
+        viewModel?.reqLearningResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
                 Status.SUCCESS ->{
                     binding.progressBar.visibility = View.GONE
-                    Log.d("NEXT PAGE", "00000")
+
                     it.data?.data?.let { data ->
                         data.learnings.links.let { links ->
-                            viewModel.setLinks(links as MutableList<Links>)
+                            viewModel?.setLinks(links as MutableList<Links>)
                         }
                         data.learnings.next_page_url?.let { _ ->
-                            data.learnings.current_page?.let { cp -> viewModel.setNextPage((cp+1).toString()) }
-                            viewModel.setCanLoadNext(true)
-                        } ?: viewModel.setCanLoadNext(false)
-                        Log.d("NEXT PAGE", viewModel.getNextPage())
+                            data.learnings.current_page?.let { cp -> viewModel?.setNextPage((cp+1).toString()) }
+                            viewModel?.setCanLoadNext(true)
+                        } ?: viewModel?.setCanLoadNext(false)
+
                         initData()
                     } ?: emptyState()
                 }
@@ -278,14 +293,14 @@ class LearningFragment : BaseFragment() {
             }
         }
 
-        viewModel.reqNextLearningResponse().observe(viewLifecycleOwner){
+        viewModel?.reqNextLearningResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
                 Status.SUCCESS ->{
                     binding.progressBar.visibility = View.GONE
-                    viewModel.setLoadingNext(false)
+                    viewModel?.setLoadingNext(false)
                     it.data?.data?.let {data ->
                         data.learnings.links.let { links ->
-                            viewModel.setLinks(links as MutableList<Links>)
+                            viewModel?.setLinks(links as MutableList<Links>)
                         }
                         setNextData()
                     }
@@ -306,11 +321,11 @@ class LearningFragment : BaseFragment() {
      * */
 
     private fun apiGetLearnings() {
-        viewModel.apiGetLearnings(viewModel.getKeyword(),viewModel.getCategory(),viewModel.getYear(),viewModel.getMonthId(),viewModel.getAbjad())
+        viewModel?.apiGetLearnings(viewModel?.getKeyword()!!,viewModel?.getCategory()!!,viewModel?.getYear()!!,viewModel?.getMonthId()!!,viewModel?.getAbjad()!!)
     }
 
     private fun apiGetNextLearnings() {
-        viewModel.apiGetNextLearnings(viewModel.getNextPage(), viewModel.getKeyword(),viewModel.getCategory(),viewModel.getYear(),viewModel.getMonthId(),viewModel.getAbjad())
+        viewModel?.apiGetNextLearnings(viewModel?.getNextPage()!!, viewModel?.getKeyword()!!,viewModel?.getCategory()!!,viewModel?.getYear()!!,viewModel?.getMonthId()!!,viewModel?.getAbjad()!!)
     }
 
 }

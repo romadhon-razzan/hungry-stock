@@ -21,6 +21,7 @@ import id.co.ptn.hungrystock.ui.main.research.dialogs.FilterResearchPageDialog
 import id.co.ptn.hungrystock.ui.main.research.fragments.ResearchReportFragment
 import id.co.ptn.hungrystock.ui.main.research.fragments.StockDataFragment
 import id.co.ptn.hungrystock.ui.main.research.viewmodel.ResearchViewModel
+import java.lang.Exception
 
 @AndroidEntryPoint
 class ResearchFragment : Fragment() {
@@ -86,15 +87,23 @@ class ResearchFragment : Fragment() {
     }
 
     private fun updateResearchTitle(total: String) {
-        val title = requireActivity().getString(R.string.title_tab_research_report,total)
-        researchPageAdapter.setTabTitle(0, title)
-        researchPageAdapter.notifyItemChanged(0)
+        try {
+            val title = requireActivity().getString(R.string.title_tab_research_report,total)
+            researchPageAdapter.setTabTitle(0, title)
+            researchPageAdapter.notifyItemChanged(0)
+        } catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 
     private fun updateStockTitle(total: String) {
-        val title = requireActivity().getString(R.string.title_tab_stock_data,total)
-        researchPageAdapter.setTabTitle(1, title)
-        researchPageAdapter.notifyItemChanged(1)
+        try {
+            val title = requireActivity().getString(R.string.title_tab_stock_data,total)
+            researchPageAdapter.setTabTitle(1, title)
+            researchPageAdapter.notifyItemChanged(1)
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 
     private fun openFilterDialog() {
