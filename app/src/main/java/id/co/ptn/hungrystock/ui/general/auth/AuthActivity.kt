@@ -2,6 +2,7 @@ package id.co.ptn.hungrystock.ui.general.auth
 
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -24,6 +25,7 @@ class AuthActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_auth)
         binding.viewModel = viewModel
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         changeStatusBar()
         init()
     }

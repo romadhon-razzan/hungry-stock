@@ -42,6 +42,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.video_player.VideoPlayerActivity"
+            android:configChanges="orientation|screenSize|layoutDirection"
             android:exported="false" />
         <activity
             android:name=".ui.privacy_police.PrivacyPoliceActivity"

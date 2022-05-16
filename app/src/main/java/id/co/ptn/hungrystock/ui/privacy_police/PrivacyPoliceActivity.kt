@@ -1,6 +1,7 @@
 package id.co.ptn.hungrystock.ui.privacy_police
 
 import android.os.Bundle
+import android.view.WindowManager
 import android.webkit.WebViewClient
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -21,6 +22,7 @@ class PrivacyPoliceActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_privacy_police)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         init()
     }
 

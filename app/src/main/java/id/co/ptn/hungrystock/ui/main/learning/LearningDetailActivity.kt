@@ -2,6 +2,7 @@ package id.co.ptn.hungrystock.ui.main.learning
 
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.add
@@ -35,6 +36,7 @@ class LearningDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_learning_detail)
         binding.vm = viewModel
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         binding.lifecycleOwner = this
         init()
     }

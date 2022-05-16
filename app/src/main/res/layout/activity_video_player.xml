@@ -14,7 +14,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
+            app:layout_constraintTop_toTopOf="parent"
+            app:touch_target_height="200dp"
+            app:scrubber_color="@color/red"
+            app:played_color="@color/red">
         </com.google.android.exoplayer2.ui.StyledPlayerView>
 
         <TextView
@@ -23,14 +26,15 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/ft_coolvetica"
             android:text="@string/app_name"
-            android:textSize="30sp"
+            android:textSize="@dimen/font_large1_1"
             android:textColor="#7C000000"
-            android:alpha="0.4"
+            android:alpha="0.2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/playerView"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
         <ProgressBar
             android:id="@+id/progressBar"

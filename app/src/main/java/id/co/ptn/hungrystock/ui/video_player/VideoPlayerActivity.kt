@@ -3,6 +3,7 @@ package id.co.ptn.hungrystock.ui.video_player
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -33,6 +34,7 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_video_player)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         init()
     }
 
@@ -64,6 +66,7 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
         preparePlayer(mp4Url, "")
         binding.playerView.player = simpleExoplayer
         viewModel.playBackPosition.value?.let { simpleExoplayer.seekTo(it) }
+//        simpleExoplayer.
         simpleExoplayer.playWhenReady = true
         simpleExoplayer.addListener(this)
     }
