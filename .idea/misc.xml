@@ -3,6 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../.gradle/caches/transforms-3/2f8f4e8c0d76a43275dad22a953007b5/transformed/jetified-exoplayer-ui-2.17.1/res/layout/exo_list_divider.xml" value="0.1" />
+        <entry key="../../.gradle/caches/transforms-3/2f8f4e8c0d76a43275dad22a953007b5/transformed/jetified-exoplayer-ui-2.17.1/res/layout/exo_player_control_view.xml" value="0.1" />
+        <entry key="../../.gradle/caches/transforms-3/2f8f4e8c0d76a43275dad22a953007b5/transformed/jetified-exoplayer-ui-2.17.1/res/layout/exo_player_view.xml" value="0.1" />
+        <entry key="../../.gradle/caches/transforms-3/2f8f4e8c0d76a43275dad22a953007b5/transformed/jetified-exoplayer-ui-2.17.1/res/layout/exo_styled_player_control_ffwd_button.xml" value="0.1" />
+        <entry key="../../.gradle/caches/transforms-3/2f8f4e8c0d76a43275dad22a953007b5/transformed/jetified-exoplayer-ui-2.17.1/res/layout/exo_styled_player_control_rewind_button.xml" value="0.1" />
+        <entry key="../../.gradle/caches/transforms-3/2f8f4e8c0d76a43275dad22a953007b5/transformed/jetified-exoplayer-ui-2.17.1/res/layout/exo_styled_player_control_view.xml" value="0.1" />
+        <entry key="../../.gradle/caches/transforms-3/2f8f4e8c0d76a43275dad22a953007b5/transformed/jetified-exoplayer-ui-2.17.1/res/layout/exo_styled_player_view.xml" value="0.1" />
+        <entry key="../../.gradle/caches/transforms-3/2f8f4e8c0d76a43275dad22a953007b5/transformed/jetified-exoplayer-ui-2.17.1/res/layout/exo_styled_settings_list.xml" value="0.1" />
+        <entry key="../../.gradle/caches/transforms-3/2f8f4e8c0d76a43275dad22a953007b5/transformed/jetified-exoplayer-ui-2.17.1/res/layout/exo_styled_settings_list_item.xml" value="0.1" />
+        <entry key="../../.gradle/caches/transforms-3/2f8f4e8c0d76a43275dad22a953007b5/transformed/jetified-exoplayer-ui-2.17.1/res/layout/exo_track_selection_dialog.xml" value="0.1" />
         <entry key="..\:/Projects/Androids/Hungry-Stock/app/src/main/res/drawable/base_background_bottom_sheet.xml" value="0.1" />
         <entry key="..\:/Projects/Androids/Hungry-Stock/app/src/main/res/layout/activity_detail_watch_list.xml" value="0.1" />
         <entry key="..\:/Projects/Androids/Hungry-Stock/app/src/main/res/layout/activity_main.xml" value="0.1" />

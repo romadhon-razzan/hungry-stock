@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
@@ -35,6 +36,7 @@ class OnboardActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_onboarding)
         viewModel = ViewModelProvider(this)[OnboardViewModel::class.java]
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
         changeStatusBar()

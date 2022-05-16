@@ -1,6 +1,7 @@
 package id.co.ptn.hungrystock.ui.profile
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
@@ -20,6 +21,7 @@ class ProfileActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_profile)
         binding.viewModel = viewModel
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         changeStatusBar()
         init()
     }

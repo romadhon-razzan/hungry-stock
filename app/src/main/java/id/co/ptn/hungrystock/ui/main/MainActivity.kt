@@ -1,6 +1,7 @@
 package id.co.ptn.hungrystock.ui.main
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
@@ -28,6 +29,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         changeStatusBar()
         init()
     }

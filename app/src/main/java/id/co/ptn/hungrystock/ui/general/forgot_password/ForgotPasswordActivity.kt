@@ -1,6 +1,7 @@
 package id.co.ptn.hungrystock.ui.general.forgot_password
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +18,7 @@ class ForgotPasswordActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_forgot_password)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         init()
     }
 
