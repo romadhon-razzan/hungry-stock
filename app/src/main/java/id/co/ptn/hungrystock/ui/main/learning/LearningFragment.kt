@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
@@ -117,8 +118,24 @@ class LearningFragment : BaseFragment() {
     private fun initPagination() {
         viewModel?.getLinks()?.let { links ->
             paginationAdapter = LearningPaginationAdapter(links, object : LearningPaginationAdapter.LearningListener{
-                override fun itemClicked(page: Char, position: Int) {
-                    viewModel?.setNextPage(page.toString())
+                override fun itemClicked(page: Links, position: Int) {
+                    val lastPage = viewModel?.lastPage?.toInt() ?: 0
+                    val currentPage = viewModel?.getNextPage()?.toInt() ?: 0
+                    if (page.label?.lowercase()?.contains("sebelumnya") == true) {
+                        var prevPage = Links.previousPage(currentPage.toString()).toInt()
+                        if (prevPage < 1){
+                            prevPage = 1
+                        }
+                        viewModel?.setNextPage(prevPage.toString())
+                    } else if (page.label?.lowercase()?.contains("berikutnya") == true) {
+                        var nextPage = Links.nextPage(currentPage.toString()).toInt()
+                        if (nextPage > lastPage) {
+                            nextPage = lastPage
+                        }
+                        viewModel?.setNextPage(nextPage.toString())
+                    } else {
+                        viewModel?.setNextPage(page.label ?: "0")
+                    }
                     apiGetNextLearnings()
                 }
             })
@@ -274,6 +291,7 @@ class LearningFragment : BaseFragment() {
                     binding.progressBar.visibility = View.GONE
 
                     it.data?.data?.let { data ->
+                        viewModel?.lastPage = data.learnings.last_page?.toString() ?: "0"
                         data.learnings.links.let { links ->
                             viewModel?.setLinks(links as MutableList<Links>)
                         }

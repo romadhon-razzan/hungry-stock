@@ -105,6 +105,7 @@ class LearningViewModel @Inject constructor(private val repository: AppRepositor
     fun setNextPage(value: String) {
         nextPage = value
     }
+    var lastPage = ""
 
     /**
      * Api
