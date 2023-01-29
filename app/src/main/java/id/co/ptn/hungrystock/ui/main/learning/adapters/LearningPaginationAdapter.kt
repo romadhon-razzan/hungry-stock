@@ -53,9 +53,7 @@ class LearningPaginationAdapter(private val items: MutableList<Links>, private v
         val element = items[position]
         holder.bind(element)
         holder.itemView.setOnClickListener {
-            element.url?.let {
-                listener.itemClicked(it[it.length - 1], position)
-            }
+            listener.itemClicked(element, position)
         }
     }
 
@@ -64,6 +62,6 @@ class LearningPaginationAdapter(private val items: MutableList<Links>, private v
     }
 
     public interface LearningListener {
-        fun itemClicked(page: Char, position: Int)
+        fun itemClicked(page: Links, position: Int)
     }
 }

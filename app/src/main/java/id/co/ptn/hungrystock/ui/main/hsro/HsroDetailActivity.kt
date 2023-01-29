@@ -108,7 +108,7 @@ class HsroDetailActivity : BaseActivity() {
     }
 
     private fun initResearchList() {
-        researchReportListAdapter = ResearchReportListAdapter(researchReports)
+        researchReportListAdapter = ResearchReportListAdapter(supportFragmentManager,researchReports)
         binding.recyclerViewResearch.apply {
             layoutManager = GridLayoutManager(this@HsroDetailActivity, 2)
             adapter = researchReportListAdapter

@@ -118,6 +118,7 @@
     <string name="takeaway_temu_emiten">Takeaway Temu Emiten</string>
     <string name="bedah_emiten">Bedah Emiten</string>
     <string name="understanding_sector">Understanding Sector</string>
+    <string name="message_no_data">Tidak ada data</string>
 
     <string-array name="sort_learning">
         <item>Terbaru</item>
