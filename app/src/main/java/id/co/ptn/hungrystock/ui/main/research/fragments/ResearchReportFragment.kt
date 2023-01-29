@@ -70,7 +70,9 @@ class ResearchReportFragment : Fragment() {
     }
 
     private fun initList() {
-        researchReportPageAdapter = ResearchReportPageAdapter(items, object: ResearchReportPageAdapter.ResearchReportListener{
+        researchReportPageAdapter = ResearchReportPageAdapter(
+            childFragmentManager,
+            items, object: ResearchReportPageAdapter.ResearchReportListener{
             override fun onFilterClick() {
 
             }

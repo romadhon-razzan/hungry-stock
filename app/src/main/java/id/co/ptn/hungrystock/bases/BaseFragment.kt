@@ -11,10 +11,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.techiness.progressdialoglibrary.ProgressDialog
+import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.router.Router
 
 open class BaseFragment: Fragment() {
     lateinit var router: Router
+    var sessionManager: SessionManager? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sessionManager = SessionManager.getInstance(requireContext())
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

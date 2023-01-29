@@ -49,7 +49,7 @@ class ProfileActivity : BaseActivity() {
         }
 
         try {
-            viewModel.setUsername(sessionManager.user.name)
+
         }catch (e: Exception){
             viewModel.setUsername("")
         }

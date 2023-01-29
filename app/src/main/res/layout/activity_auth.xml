@@ -100,19 +100,26 @@
                     app:cardCornerRadius="4dp"
                     app:strokeColor="#423B3C"
                     app:strokeWidth="1dp">
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/et_password"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:background="@color/transparent"
-                        android:fontFamily="@font/barlow_semibold"
-                        android:inputType="textPassword"
-                        android:paddingStart="@dimen/normal"
-                        android:paddingEnd="@dimen/normal"
-                        android:textColor="@color/grey"
-                        android:textColorHint="@color/grey"
-                        android:textSize="@dimen/font_medium" />
+                        android:layout_height="wrap_content"
+                        style="@style/TextInputLayout"
+                        app:passwordToggleEnabled="true"
+                        app:passwordToggleTint="@color/white">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/et_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="@color/transparent"
+                            android:fontFamily="@font/barlow_semibold"
+                            android:inputType="textPassword"
+                            android:paddingStart="@dimen/normal"
+                            android:paddingEnd="@dimen/normal"
+                            android:textColor="@color/grey"
+                            android:textColorHint="@color/grey"
+                            android:textSize="@dimen/font_medium" />
+                    </com.google.android.material.textfield.TextInputLayout>
                 </com.google.android.material.card.MaterialCardView>
 
 
