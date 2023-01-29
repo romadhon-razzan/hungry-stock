@@ -21,7 +21,7 @@ android {
         applicationId "id.co.ptn.hungrystock"
         minSdk 24
         targetSdk 31
-        versionCode 9
+        versionCode 10
         versionName "1.1.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
