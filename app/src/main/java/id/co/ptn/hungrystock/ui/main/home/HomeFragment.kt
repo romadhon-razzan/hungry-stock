@@ -16,6 +16,7 @@ import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseFragment
 import id.co.ptn.hungrystock.bases.EmptyStateFragment
 import id.co.ptn.hungrystock.databinding.HomeFragmentBinding
+import id.co.ptn.hungrystock.models.User
 import id.co.ptn.hungrystock.models.main.home.Event
 import id.co.ptn.hungrystock.models.main.home.PastEvent
 import id.co.ptn.hungrystock.models.main.home.ResponseEventData
@@ -68,7 +69,9 @@ class HomeFragment : BaseFragment() {
         viewModel?.getEvents()?.let { events ->
             eventListAdapter = EventListAdapter(events, childFragmentManager, object : EventListAdapter.Listener{
                 override fun openConference(url: String) {
-                    openUrlPage(url)
+                    if (!User.isExpired(childFragmentManager, sessionManager?.user?.membership_end_at ?: "")){
+                        openUrlPage(url)
+                    }
                 }
 
                 override fun openDetailUpcomingEvent(event: UpcomingEvent) {
@@ -76,9 +79,11 @@ class HomeFragment : BaseFragment() {
                 }
 
                 override fun openDetailPastEvent(event: PastEvent) {
-                    val intent =  router.toLearningDetail()
-                    intent.putExtra("event", Gson().toJson(event))
-                    requireContext().startActivity(intent)
+                    if (!User.isExpired(childFragmentManager,sessionManager?.user?.membership_end_at ?: "")){
+                        val intent =  router.toLearningDetail()
+                        intent.putExtra("event", Gson().toJson(event))
+                        requireContext().startActivity(intent)
+                    }
                 }
             })
             binding.recyclerView.apply {

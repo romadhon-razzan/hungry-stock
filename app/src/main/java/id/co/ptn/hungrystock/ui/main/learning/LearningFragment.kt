@@ -26,6 +26,7 @@ import id.co.ptn.hungrystock.bases.BaseFragment
 import id.co.ptn.hungrystock.bases.EmptyStateFragment
 import id.co.ptn.hungrystock.databinding.LearningFragmentBinding
 import id.co.ptn.hungrystock.models.Links
+import id.co.ptn.hungrystock.models.User
 import id.co.ptn.hungrystock.models.main.home.PastEvent
 import id.co.ptn.hungrystock.models.main.home.ResponseEventData
 import id.co.ptn.hungrystock.models.main.learning.Learning
@@ -96,14 +97,16 @@ class LearningFragment : BaseFragment() {
         viewModel?.getLearnings()?.let { learnings ->
             learningListAdapter = LearningListAdapter(learnings, object : LearningListAdapter.LearningListener{
                 override fun itemClicked(learning: Learning) {
-                    val intent =  router.toLearningDetail()
-                    try {
-                        val event = PastEvent(learning.slug!!, learning.title!!, learning.speaker!!, learning.event_date!!, learning.event_hour_start!!, learning.event_hour_end!!, learning.video_url!!)
-                        intent.putExtra("event", Gson().toJson(event))
-                    }catch (e: Exception){
-                        e.printStackTrace()
+                    if (!User.isExpired(childFragmentManager,sessionManager?.user?.membership_end_at ?: "")){
+                        val intent =  router.toLearningDetail()
+                        try {
+                            val event = PastEvent(learning.slug!!, learning.title!!, learning.speaker!!, learning.event_date!!, learning.event_hour_start!!, learning.event_hour_end!!, learning.video_url!!)
+                            intent.putExtra("event", Gson().toJson(event))
+                        }catch (e: Exception){
+                            e.printStackTrace()
+                        }
+                        requireContext().startActivity(intent)
                     }
-                    requireContext().startActivity(intent)
                 }
 
             })

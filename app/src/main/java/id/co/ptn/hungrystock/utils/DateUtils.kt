@@ -1,14 +1,30 @@
 package id.co.ptn.hungrystock.utils
 
+import android.text.format.DateUtils
 import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 
+const val indonesianTag = "in-ID"
+const val yyyyMMdd = "yyyy-MM-dd"
 // Maret, 21 2022
 fun getDateMMMMddyyyy(strDate: String): String {
-    val stringToDate: Date = SimpleDateFormat("yyyy-MM-dd").parse(strDate)
+    val stringToDate: Date? = SimpleDateFormat(yyyyMMdd, Locale.forLanguageTag(indonesianTag)).parse(strDate)
     val simpleDateFormat = SimpleDateFormat("MMMM, dd yyyy", Locale.getDefault() )
-    return simpleDateFormat.format(stringToDate)
+    return simpleDateFormat.format(stringToDate ?: "")
+}
+
+fun stringToDate(format: String, date: String): Date? {
+    return try {
+        SimpleDateFormat(format, Locale.forLanguageTag(indonesianTag)).parse(date)
+    }catch (e: Exception){
+        currentDate()
+    }
+}
+
+fun dateToString(format: String, date: Date?): String? {
+    val simpleDateFormat = SimpleDateFormat(format, Locale.forLanguageTag(indonesianTag) )
+    return date?.let { simpleDateFormat.format(it) }
 }
 
 fun currentYear() : String {
@@ -75,5 +91,35 @@ fun monthListDesc(): MutableList<String>{
     months.add("Februari")
     months.add("Januari")
     return months
+}
+
+fun date1AfterDate2(date1: String?, date2: String): Boolean {
+    val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.forLanguageTag(indonesianTag))
+    val firstDate: Date? = date1?.let { sdf.parse(it) }
+    val secondDate: Date? = sdf.parse(date2)
+
+    val cmp = firstDate?.compareTo(secondDate)
+    return if (cmp != null){
+        when {
+            cmp > 0 -> {
+                false
+            }
+            else -> {
+                true
+            }
+        }
+    } else {
+        false
+    }
+}
+
+fun currentDateString(format: String): String{
+    val time = Calendar.getInstance().time
+    val formatter = SimpleDateFormat(format, Locale.forLanguageTag(indonesianTag))
+    return formatter.format(time)
+}
+
+fun currentDate(): Date {
+    return Calendar.getInstance().time
 }
 

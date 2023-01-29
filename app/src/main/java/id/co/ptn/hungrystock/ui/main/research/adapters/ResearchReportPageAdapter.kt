@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +19,9 @@ import id.co.ptn.hungrystock.models.main.research.ResearchPage
 import id.co.ptn.hungrystock.models.main.research.ResearchReport
 import java.lang.StringBuilder
 
-class ResearchReportPageAdapter(private val items: MutableList<ResearchPage>,
+class ResearchReportPageAdapter(
+    private val fragmentManager: FragmentManager,
+    private val items: MutableList<ResearchPage>,
 private val listener: ResearchReportListener):
     RecyclerView.Adapter<ResearchReportPageAdapter.ViewHolder>() {
     private lateinit var context: Context
@@ -86,8 +89,8 @@ private val listener: ResearchReportListener):
 
     inner class ListHolder(var binding: ItemRecyclerViewBinding) : ViewHolder(binding.root) {
         private lateinit var listAdapter: MainResearchReportListAdapter
-        fun initList(items: MutableList<ResearchReport>, context: Context) {
-            listAdapter = MainResearchReportListAdapter(items)
+        fun initList(items: MutableList<ResearchReport>, context: Context, fragmentManager: FragmentManager) {
+            listAdapter = MainResearchReportListAdapter(fragmentManager,items)
             binding.recyclerView.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = listAdapter
@@ -140,7 +143,7 @@ private val listener: ResearchReportListener):
             }
             else -> {
                 val viewHolder = holder as ListHolder
-                viewHolder.initList(element.researchData as MutableList<ResearchReport>, context)
+                viewHolder.initList(element.researchData as MutableList<ResearchReport>, context, fragmentManager)
             }
         }
     }

@@ -8,6 +8,7 @@ import id.co.ptn.hungrystock.bases.BaseViewModel
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
 import id.co.ptn.hungrystock.repositories.AppRepository
 import id.co.ptn.hungrystock.utils.Resource
+import id.co.ptn.hungrystock.utils.indonesianTag
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -38,9 +39,9 @@ class ProfileViewModel @Inject constructor(private val repository: AppRepository
     val validDate: StateFlow<String> = _validDate
     fun setValidDate(validDate: String) {
         viewModelScope.launch {
-            val stringToDate: Date = SimpleDateFormat("yyyy-MM-dd").parse(validDate)
+            val stringToDate: Date? = SimpleDateFormat("yyyy-MM-dd", Locale.forLanguageTag(indonesianTag)).parse(validDate)
             val simpleDateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault() )
-            val finalDate: String = simpleDateFormat.format(stringToDate)
+            val finalDate: String = simpleDateFormat.format(stringToDate ?: "")
             _validDate.value = finalDate
         }
     }
