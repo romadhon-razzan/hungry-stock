@@ -24,14 +24,11 @@ data class User (
 ) {
     companion object {
         fun isExpired(fragmentManager: FragmentManager, membership_end_at: String): Boolean {
-            Log.d("membership_end_at", membership_end_at)
             if (membership_end_at.isEmpty())
                 return true
 
-            val date1 = stringToDate(yyyyMMdd, membership_end_at)
-            Log.d("membership_end_at", "${dateToString(yyyyMMdd, date1) ?: ""} 1")
-            Log.d("membership_end_at", "${currentDateString(yyyyMMdd)} 2")
-            val result = date1AfterDate2(dateToString(yyyyMMdd, date1), currentDateString(yyyyMMdd))
+            val date1 = stringToDate(iso8601, membership_end_at)
+            val result = date1AfterDate2(dateToString(yyyyMMdd_HHmmss, date1), currentDateString(yyyyMMdd_HHmmss), yyyyMMdd_HHmmss)
             if (result){
                 val dialog = ExpiredFragmentDialog.newInstance()
                 dialog.show(fragmentManager,"dialog_expired")
