@@ -134,20 +134,24 @@ class RegisterStepOneFragment : BaseFragment() {
     }
 
     private fun addPhotoButtonPressed() {
-        when {
-            ContextCompat.checkSelfPermission(
-                requireContext(), READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                openGallery()
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.TIRAMISU){
+            when {
+                ContextCompat.checkSelfPermission(
+                    requireContext(), READ_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    openGallery()
+                }
+                shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE
+                ) -> {
+                    Log.d("STORAGE","Masuk result")
+                    showRationalePermission()
+                }
+                else -> {
+                    requestPermissionLauncher.launch(READ_EXTERNAL_STORAGE)
+                }
             }
-            shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE
-            ) -> {
-                Log.d("STORAGE","Masuk result")
-                showRationalePermission()
-            }
-            else -> {
-                requestPermissionLauncher.launch(READ_EXTERNAL_STORAGE)
-            }
+        } else {
+            openGallery()
         }
     }
 
