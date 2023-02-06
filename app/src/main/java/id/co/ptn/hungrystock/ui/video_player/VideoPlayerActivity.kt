@@ -103,6 +103,8 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
         else binding.textView.visibility = View.GONE
     }
 
+
+    @Deprecated("Deprecated in Java", ReplaceWith("finish()"))
     override fun onBackPressed() {
         finish()
     }

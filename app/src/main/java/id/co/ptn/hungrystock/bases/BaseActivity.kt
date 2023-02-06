@@ -45,6 +45,7 @@ open class BaseActivity : AppCompatActivity() {
             it.setDisplayHomeAsUpEnabled(true)
             it.setDisplayShowHomeEnabled(true)
             it.setHomeAsUpIndicator(R.drawable.ic_back)
+            toolbar.setTitleTextColor(getColor(R.color.white))
             toolbar.setNavigationOnClickListener { onBackPressed() }
         }
 

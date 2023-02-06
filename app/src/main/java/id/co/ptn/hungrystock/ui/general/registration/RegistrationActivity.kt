@@ -40,13 +40,9 @@ class RegistrationActivity : BaseActivity() {
 
     private fun updateProgressStep(p: Int) {
         if (p == 1) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                binding.progressBar2.setProgress(100, true)
-            } else binding.progressBar2.progress = 100
+            binding.progressBar2.setProgress(100, true)
         } else if (p == 0) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                binding.progressBar2.setProgress(50, true)
-            } else binding.progressBar2.progress = 50
+            binding.progressBar2.setProgress(50, true)
         }
         binding.textView3.text = getString(R.string.label_halaman_1_dari_n,""+(p+1),"2")
     }
