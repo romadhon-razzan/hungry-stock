@@ -327,8 +327,9 @@ class RegisterStepOneFragment : BaseFragment() {
             val file = filePhotoProfile
             val requestFile: RequestBody? = file?.let { it.asRequestBody("multipart/form-data".toMediaTypeOrNull()) }
             var fp: MultipartBody.Part? = null
-            if (file != null)
-            fp = MultipartBody.Part.createFormData("foto_profil", file.name, requestFile!!)
+            if (file != null) {
+                fp = MultipartBody.Part.createFormData("foto_profil", file.name, requestFile!!)
+            }
 
             val name = binding.etFullName.text.toString()
                 .toRequestBody("multipart/form-data".toMediaTypeOrNull())

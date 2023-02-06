@@ -16,6 +16,13 @@
 
     <style name="Theme.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar"/>
 
+    <style name="Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/background</item>
+        <item name="android:titleTextColor">@color/white</item>
+    </style>
+
     <style name="LayoutMatchParent">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
