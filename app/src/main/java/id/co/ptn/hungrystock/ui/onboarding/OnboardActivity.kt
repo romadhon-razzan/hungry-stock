@@ -1,31 +1,21 @@
 package id.co.ptn.hungrystock.ui.onboarding
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
-import id.co.ptn.hungrystock.bases.WebViewFragment
 import id.co.ptn.hungrystock.config.SUCCESS
 import id.co.ptn.hungrystock.databinding.ActivityOnboardingBinding
-import id.co.ptn.hungrystock.router.Router
 import id.co.ptn.hungrystock.ui.onboarding.adapters.OnboardVPAdapter
 import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel
 import id.co.ptn.hungrystock.utils.Status
-import id.co.ptn.hungrystock.utils.getDateMMMMddyyyy
-import java.lang.Exception
-import java.lang.StringBuilder
 
 @AndroidEntryPoint
 class OnboardActivity : BaseActivity() {

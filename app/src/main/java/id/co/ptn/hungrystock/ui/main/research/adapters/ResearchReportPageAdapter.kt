@@ -8,13 +8,10 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.databinding.*
-import id.co.ptn.hungrystock.models.main.home.PastEvent
-import id.co.ptn.hungrystock.models.main.home.UpcomingEvent
 import id.co.ptn.hungrystock.models.main.research.ResearchPage
 import id.co.ptn.hungrystock.models.main.research.ResearchReport
 import java.lang.StringBuilder
