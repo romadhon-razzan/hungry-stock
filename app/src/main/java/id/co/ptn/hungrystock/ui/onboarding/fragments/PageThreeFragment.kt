@@ -54,7 +54,7 @@ class PageThreeFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(requireContext()), R.layout.fragment_page_three, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_page_three, container, false)
 
         return binding?.root
     }
