@@ -2,6 +2,7 @@ package id.co.ptn.hungrystock.core.network
 
 import com.google.gson.JsonObject
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
+import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
@@ -14,7 +15,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class ApiHelperImpl @Inject constructor(private val apiService: Services) : ApiHelper {
-//    override suspend fun getDrinkByFirstLetter(s: String): Response<DrinkResponse> = apiService.getDrinkByFirstLetter(s)
+    override suspend fun otp(): Response<ResponseOtp> = apiService.otp()
     override suspend fun auth(nt: String, p: String): Response<ResponseAuth> = apiService.auth(nt, p)
     override suspend fun resetPassword(e: String): Response<ResponsePassword> = apiService.resetPassword(e)
     override suspend fun registerStepOne(

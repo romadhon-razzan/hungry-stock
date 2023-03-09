@@ -7,3 +7,6 @@ const val REGISTER = "register"
 const val EVENT = "event"
 const val LEARNING = "learning"
 const val RESEARCH = "research"
+
+const val OTP = "otp/userkey=8000"
+const val CUSTOMER_LOGIN = "customers-login"

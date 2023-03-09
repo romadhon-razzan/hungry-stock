@@ -2,6 +2,7 @@ package id.co.ptn.hungrystock.core.network
 
 import com.google.gson.JsonObject
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
+import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
@@ -14,6 +15,7 @@ import retrofit2.Response
 
 interface ApiHelper {
 //    suspend fun getDrinkByFirstLetter(s: String): Response<DrinkResponse>
+    suspend fun otp(): Response<ResponseOtp>
     suspend fun auth(nt: String, p: String): Response<ResponseAuth>
     suspend fun resetPassword(p: String): Response<ResponsePassword>
     suspend fun registerStepOne(

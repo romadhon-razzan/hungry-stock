@@ -13,6 +13,7 @@ import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
 import id.co.ptn.hungrystock.config.SUCCESS
 import id.co.ptn.hungrystock.databinding.ActivityOnboardingBinding
+import id.co.ptn.hungrystock.ui.general.view_model.AuthViewModel
 import id.co.ptn.hungrystock.ui.onboarding.adapters.OnboardVPAdapter
 import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel
 import id.co.ptn.hungrystock.utils.Status
@@ -21,11 +22,13 @@ import id.co.ptn.hungrystock.utils.Status
 class OnboardActivity : BaseActivity() {
     private lateinit var binding: ActivityOnboardingBinding
     private var viewModel: OnboardViewModel? = null
+    private var authViewModel: AuthViewModel? = null
     var agree = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_onboarding)
         viewModel = ViewModelProvider(this)[OnboardViewModel::class.java]
+        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -35,6 +38,7 @@ class OnboardActivity : BaseActivity() {
 
     private fun init() {
         setObserve()
+        apiGetOtp()
         apiGetOnboard()
         listener()
     }
@@ -83,12 +87,31 @@ class OnboardActivity : BaseActivity() {
                 }
             }
         }
+
+        authViewModel?.reqOtpResponse()?.observe(this){
+            when(it.status) {
+                Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
+
+                }
+                Status.LOADING -> {
+
+                }
+                Status.ERROR -> {
+                    router.toAuth()
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
     }
 
     /**
      * Api
      * */
 
+    private fun apiGetOtp() {
+        authViewModel?.apiGetOtp()
+    }
     private fun apiGetOnboard() {
         viewModel?.apiGetOnboard()
     }

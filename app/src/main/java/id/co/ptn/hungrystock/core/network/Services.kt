@@ -2,6 +2,7 @@ package id.co.ptn.hungrystock.core.network
 
 import com.google.gson.JsonObject
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
+import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
@@ -15,6 +16,8 @@ import retrofit2.http.*
 
 interface Services {
 
+    @GET(OTP)
+    suspend fun otp(): Response<ResponseOtp>
     @FormUrlEncoded
     @POST(AUTH)
     suspend fun auth(

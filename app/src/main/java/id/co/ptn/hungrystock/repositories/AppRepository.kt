@@ -6,7 +6,7 @@ import okhttp3.RequestBody
 import javax.inject.Inject
 
 class AppRepository @Inject constructor(private val apiHelper: ApiHelper) {
-//    suspend fun getDrinkByFirstLetter(s: String) =  apiHelper.getDrinkByFirstLetter(s)
+    suspend fun otp() =  apiHelper.otp()
     suspend fun auth(nt: String, p: String) =  apiHelper.auth(nt, p)
     suspend fun resetPassword(e: String) =  apiHelper.resetPassword(e)
     suspend fun registerStepOne(
