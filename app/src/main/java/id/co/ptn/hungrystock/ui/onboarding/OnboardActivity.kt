@@ -39,7 +39,6 @@ class OnboardActivity : BaseActivity() {
     private fun init() {
         setObserve()
         apiGetOtp()
-        apiGetOnboard()
         listener()
     }
 
@@ -88,11 +87,11 @@ class OnboardActivity : BaseActivity() {
             }
         }
 
-        authViewModel?.reqOtpResponse()?.observe(this){
+        otpViewModel?.reqOtpResponse()?.observe(this){
             when(it.status) {
                 Status.SUCCESS -> {
                     binding.progressBar.visibility = View.GONE
-
+                    router.toAuth()
                 }
                 Status.LOADING -> {
 
@@ -108,12 +107,8 @@ class OnboardActivity : BaseActivity() {
     /**
      * Api
      * */
-
     private fun apiGetOtp() {
-        authViewModel?.apiGetOtp()
-    }
-    private fun apiGetOnboard() {
-        viewModel?.apiGetOnboard()
+        otpViewModel?.apiGetOtp()
     }
 
 }

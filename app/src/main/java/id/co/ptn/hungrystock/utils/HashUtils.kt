@@ -1,11 +1,24 @@
 package id.co.ptn.hungrystock.utils
 
+import id.co.ptn.hungrystock.config.ENV
+import id.co.ptn.hungrystock.core.network.CUSTOMER_LOGIN
+import id.co.ptn.hungrystock.core.network.OTP
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 class HashUtils {
+
+    companion object {
+        fun hash256Otp(): String{
+            return HashUtils().generateHmac256("${ENV.serviceUrl()}$OTP", ENV.serviceSecretKey().toByteArray()) ?: ""
+        }
+
+        fun hash256CustomerLogin(): String{
+            return HashUtils().generateHmac256("${ENV.serviceUrl()}$CUSTOMER_LOGIN", ENV.serviceSecretKey().toByteArray()) ?: ""
+        }
+    }
     @Throws(InvalidKeyException::class, NoSuchAlgorithmException::class)
     fun generateHmac256(message: String, key: ByteArray?): String? {
         val bytes = hmac("HmacSHA256", key, message.toByteArray())

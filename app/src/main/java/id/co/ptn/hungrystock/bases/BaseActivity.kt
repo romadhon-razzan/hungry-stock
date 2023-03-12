@@ -10,9 +10,11 @@ import com.google.android.material.snackbar.Snackbar
 import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.router.Router
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.ViewModelProvider
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.helper.Keyboard
+import id.co.ptn.hungrystock.ui.general.view_model.OtpViewModel
 
 
 open class BaseActivity : AppCompatActivity() {
@@ -20,12 +22,13 @@ open class BaseActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
     lateinit var router: Router
     lateinit var keyboard: Keyboard
+    var otpViewModel: OtpViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sessionManager = SessionManager.getInstance(this)
         router = Router(this)
-        TOKEN = sessionManager.token
+        otpViewModel = ViewModelProvider(this)[OtpViewModel::class.java]
     }
 
     fun changeStatusBar() {

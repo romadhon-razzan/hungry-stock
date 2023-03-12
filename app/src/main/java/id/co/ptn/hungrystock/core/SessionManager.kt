@@ -7,6 +7,7 @@ import id.co.ptn.hungrystock.models.User
 
 private const val USER_PREFERENCES_NAME = "user_preferences"
 
+private const val KEY_AUTH_DATA = "auth_data"
 private const val KEY_TOKEN = "token"
 private const val KEY_USER = "user"
 private const val KEY_READ_PRIVACY_POLICE = "read_privacy_police"
@@ -15,6 +16,16 @@ class SessionManager private constructor(context: Context) {
     private val sharedPreferences =
         context.applicationContext.getSharedPreferences(USER_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
+
+    val authData: String
+        get() {
+            val result = sharedPreferences.getString(KEY_AUTH_DATA, "")
+            return result ?: ""
+        }
+
+    fun setAuthData(authData: String) {
+        sharedPreferences.edit { putString(KEY_AUTH_DATA, authData) }
+    }
 
     val token: String
         get() {

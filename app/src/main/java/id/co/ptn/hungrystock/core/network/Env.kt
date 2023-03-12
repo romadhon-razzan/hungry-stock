@@ -10,6 +10,10 @@ enum class Env {
             return ""
         }
 
+        override fun userKey(): String {
+            return "8000"
+        }
+
         override fun debug(): Boolean {
             return false
         }
@@ -24,6 +28,10 @@ enum class Env {
             return "AAACr_y89IrkU9DYfOD7o"
         }
 
+        override fun userKey(): String {
+            return "8000"
+        }
+
         override fun debug(): Boolean {
             return true
         }
@@ -32,5 +40,6 @@ enum class Env {
 
     abstract fun serviceUrl() : String
     abstract fun serviceSecretKey() : String
+    abstract fun userKey() : String
     abstract fun debug() : Boolean
 }

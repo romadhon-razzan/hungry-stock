@@ -8,8 +8,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
 import id.co.ptn.hungrystock.config.ENV
 import id.co.ptn.hungrystock.config.TOKEN
+import id.co.ptn.hungrystock.core.network.CUSTOMER_LOGIN
 import id.co.ptn.hungrystock.core.network.OTP
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
+import id.co.ptn.hungrystock.models.auth.ResponseAuthV2
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.repositories.AppRepository
 import id.co.ptn.hungrystock.utils.HashUtils
@@ -28,11 +30,10 @@ class AuthViewModel @Inject constructor(private val repository: AppRepository): 
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _username
 
-    private var _reqAuthResponse: MutableLiveData<Resource<ResponseAuth>> = MutableLiveData()
-    fun reqAuthResponse(): MutableLiveData<Resource<ResponseAuth>> = _reqAuthResponse
-
-    private var _reqOtpResponse: MutableLiveData<Resource<ResponseOtp>> = MutableLiveData()
-    fun reqOtpResponse(): MutableLiveData<Resource<ResponseOtp>> = _reqOtpResponse
+//    private var _reqAuthResponse: MutableLiveData<Resource<ResponseAuth>> = MutableLiveData()
+//    fun reqAuthResponse(): MutableLiveData<Resource<ResponseAuth>> = _reqAuthResponse
+    private var _reqAuthResponse: MutableLiveData<Resource<ResponseAuthV2>> = MutableLiveData()
+    fun reqAuthResponse(): MutableLiveData<Resource<ResponseAuthV2>> = _reqAuthResponse
 
     fun setUsername(userName: String) {
         viewModelScope.launch {
@@ -49,40 +50,22 @@ class AuthViewModel @Inject constructor(private val repository: AppRepository): 
     /**
      * Api
      * */
-
-    fun apiGetOtp() {
-        viewModelScope.launch {
-            try {
-                TOKEN = HashUtils().generateHmac256("${ENV.serviceUrl()}${OTP}", ENV.serviceSecretKey().toByteArray()) ?: ""
-                _reqAuthResponse.postValue(Resource.loading(null))
-                repository.otp().let {
-                    if (it.isSuccessful){
-                        _reqOtpResponse.postValue(Resource.success(it.body()))
-                    } else {
-                        //
-                    }
-                }
-            }catch (e: Exception){
-                e.printStackTrace()
-            }
-        }
-    }
     fun apiAuth() {
         viewModelScope.launch {
             try {
                 _reqAuthResponse.postValue(Resource.loading(null))
-                repository.auth(_username.value,_password.value).let {
+                repository.authV2(_username.value,_password.value).let {
                     if (it.isSuccessful){
                         _reqAuthResponse.postValue(Resource.success(it.body()))
                     } else {
-                        val type = object : TypeToken<ResponseAuth>() {}.type
-                        var errorResponse: ResponseAuth? = null
-                        try {
-                            errorResponse = Gson().fromJson(it.errorBody()?.charStream(), type)
-                        } catch(e: Exception) {
-                            e.printStackTrace()
-                        }
-                        _reqAuthResponse.postValue(Resource.error(it.errorBody().toString(), errorResponse))
+//                        val type = object : TypeToken<ResponseAuth>() {}.type
+//                        var errorResponse: ResponseAuth? = null
+//                        try {
+//                            errorResponse = Gson().fromJson(it.errorBody()?.charStream(), type)
+//                        } catch(e: Exception) {
+//                            e.printStackTrace()
+//                        }
+//                        _reqAuthResponse.postValue(Resource.error(it.errorBody().toString(), errorResponse))
                     }
                 }
             }catch (e: Exception){
