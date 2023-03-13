@@ -3,7 +3,7 @@ package id.co.ptn.hungrystock.models.main.home
      val title: String,
      val description: String,
      val speaker: String,
-     val date: String,
+     val date: Long,
      val startAt: String,
      val endAt: String,
      val cover: String,

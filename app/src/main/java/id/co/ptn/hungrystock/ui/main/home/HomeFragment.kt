@@ -98,40 +98,46 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun initData(data: ResponseEventsData) {
-        try {
-            val headlineEvent = data.headlineEvent
-            val upe: MutableList<UpcomingEvent>  = mutableListOf()
-            upe.add(0,
-                UpcomingEvent(
-                    headlineEvent.title.toString(),
-                    headlineEvent.content.toString(),
-                    headlineEvent.speaker.toString(),
-                    headlineEvent.event_date.toString(),
-                    headlineEvent.event_hour_start.toString(),
-                    headlineEvent.event_hour_end.toString(),
-                    headlineEvent.photo_url.toString(),
-                    headlineEvent.zoom_link.toString()))
-            viewModel?.setUpcomingEvents(upe)
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
+    private fun initData(data: MutableList<ResponseEventsData>) {
 
-        try {
-            val pe: MutableList<PastEvent>  = mutableListOf()
-            data.events.data.forEachIndexed { index, eventData ->
-                pe.add(index, PastEvent(
-                    eventData.slug.toString(),
-                    eventData.title.toString(),
-                    eventData.speaker.toString(),
-                    eventData.event_date.toString(),
-                    eventData.event_hour_start.toString(),
-                    eventData.event_hour_end.toString(),
-                    eventData.zoom_link.toString()))
+        val pe: MutableList<PastEvent>  = mutableListOf()
+        data.forEachIndexed { index, responseEventsData ->
+            if (index == 0){
+                try {
+                    val upe: MutableList<UpcomingEvent>  = mutableListOf()
+                    upe.add(UpcomingEvent(
+                            responseEventsData.title ?: "",
+                            responseEventsData.description ?: "",
+                            responseEventsData.speakers ?: "",
+                        (responseEventsData.date_from ?: 0) * 1000,
+//                            responseEventsData.event_hour_start.toString(),
+//                            responseEventsData.event_hour_end.toString(),
+                            "12.00",
+                            "14.00",
+                            responseEventsData.image_file ?: "",
+                            responseEventsData.zoom_link ?: ""))
+                    viewModel?.setUpcomingEvents(upe)
+                }catch (e: Exception){
+                    e.printStackTrace()
+                }
+            } else {
+                try {
+                    pe.add(PastEvent(
+                        responseEventsData.description.toString(),
+                        responseEventsData.title.toString(),
+                        responseEventsData.speakers.toString(),
+                        (responseEventsData.date_from ?: 0) * 1000,
+//                        responseEventsData.event_hour_start.toString(),
+//                        responseEventsData.event_hour_end.toString(),
+//                        "2 Februari 2023",
+                        "12.00",
+                        "14.00",
+                        responseEventsData.zoom_link.toString()))
+                    viewModel?.setPastEvents(pe)
+                }catch (e: Exception){
+                    e.printStackTrace()
+                }
             }
-            viewModel?.setPastEvents(pe)
-        }catch (e: Exception){
-            e.printStackTrace()
         }
 
         val h: MutableList<Event>  = mutableListOf()
@@ -149,7 +155,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setNextData(data: ResponseEventData) {
-        try {
+       /* try {
             val pe: MutableList<PastEvent>  = mutableListOf()
             data.events.data.forEachIndexed { index, eventData ->
                 pe.add(index, PastEvent(
@@ -167,7 +173,7 @@ class HomeFragment : BaseFragment() {
             }
         }catch (e: Exception){
             e.printStackTrace()
-        }
+        }*/
     }
 
     private fun emptyState() {
@@ -197,7 +203,13 @@ class HomeFragment : BaseFragment() {
                 Status.SUCCESS -> {
                     binding.progressBar.visibility = View.GONE
                     binding.swipeRefresh.isRefreshing = false
-                    initData()
+                    val data = it?.data?.data ?: mutableListOf()
+                    if (data.isNotEmpty()){
+                        initData(data as MutableList<ResponseEventsData>)
+                        initList()
+                    } else {
+                        emptyState()
+                    }
 //                    it.data?.data?.let { data ->
 //                        data.events.next_page_url?.let { _ ->
 //                            data.events.current_page?.let { cp -> viewModel?.setNextPage((cp+1).toString()) }

@@ -113,7 +113,7 @@ class LearningViewModel @Inject constructor(private val repository: AppRepositor
 
     fun apiGetLearnings(k: String, c: String, y: String, m: String, ot: String) {
         viewModelScope.launch {
-            try {
+            /*try {
                 _reqLearningResponse.postValue(Resource.loading(null))
                 repository.getLearnings(k, c, y, m, ot).let {
                     if (it.isSuccessful){
@@ -131,7 +131,7 @@ class LearningViewModel @Inject constructor(private val repository: AppRepositor
                 }
             }catch (e: Exception){
                 e.printStackTrace()
-            }
+            }*/
         }
     }
 

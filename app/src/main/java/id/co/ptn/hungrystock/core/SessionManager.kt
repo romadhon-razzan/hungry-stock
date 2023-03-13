@@ -5,7 +5,6 @@ import androidx.core.content.edit
 import com.google.gson.Gson
 import id.co.ptn.hungrystock.models.User
 import id.co.ptn.hungrystock.models.auth.ResponseAuthDataV2
-import id.co.ptn.hungrystock.models.auth.ResponseAuthV2
 
 private const val USER_PREFERENCES_NAME = "user_preferences"
 

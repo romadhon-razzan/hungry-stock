@@ -102,7 +102,8 @@ class LearningDetailActivity : BaseActivity() {
                         learning.slug.toString(),
                         learning.title.toString(),
                         learning.speaker.toString(),
-                        learning.event_date.toString(),
+//                        learning.event_date.toString(),
+                        0,
                         learning.event_hour_start.toString(),
                         learning.event_hour_end.toString(),
                         learning.zoom_link.toString())

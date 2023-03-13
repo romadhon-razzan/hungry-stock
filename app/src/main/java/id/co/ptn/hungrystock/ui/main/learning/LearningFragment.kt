@@ -100,7 +100,7 @@ class LearningFragment : BaseFragment() {
                     if (!User.isExpired(childFragmentManager,sessionManager?.user?.membership_end_at ?: "")){
                         val intent =  router.toLearningDetail()
                         try {
-                            val event = PastEvent(learning.slug!!, learning.title!!, learning.speaker!!, learning.event_date!!, learning.event_hour_start!!, learning.event_hour_end!!, learning.video_url!!)
+                            val event = PastEvent(learning.slug!!, learning.title!!, learning.speaker!!, 0, learning.event_hour_start!!, learning.event_hour_end!!, learning.video_url!!)
                             intent.putExtra("event", Gson().toJson(event))
                         }catch (e: Exception){
                             e.printStackTrace()
