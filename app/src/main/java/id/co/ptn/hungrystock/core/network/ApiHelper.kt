@@ -5,6 +5,7 @@ import id.co.ptn.hungrystock.models.auth.ResponseAuth
 import id.co.ptn.hungrystock.models.auth.ResponseAuthV2
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
+import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
 import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
@@ -18,6 +19,9 @@ interface ApiHelper {
 //    suspend fun getDrinkByFirstLetter(s: String): Response<DrinkResponse>
     suspend fun otp(): Response<ResponseOtp>
     suspend fun authV2(username: String, password: String): Response<ResponseAuthV2>
+    suspend fun events(customerId: String): Response<ResponseEvents>
+
+
     suspend fun auth(nt: String, p: String): Response<ResponseAuth>
     suspend fun resetPassword(p: String): Response<ResponsePassword>
     suspend fun registerStepOne(

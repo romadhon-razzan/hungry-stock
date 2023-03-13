@@ -1,6 +1,7 @@
 package id.co.ptn.hungrystock.ui.main.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +16,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseFragment
 import id.co.ptn.hungrystock.bases.EmptyStateFragment
+import id.co.ptn.hungrystock.config.ENV
+import id.co.ptn.hungrystock.config.TOKEN
+import id.co.ptn.hungrystock.core.network.RunningServiceType
+import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.HomeFragmentBinding
 import id.co.ptn.hungrystock.models.User
-import id.co.ptn.hungrystock.models.main.home.Event
-import id.co.ptn.hungrystock.models.main.home.PastEvent
-import id.co.ptn.hungrystock.models.main.home.ResponseEventData
-import id.co.ptn.hungrystock.models.main.home.UpcomingEvent
+import id.co.ptn.hungrystock.models.main.home.*
 import id.co.ptn.hungrystock.ui.main.home.adapters.EventListAdapter
+import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Status
 
 @AndroidEntryPoint
@@ -54,7 +57,9 @@ class HomeFragment : BaseFragment() {
     private fun init() {
         initListener()
         setObserve()
-        apiGetHome()
+
+        running_service = RunningServiceType.EVENT
+        apiGetOtp()
     }
 
     private fun initListener() {
@@ -93,7 +98,7 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun initData(data: ResponseEventData) {
+    private fun initData(data: ResponseEventsData) {
         try {
             val headlineEvent = data.headlineEvent
             val upe: MutableList<UpcomingEvent>  = mutableListOf()
@@ -178,19 +183,29 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setObserve() {
+        otpViewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
+            if (running_service == RunningServiceType.EVENT){
+                TOKEN = "${HashUtils.hash256Events("customer_id=${sessionManager?.authData?.code ?: ""}")}.${ENV.userKey()}.${it?.data?.data ?: ""}"
+                Log.d("access_token", TOKEN)
+                apiGetHome()
+            } else if (running_service == RunningServiceType.EVENT_NEXT) {
+                apiGetNextEvent()
+            }
+        }
         viewModel?.reqHomeResponse()?.observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {
                     binding.progressBar.visibility = View.GONE
                     binding.swipeRefresh.isRefreshing = false
-                    it.data?.data?.let { data ->
-                        data.events.next_page_url?.let { _ ->
-                            data.events.current_page?.let { cp -> viewModel?.setNextPage((cp+1).toString()) }
-                            viewModel?.setCanLoadNext(true)
-                        } ?: viewModel?.setCanLoadNext(false)
-                        initData(data)
-                        initList()
-                    } ?: emptyState()
+                    initData()
+//                    it.data?.data?.let { data ->
+//                        data.events.next_page_url?.let { _ ->
+//                            data.events.current_page?.let { cp -> viewModel?.setNextPage((cp+1).toString()) }
+//                            viewModel?.setCanLoadNext(true)
+//                        } ?: viewModel?.setCanLoadNext(false)
+//                        initData(data)
+//                        initList()
+//                    } ?: emptyState()
                 }
                 Status.LOADING -> {
                     binding.progressBar.visibility = View.VISIBLE
@@ -231,8 +246,12 @@ class HomeFragment : BaseFragment() {
      * Api
      * */
 
+    private fun apiGetOtp() {
+        otpViewModel?.apiGetOtp()
+    }
+
     private fun apiGetHome() {
-        viewModel?.apiGetHome()
+        viewModel?.apiGetHome(sessionManager)
     }
 
     private fun apiGetNextEvent() {

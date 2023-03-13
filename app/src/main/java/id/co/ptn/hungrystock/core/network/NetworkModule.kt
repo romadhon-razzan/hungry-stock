@@ -1,5 +1,6 @@
 package id.co.ptn.hungrystock.core.network
 
+import android.util.Log
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,6 +22,7 @@ class NetworkModule {
     fun provideBaseUrl() = ENV.serviceUrl()
 
     private fun getHeader(): Interceptor {
+
         return Interceptor { chain ->
             val request =
                 chain.request().newBuilder()

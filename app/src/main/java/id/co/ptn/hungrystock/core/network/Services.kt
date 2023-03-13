@@ -5,6 +5,7 @@ import id.co.ptn.hungrystock.models.auth.ResponseAuth
 import id.co.ptn.hungrystock.models.auth.ResponseAuthV2
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
+import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
 import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
@@ -25,6 +26,14 @@ interface Services {
         @Field("username") username: String,
         @Field("password") password: String,
     ): Response<ResponseAuthV2>
+
+    @GET("${EVENTS}/customer_id={cId}")
+    suspend fun events(
+        @Path("cId") customer_id: String,
+    ): Response<ResponseEvents>
+
+
+
     @FormUrlEncoded
     @POST(AUTH)
     suspend fun auth(

@@ -10,3 +10,4 @@ const val RESEARCH = "research"
 
 const val OTP = "otp/userkey=8000"
 const val CUSTOMER_LOGIN = "customers-login"
+const val EVENTS = "events"

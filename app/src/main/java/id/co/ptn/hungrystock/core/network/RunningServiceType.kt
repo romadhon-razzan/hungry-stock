@@ -6,5 +6,6 @@ enum class RunningServiceType {
     CUSTOMER_LOGIN,
     REGISTER,
     EVENT,
+    EVENT_NEXT,
     RESEARCH
 }

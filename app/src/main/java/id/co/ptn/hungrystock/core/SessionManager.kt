@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.core.content.edit
 import com.google.gson.Gson
 import id.co.ptn.hungrystock.models.User
+import id.co.ptn.hungrystock.models.auth.ResponseAuthDataV2
+import id.co.ptn.hungrystock.models.auth.ResponseAuthV2
 
 private const val USER_PREFERENCES_NAME = "user_preferences"
 
@@ -17,10 +19,14 @@ class SessionManager private constructor(context: Context) {
         context.applicationContext.getSharedPreferences(USER_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
 
-    val authData: String
+    val authData: ResponseAuthDataV2
         get() {
             val result = sharedPreferences.getString(KEY_AUTH_DATA, "")
-            return result ?: ""
+            return try {
+                Gson().fromJson(result, ResponseAuthDataV2::class.java)
+            } catch (e: Exception){
+                ResponseAuthDataV2("","","","")
+            }
         }
 
     fun setAuthData(authData: String) {
