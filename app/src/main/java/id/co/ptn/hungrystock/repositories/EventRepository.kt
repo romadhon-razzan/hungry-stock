@@ -6,5 +6,5 @@ import okhttp3.RequestBody
 import javax.inject.Inject
 
 class EventRepository @Inject constructor(private val apiHelper: ApiHelper) {
-    suspend fun getEvent(customerId: String) =  apiHelper.events(customerId)
+    suspend fun getEvent(param: String) =  apiHelper.events(param)
 }

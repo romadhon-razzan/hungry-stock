@@ -31,8 +31,8 @@ class HomeViewModel @Inject constructor(private val repository: EventRepository)
     private var _reqHomeResponse: MutableLiveData<Resource<ResponseEvents>> = MutableLiveData()
     fun reqHomeResponse(): MutableLiveData<Resource<ResponseEvents>> = _reqHomeResponse
 
-    private var _reqNextEventResponse: MutableLiveData<Resource<ResponseEvent>> = MutableLiveData()
-    fun reqNextEventResponse(): MutableLiveData<Resource<ResponseEvent>> = _reqNextEventResponse
+    private var _reqNextEventResponse: MutableLiveData<Resource<ResponseEvents>> = MutableLiveData()
+    fun reqNextEventResponse(): MutableLiveData<Resource<ResponseEvents>> = _reqNextEventResponse
 
     private val _loadingNext = MutableLiveData(false)
     val loadingNext: LiveData<Boolean> = _loadingNext
@@ -60,7 +60,8 @@ class HomeViewModel @Inject constructor(private val repository: EventRepository)
         viewModelScope.launch {
             try {
                 _reqHomeResponse.postValue(Resource.loading(null))
-                repository.getEvent(sessionManager?.authData?.code ?: "").let {
+                val param = "customer_id=${sessionManager?.authData?.code ?: ""}"
+                repository.getEvent(param).let {
                     if (it.isSuccessful){
                         _reqHomeResponse.postValue(Resource.success(it.body()))
                     } else {
@@ -73,25 +74,19 @@ class HomeViewModel @Inject constructor(private val repository: EventRepository)
         }
     }
 
-    fun apiGetNextEvent(p: String) {
-        Log.d("Page", p)
+    fun apiGetNextEvent(sessionManager: SessionManager?) {
         viewModelScope.launch {
             try {
                 _reqNextEventResponse.postValue(Resource.loading(null))
-//                repository.getNextEvent(p).let {
-//                    if (it.isSuccessful){
-//                        _reqNextEventResponse.postValue(Resource.success(it.body()))
-//                    } else {
-//                        val type = object : TypeToken<ResponseEvent>() {}.type
-//                        var errorResponse: ResponseEvent? = null
-//                        try {
-//                            errorResponse = Gson().fromJson(it.errorBody()?.charStream(), type)
-//                        } catch(e: Exception) {
-//                            e.printStackTrace()
-//                        }
-//                        _reqNextEventResponse.postValue(Resource.error(it.errorBody().toString(), errorResponse))
-//                    }
-//                }
+                val param = "customer_id=${sessionManager?.authData?.code ?: ""}&offset=${nextPage}"
+                repository.getEvent(param).let {
+                    if (it.isSuccessful){
+                        _reqNextEventResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        //
+                        _reqNextEventResponse.postValue(Resource.error(it.errorBody().toString(), null))
+                    }
+                }
             }catch (e: Exception){
                 e.printStackTrace()
             }

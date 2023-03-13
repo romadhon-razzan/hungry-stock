@@ -19,7 +19,7 @@ interface ApiHelper {
 //    suspend fun getDrinkByFirstLetter(s: String): Response<DrinkResponse>
     suspend fun otp(): Response<ResponseOtp>
     suspend fun authV2(username: String, password: String): Response<ResponseAuthV2>
-    suspend fun events(customerId: String): Response<ResponseEvents>
+    suspend fun events(param: String): Response<ResponseEvents>
 
 
     suspend fun auth(nt: String, p: String): Response<ResponseAuth>

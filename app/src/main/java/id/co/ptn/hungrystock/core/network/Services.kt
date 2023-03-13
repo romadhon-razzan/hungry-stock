@@ -27,9 +27,9 @@ interface Services {
         @Field("password") password: String,
     ): Response<ResponseAuthV2>
 
-    @GET("${EVENTS}/customer_id={cId}")
+    @GET("${EVENTS}/{param}")
     suspend fun events(
-        @Path("cId") customer_id: String,
+        @Path("param") param: String,
     ): Response<ResponseEvents>
 
 

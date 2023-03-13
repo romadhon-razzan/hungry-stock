@@ -11,7 +11,19 @@ ResponseEvents (
     @SerializedName("rows_per_page" ) var rows_per_page  : String?         = null,
     @SerializedName("total_pages"   ) var total_pages   : Int?            = null,
     @SerializedName("total_rows"    ) var total_rows    : Int?            = null
-)
+) {
+    companion object {
+        fun getNextPage(responseEvents: ResponseEvents): Int {
+            val offset = responseEvents.offset ?: 0
+            return offset + 1
+        }
+        fun canLoadNext(responseEvents: ResponseEvents): Boolean{
+            val offset = responseEvents.offset ?: 0
+            val totalPages = responseEvents.total_pages ?: 0
+            return offset < totalPages
+        }
+    }
+}
 
 data class ResponseEventsData (
     @SerializedName("key"           ) var key          : String?  = null,

@@ -21,8 +21,7 @@ class EventListAdapter(private val items: MutableList<ResponseEventsData>,
     private lateinit var context: Context
 
     fun updatePastEvent(positionStart: Int, total: Int) {
-//        pastEventListAdapter.notifyItemInserted(positionStart)
-//        pastEventHolder.binding.recyclerView.smoothScrollToPosition(positionStart+2)
+        notifyItemRangeInserted(positionStart, total)
     }
 
     open inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
