@@ -1,6 +1,7 @@
 package id.co.ptn.hungrystock.ui.main.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +27,8 @@ import id.co.ptn.hungrystock.models.main.home.*
 import id.co.ptn.hungrystock.ui.main.home.adapters.EventListAdapter
 import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Status
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {
@@ -127,10 +131,18 @@ class HomeFragment : BaseFragment() {
         otpViewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
             if (running_service == RunningServiceType.EVENT){
                 TOKEN = "${HashUtils.hash256Events("customer_id=${sessionManager?.authData?.code ?: ""}")}.${ENV.userKey()}.${it.data?.data ?: ""}"
-                viewModel?.apiGetHome(sessionManager)
+                Log.d("access_token", TOKEN)
+                lifecycleScope.launch {
+                    delay(500)
+                    viewModel?.apiGetHome(sessionManager)
+                }
             } else if (running_service == RunningServiceType.EVENT_NEXT) {
                 TOKEN = "${HashUtils.hash256Events("customer_id=${sessionManager?.authData?.code ?: ""}&offset=${viewModel?.getNextPage()}")}.${ENV.userKey()}.${it.data?.data ?: ""}"
-                viewModel?.apiGetNextEvent(sessionManager)
+                Log.d("access_token", TOKEN)
+                lifecycleScope.launch {
+                    delay(500)
+                    viewModel?.apiGetNextEvent(sessionManager)
+                }
             }
         }
         viewModel?.reqHomeResponse()?.observe(viewLifecycleOwner){
