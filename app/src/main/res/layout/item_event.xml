@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large"
+        android:paddingStart="@dimen/normal2"
+        android:paddingEnd="@dimen/normal2"
+        android:orientation="vertical"
+        android:background="@color/background">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/container_upcoming_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="264dp"
+                app:cardCornerRadius="14dp">
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/img_sample_event"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small1"
+                android:layout_marginBottom="@dimen/small"
+                android:fontFamily="@font/ft_barlow_regular"
+                android:textSize="@dimen/font_small"
+                android:textColor="@color/white_70"
+                android:text="Event yang akan datang"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_upcoming_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/small"
+                android:fontFamily="@font/ft_coolvetica"
+                android:textSize="@dimen/font_large1_1"
+                android:textColor="@color/secondary"
+                android:text="Temu Emiten: BSDE &amp; DMAS"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_upcoming_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ft_barlow_regular"
+                android:textSize="@dimen/font_normal1"
+                android:textColor="@color/white"
+                tools:text="Sabtu, 22 Nov 2021. 08:45 - 12:00 WIB"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_upcoming_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ft_barlow_regular"
+                android:textSize="@dimen/font_normal1"
+                android:textColor="@color/white_70"
+                android:singleLine="true"
+                android:visibility="gone"
+                tools:text="Bertemu langsung dengan jajaran direksi dari BSDE &amp; DMAS"/>
+
+            <FrameLayout
+                android:id="@+id/frame_web"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small1"
+                android:layout_marginEnd="@dimen/small1"/>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_upcoming_join"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/large"
+                app:cardBackgroundColor="@color/secondary"
+                app:cardCornerRadius="50dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:fontFamily="@font/ft_barlow_semibold"
+                    android:textSize="@dimen/font_normal1"
+                    android:textColor="@color/black"
+                    android:text="Open Zoom Meeting"/>
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/container_past_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_past_event_sub_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_24"
+                style="@style/Heading5"
+                android:text="Event yang telah lewat"/>
+
+            <View
+                android:id="@+id/divider_past_event_sub_title"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacing_16"
+                android:layout_marginBottom="@dimen/spacing_16"
+                android:background="@color/white_10"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_past_event_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/small"
+                android:fontFamily="@font/ft_coolvetica"
+                android:textSize="@dimen/font_medium1"
+                android:textColor="@color/white"
+                tools:text="Temu Emiten: BSDE &amp; DMAS"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_past_event_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ft_barlow_regular"
+                android:textSize="@dimen/font_normal1"
+                android:textColor="@color/white"
+                tools:text="Selasa, 9 Nov 2021. 18:30 WIB"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_past_event_speaker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ft_barlow_regular"
+                android:textSize="@dimen/font_normal1"
+                android:textColor="@color/white_70"
+                tools:text="Speakers from HungryStock"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_past_event_join"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/normal1"
+                android:layout_marginBottom="@dimen/large"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/secondary"
+                app:cardBackgroundColor="@color/transparent"
+                app:cardCornerRadius="50dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:fontFamily="@font/ft_barlow_semibold"
+                    android:textSize="@dimen/font_normal1"
+                    android:textColor="@color/secondary"
+                    android:text="Tonton Video"/>
+            </com.google.android.material.card.MaterialCardView>
+
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white_10" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

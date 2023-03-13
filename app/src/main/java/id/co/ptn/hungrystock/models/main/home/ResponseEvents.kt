@@ -25,7 +25,7 @@ data class ResponseEventsData (
     @SerializedName("description"   ) var description  : String?  = null,
     @SerializedName("speakers"      ) var speakers     : String?  = null,
     @SerializedName("date_from"     ) var date_from     : Long?     = null,
-    @SerializedName("date_to"       ) var date_to       : Int?     = null,
+    @SerializedName("date_to"       ) var date_to       : Long?     = null,
     @SerializedName("is_free"       ) var is_free       : String?  = null,
     @SerializedName("zoom_link"     ) var zoom_link     : String?  = null,
     @SerializedName("category_name" ) var category_name : String?  = null,

@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
@@ -72,7 +71,7 @@ class HomeFragment : BaseFragment() {
     private fun initList() {
         binding.frameContainer.visibility = View.GONE
         viewModel?.getEvents()?.let { events ->
-            eventListAdapter = EventListAdapter(events, childFragmentManager, object : EventListAdapter.Listener{
+            eventListAdapter = EventListAdapter(events, object : EventListAdapter.Listener{
                 override fun openConference(url: String) {
                     if (!User.isExpired(childFragmentManager, sessionManager?.user?.membership_end_at ?: "")){
                         openUrlPage(url)
@@ -99,59 +98,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun initData(data: MutableList<ResponseEventsData>) {
-
-        val pe: MutableList<PastEvent>  = mutableListOf()
-        data.forEachIndexed { index, responseEventsData ->
-            if (index == 0){
-                try {
-                    val upe: MutableList<UpcomingEvent>  = mutableListOf()
-                    upe.add(UpcomingEvent(
-                            responseEventsData.title ?: "",
-                            responseEventsData.description ?: "",
-                            responseEventsData.speakers ?: "",
-                        (responseEventsData.date_from ?: 0) * 1000,
-//                            responseEventsData.event_hour_start.toString(),
-//                            responseEventsData.event_hour_end.toString(),
-                            "12.00",
-                            "14.00",
-                            responseEventsData.image_file ?: "",
-                            responseEventsData.zoom_link ?: ""))
-                    viewModel?.setUpcomingEvents(upe)
-                }catch (e: Exception){
-                    e.printStackTrace()
-                }
-            } else {
-                try {
-                    pe.add(PastEvent(
-                        responseEventsData.description.toString(),
-                        responseEventsData.title.toString(),
-                        responseEventsData.speakers.toString(),
-                        (responseEventsData.date_from ?: 0) * 1000,
-//                        responseEventsData.event_hour_start.toString(),
-//                        responseEventsData.event_hour_end.toString(),
-//                        "2 Februari 2023",
-                        "12.00",
-                        "14.00",
-                        responseEventsData.zoom_link.toString()))
-                    viewModel?.setPastEvents(pe)
-                }catch (e: Exception){
-                    e.printStackTrace()
-                }
-            }
-        }
-
-        val h: MutableList<Event>  = mutableListOf()
-
-        viewModel?.getUpcomingEvents()?.let { upEvents ->
-            if (upEvents.isNotEmpty())
-                h.add(0, Event(Event.TYPE_UPCOMING_EVENT, upEvents, mutableListOf()))
-        }
-
-        viewModel?.getPastEvents()?.let { pEvents ->
-            if (pEvents.isNotEmpty())
-                h.add(1, Event(Event.TYPE_PAST_EVENT, mutableListOf(), pEvents))
-        }
-        viewModel?.setEvents(h)
+        viewModel?.setEvents(data)
     }
 
     private fun setNextData(data: ResponseEventData) {

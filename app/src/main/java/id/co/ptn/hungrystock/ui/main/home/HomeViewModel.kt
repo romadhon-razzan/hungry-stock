@@ -15,32 +15,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val repository: EventRepository) : ViewModel() {
-    private var events: MutableList<Event> = mutableListOf()
+    private var events: MutableList<ResponseEventsData> = mutableListOf()
     private var upcomingEvents: MutableList<UpcomingEvent> = mutableListOf()
     private var pastEvents: MutableList<PastEvent> = mutableListOf()
 
-    fun setEvents(events: MutableList<Event>) {
+    fun setEvents(events: MutableList<ResponseEventsData>) {
         this.events = events
     }
 
-    fun getEvents(): MutableList<Event> {
+    fun getEvents(): MutableList<ResponseEventsData> {
         return events
-    }
-
-    fun setUpcomingEvents(events: MutableList<UpcomingEvent>) {
-        this.upcomingEvents = events
-    }
-
-    fun getUpcomingEvents(): MutableList<UpcomingEvent> {
-        return upcomingEvents
-    }
-
-    fun setPastEvents(events: MutableList<PastEvent>) {
-        this.pastEvents = events
-    }
-
-    fun getPastEvents(): MutableList<PastEvent> {
-        return pastEvents
     }
 
 

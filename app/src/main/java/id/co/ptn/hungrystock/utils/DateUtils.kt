@@ -17,8 +17,12 @@ fun getDateMMMMddyyyy(strDate: String): String {
 }
 
 fun getDateMMMMddyyyy(date: Long): String {
-//    val stringToDate: Date? = SimpleDateFormat(yyyyMMdd, Locale.forLanguageTag(indonesianTag)).parse(strDate)
     val simpleDateFormat = SimpleDateFormat("MMMM, dd yyyy", Locale.getDefault() )
+    return simpleDateFormat.format(date)
+}
+
+fun getHHmm(date: Long): String {
+    val simpleDateFormat = SimpleDateFormat("HH:mm", Locale.getDefault() )
     return simpleDateFormat.format(date)
 }
 

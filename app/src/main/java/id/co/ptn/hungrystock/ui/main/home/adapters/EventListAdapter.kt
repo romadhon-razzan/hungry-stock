@@ -5,105 +5,55 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import id.co.ptn.hungrystock.R
-import id.co.ptn.hungrystock.databinding.ItemPastEventListBinding
-import id.co.ptn.hungrystock.databinding.ItemUpcomingEventListBinding
-import id.co.ptn.hungrystock.models.main.home.Event
+import id.co.ptn.hungrystock.databinding.ItemEventBinding
 import id.co.ptn.hungrystock.models.main.home.PastEvent
+import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
 import id.co.ptn.hungrystock.models.main.home.UpcomingEvent
+import id.co.ptn.hungrystock.utils.getDateMMMMddyyyy
+import id.co.ptn.hungrystock.utils.getHHmm
 
-class EventListAdapter(private val items: MutableList<Event>,
-                       private val fragmentManager: FragmentManager,
-private val listener: Listener):
+class EventListAdapter(private val items: MutableList<ResponseEventsData>,
+                        private val listener: Listener):
     RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
     private lateinit var context: Context
-    private lateinit var  pastEventListAdapter: PastEventListAdapter
-    private lateinit var pastEventHolder: PastEventHolder
-
-    companion object {
-        const val TYPE_UPCOMING_EVENT = 0
-        const val TYPE_PAST_EVENT = 1
-    }
 
     fun updatePastEvent(positionStart: Int, total: Int) {
-        pastEventListAdapter.notifyItemInserted(positionStart)
+//        pastEventListAdapter.notifyItemInserted(positionStart)
 //        pastEventHolder.binding.recyclerView.smoothScrollToPosition(positionStart+2)
     }
 
     open inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    inner class UpcomingEventHolder(var binding: ItemUpcomingEventListBinding) : ViewHolder(binding.root) {
-        private lateinit var upcomingEventListAdapter: UpcomingEventListAdapter
-        fun initList(items: MutableList<UpcomingEvent>, context: Context, fragmentManager: FragmentManager, listener: Listener) {
-            upcomingEventListAdapter = UpcomingEventListAdapter(context,items, fragmentManager, object : UpcomingEventListAdapter.Listener{
-                override fun openConference(url: String) {
-                    listener.openConference(url)
-                }
+    inner class EventHolder(var binding: ItemEventBinding) : ViewHolder(binding.root) {
+        fun setView(item: ResponseEventsData, position: Int) {
+            binding.tvUpcomingTitle.text = item.title ?: ""
+            binding.tvUpcomingDate.text = getDateMMMMddyyyy((item.date_from ?: 0) * 1000)
+            binding.tvUpcomingDate.append(" ${getHHmm((item.date_from ?: 0) * 1000)}-${getHHmm((item.date_to ?: 0) * 1000)} WIB")
 
-                override fun openDetailUpcomingEvent(event: UpcomingEvent) {
-                    listener.openDetailUpcomingEvent(event)
-                }
-            })
-            binding.recyclerView.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = upcomingEventListAdapter
-            }
+            binding.tvPastEventSubTitle.visibility = if (position == 1 ) View.VISIBLE else View.GONE
+            binding.dividerPastEventSubTitle.visibility = if (position == 1 ) View.VISIBLE else View.GONE
+            binding.tvPastEventTitle.text = item.title ?: ""
+            binding.tvPastEventDate.text = getDateMMMMddyyyy((item.date_from ?: 0) * 1000)
+            binding.tvPastEventDate.append(" ${getHHmm((item.date_from ?: 0) * 1000)}-${getHHmm((item.date_to ?: 0) * 1000)} WIB")
+            binding.tvPastEventSpeaker.text = item.speakers ?: ""
         }
-    }
-
-    inner class PastEventHolder(var binding: ItemPastEventListBinding) : ViewHolder(binding.root) {
-        var pastEventListAdapter: PastEventListAdapter? = null
-        fun initList(items: MutableList<PastEvent>, context: Context, listener: Listener) {
-            pastEventListAdapter = PastEventListAdapter(items, object : PastEventListAdapter.Listener{
-                override fun openDetailPastEvent(event: PastEvent) {
-                    listener.openDetailPastEvent(event)
-                }
-            })
-            binding.recyclerView.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = pastEventListAdapter
-            }
-        }
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (items[position].type == Event.TYPE_UPCOMING_EVENT)
-            TYPE_UPCOMING_EVENT
-        else TYPE_PAST_EVENT
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
-        return when(viewType) {
-            TYPE_UPCOMING_EVENT -> {
-                val binding: ItemUpcomingEventListBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_upcoming_event_list, parent, false)
-                UpcomingEventHolder(binding)
-            }
-            else -> {
-                val binding: ItemPastEventListBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_past_event_list, parent, false)
-                PastEventHolder(binding)
-            }
-        }
+        val binding: ItemEventBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_event, parent, false)
+        return EventHolder(binding)
 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val element = items[position]
-        when(element.type) {
-            Event.TYPE_UPCOMING_EVENT -> {
-                val viewHolder = holder as UpcomingEventHolder
-                viewHolder.initList(element.upcomingEvents as MutableList<UpcomingEvent>, context, fragmentManager, listener)
-            }
-            else -> {
-                val viewHolder = holder as PastEventHolder
-                pastEventHolder = viewHolder
-                viewHolder.initList(element.pastEvents as MutableList<PastEvent>, context, listener)
-                viewHolder.pastEventListAdapter?.let { pa -> pastEventListAdapter = pa }
-            }
-        }
+        val viewHolder = holder as EventHolder
+        viewHolder.binding.containerUpcomingEvent.visibility = if (position == 0) View.VISIBLE else View.GONE
+        viewHolder.binding.containerPastEvent.visibility = if (position == 0) View.GONE else View.VISIBLE
+        viewHolder.setView(element, position)
     }
 
     override fun getItemCount(): Int {

@@ -20,12 +20,13 @@ import id.co.ptn.hungrystock.databinding.ItemRadioButtonBinding
 import id.co.ptn.hungrystock.databinding.ItemRegistrationStep2Binding
 import id.co.ptn.hungrystock.databinding.ItemUpcomingEventBinding
 import id.co.ptn.hungrystock.models.OnboardPageTwo
+import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
 import id.co.ptn.hungrystock.models.main.home.UpcomingEvent
 import id.co.ptn.hungrystock.models.registration.MainRegistration
 import id.co.ptn.hungrystock.models.registration.RegistrationItem
 import id.co.ptn.hungrystock.utils.getDateMMMMddyyyy
 
-class UpcomingEventListAdapter(private val context: Context, private val items: MutableList<UpcomingEvent>,
+class UpcomingEventListAdapter(private val context: Context, private val items: MutableList<ResponseEventsData>,
                                private val fragmentManager: FragmentManager,
     private val listener: Listener):
     RecyclerView.Adapter<UpcomingEventListAdapter.ViewHolder>() {
@@ -67,7 +68,7 @@ class UpcomingEventListAdapter(private val context: Context, private val items: 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val element = items[position]
-        holder.bind(context, element, fragmentManager, listener)
+//        holder.bind(context, element, fragmentManager, listener)
     }
 
     override fun getItemCount(): Int {
