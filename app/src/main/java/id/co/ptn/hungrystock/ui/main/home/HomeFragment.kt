@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
@@ -74,7 +75,11 @@ class HomeFragment : BaseFragment() {
             eventListAdapter = EventListAdapter(events, object : EventListAdapter.Listener{
                 override fun openConference(url: String) {
                     if (!User.isExpired(childFragmentManager, sessionManager?.user?.membership_end_at ?: "")){
-                        openUrlPage(url)
+                        if (url.isNotEmpty()) {
+                            openUrlPage(url)
+                        } else {
+                            Toast.makeText(requireContext(), "Link belum disiapkan", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
 
@@ -82,7 +87,7 @@ class HomeFragment : BaseFragment() {
 
                 }
 
-                override fun openDetailPastEvent(event: PastEvent) {
+                override fun openDetailPastEvent(event: ResponseEventsData) {
                     if (!User.isExpired(childFragmentManager,sessionManager?.user?.membership_end_at ?: "")){
                         val intent =  router.toLearningDetail()
                         intent.putExtra("event", Gson().toJson(event))

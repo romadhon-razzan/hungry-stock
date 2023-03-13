@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.databinding.ItemEventBinding
 import id.co.ptn.hungrystock.models.main.home.PastEvent
@@ -28,6 +29,7 @@ class EventListAdapter(private val items: MutableList<ResponseEventsData>,
 
     inner class EventHolder(var binding: ItemEventBinding) : ViewHolder(binding.root) {
         fun setView(item: ResponseEventsData, position: Int) {
+            Glide.with(context).load(item.image_file ?: "").into(binding.image)
             binding.tvUpcomingTitle.text = item.title ?: ""
             binding.tvUpcomingDate.text = getDateMMMMddyyyy((item.date_from ?: 0) * 1000)
             binding.tvUpcomingDate.append(" ${getHHmm((item.date_from ?: 0) * 1000)}-${getHHmm((item.date_to ?: 0) * 1000)} WIB")
@@ -54,6 +56,8 @@ class EventListAdapter(private val items: MutableList<ResponseEventsData>,
         viewHolder.binding.containerUpcomingEvent.visibility = if (position == 0) View.VISIBLE else View.GONE
         viewHolder.binding.containerPastEvent.visibility = if (position == 0) View.GONE else View.VISIBLE
         viewHolder.setView(element, position)
+        viewHolder.binding.btnUpcomingJoin.setOnClickListener { listener.openConference(element.zoom_link ?: "") }
+        viewHolder.binding.btnPastEventJoin.setOnClickListener { listener.openDetailPastEvent(element) }
     }
 
     override fun getItemCount(): Int {
@@ -63,6 +67,6 @@ class EventListAdapter(private val items: MutableList<ResponseEventsData>,
     public interface Listener {
         fun openConference(url: String)
         fun openDetailUpcomingEvent(event: UpcomingEvent)
-        fun openDetailPastEvent(event: PastEvent)
+        fun openDetailPastEvent(event: ResponseEventsData)
     }
 }
