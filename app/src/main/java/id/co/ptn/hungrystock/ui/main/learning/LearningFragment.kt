@@ -57,13 +57,12 @@ class LearningFragment : BaseFragment() {
 
     private lateinit var binding: LearningFragmentBinding
     private var viewModel: LearningViewModel? = null
-    private var otpViewModel: OtpViewModel? = null
     private lateinit var learningListAdapter: LearningListAdapter
     private var paginationAdapter: LearningPaginationAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        otpViewModel = ViewModelProvider(requireActivity())[OtpViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[LearningViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -76,7 +75,6 @@ class LearningFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[LearningViewModel::class.java]
         binding.vm = viewModel
         binding.lifecycleOwner = this
         init()
@@ -145,44 +143,46 @@ class LearningFragment : BaseFragment() {
     private fun initPagination() {
         paginationAdapter = LearningPaginationAdapter(viewModel?.getLinks() ?: mutableListOf(), object : LearningPaginationAdapter.LearningListener{
             override fun itemClicked(page: Links, position: Int) {
-                // for inactive page button
-                viewModel?.getLinks()?.forEachIndexed { index, links ->
-                    if (links.active == true){
-                        links.active = false
-                        paginationAdapter?.notifyItemChanged(index)
-                        return@forEachIndexed
+                if (viewModel?.requesting == false){
+                    // for inactive page button
+                    viewModel?.getLinks()?.forEachIndexed { index, links ->
+                        if (links.active == true){
+                            links.active = false
+                            paginationAdapter?.notifyItemChanged(index)
+                            return@forEachIndexed
+                        }
                     }
+
+                    val lastPage = viewModel?.lastPage?.toInt() ?: 0
+                    val currentPage = viewModel?.currentPage ?: "1"
+                    if (page.label?.lowercase()?.contains(Links.previous) == true) {
+                        var prevPage = Links.previousPage(currentPage).toInt()
+                        if (prevPage < 1){
+                            prevPage = 1
+                        }
+
+                        viewModel?.getLinks()?.get(prevPage)?.active = true
+                        paginationAdapter?.notifyItemChanged(prevPage)
+
+                        viewModel?.setNextPage(prevPage.toString())
+                    } else if (page.label?.lowercase()?.contains(Links.next) == true) {
+                        var nextPage = Links.nextPage(currentPage).toInt()
+                        if (nextPage > lastPage) {
+                            nextPage = lastPage
+                        }
+
+                        viewModel?.getLinks()?.get(nextPage)?.active = true
+                        paginationAdapter?.notifyItemChanged(nextPage)
+
+                        viewModel?.setNextPage(nextPage.toString())
+                    } else {
+                        viewModel?.getLinks()?.get(position)?.active = true
+                        paginationAdapter?.notifyItemChanged(position)
+                        viewModel?.setNextPage(page.label ?: "0")
+                    }
+                    viewModel?.currentPage = viewModel?.getNextPage() ?: "1"
+                    apiGetNextLearnings()
                 }
-
-                val lastPage = viewModel?.lastPage?.toInt() ?: 0
-                val currentPage = viewModel?.currentPage ?: "1"
-                if (page.label?.lowercase()?.contains(Links.previous) == true) {
-                    var prevPage = Links.previousPage(currentPage).toInt()
-                    if (prevPage < 1){
-                        prevPage = 1
-                    }
-
-                    viewModel?.getLinks()?.get(prevPage)?.active = true
-                    paginationAdapter?.notifyItemChanged(prevPage)
-
-                    viewModel?.setNextPage(prevPage.toString())
-                } else if (page.label?.lowercase()?.contains(Links.next) == true) {
-                    var nextPage = Links.nextPage(currentPage).toInt()
-                    if (nextPage > lastPage) {
-                        nextPage = lastPage
-                    }
-
-                    viewModel?.getLinks()?.get(nextPage)?.active = true
-                    paginationAdapter?.notifyItemChanged(nextPage)
-
-                    viewModel?.setNextPage(nextPage.toString())
-                } else {
-                    viewModel?.getLinks()?.get(position)?.active = true
-                    paginationAdapter?.notifyItemChanged(position)
-                    viewModel?.setNextPage(page.label ?: "0")
-                }
-                viewModel?.currentPage = viewModel?.getNextPage() ?: "1"
-                apiGetNextLearnings()
             }
         })
         binding.rvPagination.apply {
@@ -211,7 +211,7 @@ class LearningFragment : BaseFragment() {
                 }
             }
             initList()
-            initPagination()
+//            initPagination()
             binding.nestedScrollView.smoothScrollTo(0,0)
         }catch (e: Exception){
             e.printStackTrace()
@@ -330,7 +330,7 @@ class LearningFragment : BaseFragment() {
 
 
     private fun setObserve() {
-        otpViewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
+        viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
             if (running_service == RunningServiceType.EVENT){
                 TOKEN = "${HashUtils.hash256Events("customer_id=${sessionManager?.authData?.code ?: ""}")}.${ENV.userKey()}.${it.data?.data ?: ""}"
                 Log.d("access_token", TOKEN)
@@ -356,7 +356,6 @@ class LearningFragment : BaseFragment() {
                         initData()
                         viewModel?.setLinks(data.total_pages ?: 0)
                         viewModel?.setNextPage(ResponseEvents.getNextPage(data).toString())
-                        viewModel?.setCanLoadNext(ResponseEvents.canLoadNext(data))
                     } ?: emptyState()
                 }
                 Status.LOADING ->{ binding.progressBar.visibility = View.VISIBLE}
@@ -368,14 +367,11 @@ class LearningFragment : BaseFragment() {
         }
 
         viewModel?.reqNextLearningResponse()?.observe(viewLifecycleOwner){
+            viewModel?.requesting = false
             when(it.status) {
                 Status.SUCCESS ->{
                     binding.progressBar.visibility = View.GONE
-                    viewModel?.setLoadingNext(false)
                     it.data?.data?.let {data ->
-//                        data.learnings.links.let { links ->
-//                            viewModel?.setLinks(links as MutableList<Links>)
-//                        }
                         setNextData()
                     }
                 }
@@ -394,7 +390,7 @@ class LearningFragment : BaseFragment() {
      * Api
      * */
     private fun apiGetOtp() {
-        otpViewModel?.apiGetOtp()
+        viewModel?.apiGetOtp()
     }
     private fun apiGetLearnings() {
         running_service = RunningServiceType.EVENT
@@ -402,6 +398,7 @@ class LearningFragment : BaseFragment() {
     }
 
     private fun apiGetNextLearnings() {
+        viewModel?.requesting = true
         running_service = RunningServiceType.EVENT_NEXT
         apiGetOtp()
     }

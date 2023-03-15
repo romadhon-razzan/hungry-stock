@@ -10,8 +10,10 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
+import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.models.Links
+import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
@@ -20,6 +22,7 @@ import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
 import id.co.ptn.hungrystock.repositories.AppRepository
 import id.co.ptn.hungrystock.repositories.EventRepository
+import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Resource
 import id.co.ptn.hungrystock.utils.currentYear
 import kotlinx.coroutines.launch
@@ -91,24 +94,14 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
         abjad = a
     }
 
+    private var _reqOtpResponse: MutableLiveData<Resource<ResponseOtp>> = MutableLiveData()
+    fun reqOtpResponse(): MutableLiveData<Resource<ResponseOtp>> = _reqOtpResponse
     private var _reqLearningResponse: MutableLiveData<Resource<ResponseEvents>> = MutableLiveData()
     fun reqLearningResponse(): MutableLiveData<Resource<ResponseEvents>> = _reqLearningResponse
 
     private var _reqNextLearningResponse: MutableLiveData<Resource<ResponseEvents>> = MutableLiveData()
     fun reqNextLearningResponse(): MutableLiveData<Resource<ResponseEvents>> = _reqNextLearningResponse
 
-
-    private val _loadingNext = MutableLiveData(false)
-    val loadingNext: LiveData<Boolean> = _loadingNext
-    fun setLoadingNext(value: Boolean) {
-        _loadingNext.value = value
-    }
-
-    private val _canLoadNext = MutableLiveData(false)
-    val canLoadNext: LiveData<Boolean> = _canLoadNext
-    fun setCanLoadNext(value: Boolean) {
-        _canLoadNext.value = value
-    }
 
     private var nextPage = ""
     fun getNextPage(): String = nextPage
@@ -117,12 +110,30 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
     }
     var lastPage = ""
     var currentPage ="1"
-
+    var requesting = false
 
 
     /**
      * Api
      * */
+
+    fun apiGetOtp() {
+        viewModelScope.launch {
+            try {
+                TOKEN = HashUtils.hash256Otp()
+                _reqOtpResponse.postValue(Resource.loading(null))
+                repository.otp().let {
+                    if (it.isSuccessful){
+                        _reqOtpResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        //
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
 
     fun apiGetLearnings(sessionManager: SessionManager?, k: String, c: String, y: String, m: String, ot: String) {
         viewModelScope.launch {

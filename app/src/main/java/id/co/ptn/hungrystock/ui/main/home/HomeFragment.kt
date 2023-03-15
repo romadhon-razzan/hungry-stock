@@ -40,13 +40,11 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var binding: HomeFragmentBinding
     private var viewModel: HomeViewModel? = null
-    private var otpViewModel: OtpViewModel? = null
     private lateinit var eventListAdapter: EventListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
-        otpViewModel = ViewModelProvider(requireActivity())[OtpViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -135,7 +133,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setObserve() {
-        otpViewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
+        viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
             if (running_service == RunningServiceType.EVENT){
                 TOKEN = "${HashUtils.hash256Events("customer_id=${sessionManager?.authData?.code ?: ""}")}.${ENV.userKey()}.${it.data?.data ?: ""}"
                 Log.d("access_token", TOKEN)
@@ -206,7 +204,7 @@ class HomeFragment : BaseFragment() {
      * */
 
     private fun apiGetOtp() {
-        otpViewModel?.apiGetOtp()
+        viewModel?.apiGetOtp()
     }
 
     private fun apiGetHome() {
