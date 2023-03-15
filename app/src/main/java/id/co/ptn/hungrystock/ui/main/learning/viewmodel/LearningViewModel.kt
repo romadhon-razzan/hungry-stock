@@ -135,12 +135,11 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
         }
     }
 
-    fun apiGetLearnings(sessionManager: SessionManager?, k: String, c: String, y: String, m: String, ot: String) {
+    fun apiGetLearnings(parameter: String) {
         viewModelScope.launch {
             try {
                 _reqLearningResponse.postValue(Resource.loading(null))
-                val param = "customer_id=${sessionManager?.authData?.code ?: ""}"
-                repository.getEvent(param).let {
+                repository.getEvent(parameter).let {
                     if (it.isSuccessful){
                         _reqLearningResponse.postValue(Resource.success(it.body()))
                     } else {
@@ -153,12 +152,11 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
         }
     }
 
-    fun apiGetNextLearnings(sessionManager: SessionManager?,p: String, k: String, c: String, y: String, m: String, ot: String) {
+    fun apiGetNextLearnings(parameter: String) {
         viewModelScope.launch {
             try {
                 _reqNextLearningResponse.postValue(Resource.loading(null))
-                val param = "customer_id=${sessionManager?.authData?.code ?: ""}&offset=${nextPage}"
-                repository.getEvent(param).let {
+                repository.getEvent(parameter).let {
                     if (it.isSuccessful){
                         _reqNextLearningResponse.postValue(Resource.success(it.body()))
                     } else {

@@ -17,10 +17,8 @@ class LearningListAdapter(private val items: MutableList<ResponseEventsData>, pr
     class ViewHolder(var binding: ItemLearningBinding, var context: Context) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ResponseEventsData) {
             item.image_file.let { Glide.with(context).load(it).into(binding.image) }
-            item.title.let { binding.tvTitle.text = it }
-            item.date_from?.let {
-                binding.tvSubTitle.text = getDateMMMMddyyyy(it)
-            }
+            binding.tvTitle.text = item.title ?: ""
+            binding.tvSubTitle.text = getDateMMMMddyyyy((item.date_from ?: 0) * 1000)
         }
     }
 

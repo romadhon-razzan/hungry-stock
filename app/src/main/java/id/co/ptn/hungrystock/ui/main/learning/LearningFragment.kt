@@ -10,8 +10,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.*
@@ -33,11 +31,8 @@ import id.co.ptn.hungrystock.databinding.LearningFragmentBinding
 import id.co.ptn.hungrystock.models.Links
 import id.co.ptn.hungrystock.models.User
 import id.co.ptn.hungrystock.models.main.home.PastEvent
-import id.co.ptn.hungrystock.models.main.home.ResponseEventData
 import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
-import id.co.ptn.hungrystock.models.main.learning.Learning
-import id.co.ptn.hungrystock.ui.general.view_model.OtpViewModel
 import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningListAdapter
 import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningPaginationAdapter
 import id.co.ptn.hungrystock.ui.main.learning.dialogs.FilteLearningPageDialog
@@ -211,7 +206,6 @@ class LearningFragment : BaseFragment() {
                 }
             }
             initList()
-//            initPagination()
             binding.nestedScrollView.smoothScrollTo(0,0)
         }catch (e: Exception){
             e.printStackTrace()
@@ -332,18 +326,33 @@ class LearningFragment : BaseFragment() {
     private fun setObserve() {
         viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
             if (running_service == RunningServiceType.EVENT){
-                TOKEN = "${HashUtils.hash256Events("customer_id=${sessionManager?.authData?.code ?: ""}")}.${ENV.userKey()}.${it.data?.data ?: ""}"
+                val parameter = StringBuilder()
+                parameter.append("customer_id=${sessionManager?.authData?.code ?: ""}")
+                if (viewModel?.getYear()?.isNotEmpty() == true){
+                    parameter.append("&year=${viewModel?.getYear()}")
+                }
+                if (viewModel?.getAbjad()?.isNotEmpty() ==  true){
+                    parameter.append("&order_by=title")
+                    if (viewModel?.getAbjad() == "A-Z"){
+                        parameter.append("&order_type=0") // ASC
+                    } else {
+                        parameter.append("&order_type=1") // DESC
+                    }
+                }
+                TOKEN = "${HashUtils.hash256Events(parameter.toString())}.${ENV.userKey()}.${it.data?.data ?: ""}"
                 Log.d("access_token", TOKEN)
                 lifecycleScope.launch {
                     delay(500)
-                    viewModel?.apiGetLearnings(sessionManager, viewModel?.getKeyword()!!,viewModel?.getCategory()!!,viewModel?.getYear()!!,viewModel?.getMonthId()!!,viewModel?.getAbjad()!!)
+                    viewModel?.apiGetLearnings(parameter.toString())
                 }
             } else if (running_service == RunningServiceType.EVENT_NEXT) {
-                TOKEN = "${HashUtils.hash256Events("customer_id=${sessionManager?.authData?.code ?: ""}&offset=${viewModel?.getNextPage()}")}.${ENV.userKey()}.${it.data?.data ?: ""}"
+                val parameter = StringBuilder()
+                parameter.append("customer_id=${sessionManager?.authData?.code ?: ""}&offset=${viewModel?.getNextPage()}")
+                TOKEN = "${HashUtils.hash256Events(parameter.toString())}.${ENV.userKey()}.${it.data?.data ?: ""}"
                 Log.d("access_token", TOKEN)
                 lifecycleScope.launch {
                     delay(500)
-                    viewModel?.apiGetNextLearnings(sessionManager, viewModel?.getNextPage()!!, viewModel?.getKeyword()!!,viewModel?.getCategory()!!,viewModel?.getYear()!!,viewModel?.getMonthId()!!,viewModel?.getAbjad()!!)
+                    viewModel?.apiGetNextLearnings(parameter.toString())
                 }
             }
         }
