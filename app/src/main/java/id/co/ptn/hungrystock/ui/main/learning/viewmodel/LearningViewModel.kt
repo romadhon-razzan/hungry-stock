@@ -49,6 +49,7 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
             links.add(Links("", "$i", i == 1))
         }
         links.add(Links("", Links.next, false)) // next
+        lastPage = "$totalPage"
     }
     fun getLinks(): MutableList<Links> {
         return links
@@ -115,6 +116,9 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
         nextPage = value
     }
     var lastPage = ""
+    var currentPage ="1"
+
+
 
     /**
      * Api

@@ -145,23 +145,43 @@ class LearningFragment : BaseFragment() {
     private fun initPagination() {
         paginationAdapter = LearningPaginationAdapter(viewModel?.getLinks() ?: mutableListOf(), object : LearningPaginationAdapter.LearningListener{
             override fun itemClicked(page: Links, position: Int) {
+                // for inactive page button
+                viewModel?.getLinks()?.forEachIndexed { index, links ->
+                    if (links.active == true){
+                        links.active = false
+                        paginationAdapter?.notifyItemChanged(index)
+                        return@forEachIndexed
+                    }
+                }
+
                 val lastPage = viewModel?.lastPage?.toInt() ?: 0
-                val currentPage = viewModel?.getNextPage()?.toInt() ?: 0
-                if (page.label?.lowercase()?.contains("sebelumnya") == true) {
-                    var prevPage = Links.previousPage(currentPage.toString()).toInt()
+                val currentPage = viewModel?.currentPage ?: "1"
+                if (page.label?.lowercase()?.contains(Links.previous) == true) {
+                    var prevPage = Links.previousPage(currentPage).toInt()
                     if (prevPage < 1){
                         prevPage = 1
                     }
+
+                    viewModel?.getLinks()?.get(prevPage)?.active = true
+                    paginationAdapter?.notifyItemChanged(prevPage)
+
                     viewModel?.setNextPage(prevPage.toString())
-                } else if (page.label?.lowercase()?.contains("berikutnya") == true) {
-                    var nextPage = Links.nextPage(currentPage.toString()).toInt()
+                } else if (page.label?.lowercase()?.contains(Links.next) == true) {
+                    var nextPage = Links.nextPage(currentPage).toInt()
                     if (nextPage > lastPage) {
                         nextPage = lastPage
                     }
+
+                    viewModel?.getLinks()?.get(nextPage)?.active = true
+                    paginationAdapter?.notifyItemChanged(nextPage)
+
                     viewModel?.setNextPage(nextPage.toString())
                 } else {
+                    viewModel?.getLinks()?.get(position)?.active = true
+                    paginationAdapter?.notifyItemChanged(position)
                     viewModel?.setNextPage(page.label ?: "0")
                 }
+                viewModel?.currentPage = viewModel?.getNextPage() ?: "1"
                 apiGetNextLearnings()
             }
         })
