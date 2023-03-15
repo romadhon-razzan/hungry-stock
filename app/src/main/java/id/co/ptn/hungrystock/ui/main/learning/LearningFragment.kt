@@ -143,33 +143,31 @@ class LearningFragment : BaseFragment() {
     }
 
     private fun initPagination() {
-        viewModel?.getLinks()?.let { links ->
-            paginationAdapter = LearningPaginationAdapter(links, object : LearningPaginationAdapter.LearningListener{
-                override fun itemClicked(page: Links, position: Int) {
-                    val lastPage = viewModel?.lastPage?.toInt() ?: 0
-                    val currentPage = viewModel?.getNextPage()?.toInt() ?: 0
-                    if (page.label?.lowercase()?.contains("sebelumnya") == true) {
-                        var prevPage = Links.previousPage(currentPage.toString()).toInt()
-                        if (prevPage < 1){
-                            prevPage = 1
-                        }
-                        viewModel?.setNextPage(prevPage.toString())
-                    } else if (page.label?.lowercase()?.contains("berikutnya") == true) {
-                        var nextPage = Links.nextPage(currentPage.toString()).toInt()
-                        if (nextPage > lastPage) {
-                            nextPage = lastPage
-                        }
-                        viewModel?.setNextPage(nextPage.toString())
-                    } else {
-                        viewModel?.setNextPage(page.label ?: "0")
+        paginationAdapter = LearningPaginationAdapter(viewModel?.getLinks() ?: mutableListOf(), object : LearningPaginationAdapter.LearningListener{
+            override fun itemClicked(page: Links, position: Int) {
+                val lastPage = viewModel?.lastPage?.toInt() ?: 0
+                val currentPage = viewModel?.getNextPage()?.toInt() ?: 0
+                if (page.label?.lowercase()?.contains("sebelumnya") == true) {
+                    var prevPage = Links.previousPage(currentPage.toString()).toInt()
+                    if (prevPage < 1){
+                        prevPage = 1
                     }
-                    apiGetNextLearnings()
+                    viewModel?.setNextPage(prevPage.toString())
+                } else if (page.label?.lowercase()?.contains("berikutnya") == true) {
+                    var nextPage = Links.nextPage(currentPage.toString()).toInt()
+                    if (nextPage > lastPage) {
+                        nextPage = lastPage
+                    }
+                    viewModel?.setNextPage(nextPage.toString())
+                } else {
+                    viewModel?.setNextPage(page.label ?: "0")
                 }
-            })
-            binding.rvPagination.apply {
-                layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-                adapter = paginationAdapter
+                apiGetNextLearnings()
             }
+        })
+        binding.rvPagination.apply {
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+            adapter = paginationAdapter
         }
     }
 
@@ -333,8 +331,10 @@ class LearningFragment : BaseFragment() {
             when(it.status) {
                 Status.SUCCESS ->{
                     binding.progressBar.visibility = View.GONE
+
                     it.data?.let { data ->
                         initData()
+                        viewModel?.setLinks(data.total_pages ?: 0)
                         viewModel?.setNextPage(ResponseEvents.getNextPage(data).toString())
                         viewModel?.setCanLoadNext(ResponseEvents.canLoadNext(data))
                     } ?: emptyState()

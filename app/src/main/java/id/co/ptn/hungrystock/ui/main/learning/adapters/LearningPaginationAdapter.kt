@@ -28,11 +28,11 @@ class LearningPaginationAdapter(private val items: MutableList<Links>, private v
             item.label?.let {
                 binding.tvValue.text = it
                 when {
-                    it.lowercase().contains("sebelumnya") -> {
+                    it.lowercase().contains(Links.previous) -> {
                         binding.tvValue.visibility = View.GONE
                         binding.icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_prev_arrow))
                     }
-                    it.lowercase().contains("berikutnya") -> {
+                    it.lowercase().contains(Links.next) -> {
                         binding.tvValue.visibility = View.GONE
                         binding.icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_next_arrow))
                     }

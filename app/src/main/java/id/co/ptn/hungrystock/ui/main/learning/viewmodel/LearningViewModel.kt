@@ -42,8 +42,13 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
     }
 
     private var links: MutableList<Links> = mutableListOf()
-    fun setLinks(links: MutableList<Links>) {
-        this.links = links
+    fun setLinks(totalPage: Int) {
+        links.clear()
+        links.add(Links("", Links.previous, false)) // previous
+        for (i in 1..totalPage){
+            links.add(Links("", "$i", i == 1))
+        }
+        links.add(Links("", Links.next, false)) // next
     }
     fun getLinks(): MutableList<Links> {
         return links
