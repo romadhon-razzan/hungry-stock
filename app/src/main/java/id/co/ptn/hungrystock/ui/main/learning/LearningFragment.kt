@@ -16,6 +16,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.*
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,17 +25,28 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseFragment
 import id.co.ptn.hungrystock.bases.EmptyStateFragment
+import id.co.ptn.hungrystock.config.ENV
+import id.co.ptn.hungrystock.config.TOKEN
+import id.co.ptn.hungrystock.core.network.RunningServiceType
+import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.LearningFragmentBinding
 import id.co.ptn.hungrystock.models.Links
 import id.co.ptn.hungrystock.models.User
 import id.co.ptn.hungrystock.models.main.home.PastEvent
 import id.co.ptn.hungrystock.models.main.home.ResponseEventData
+import id.co.ptn.hungrystock.models.main.home.ResponseEvents
+import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
 import id.co.ptn.hungrystock.models.main.learning.Learning
+import id.co.ptn.hungrystock.ui.general.view_model.OtpViewModel
 import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningListAdapter
 import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningPaginationAdapter
 import id.co.ptn.hungrystock.ui.main.learning.dialogs.FilteLearningPageDialog
 import id.co.ptn.hungrystock.ui.main.learning.viewmodel.LearningViewModel
+import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Status
+import id.co.ptn.hungrystock.utils.getHHmm
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LearningFragment : BaseFragment() {
@@ -45,8 +57,14 @@ class LearningFragment : BaseFragment() {
 
     private lateinit var binding: LearningFragmentBinding
     private var viewModel: LearningViewModel? = null
+    private var otpViewModel: OtpViewModel? = null
     private lateinit var learningListAdapter: LearningListAdapter
     private var paginationAdapter: LearningPaginationAdapter? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        otpViewModel = ViewModelProvider(requireActivity())[OtpViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -96,11 +114,17 @@ class LearningFragment : BaseFragment() {
     private fun initList() {
         viewModel?.getLearnings()?.let { learnings ->
             learningListAdapter = LearningListAdapter(learnings, object : LearningListAdapter.LearningListener{
-                override fun itemClicked(learning: Learning) {
+                override fun itemClicked(learning: ResponseEventsData) {
                     if (!User.isExpired(childFragmentManager,sessionManager?.user?.membership_end_at ?: "")){
                         val intent =  router.toLearningDetail()
                         try {
-                            val event = PastEvent(learning.slug!!, learning.title!!, learning.speaker!!, 0, learning.event_hour_start!!, learning.event_hour_end!!, learning.video_url!!)
+                            val event = PastEvent(
+                                learning.description ?: "",
+                                learning.title ?: "",
+                                learning.speakers ?: "", 0,
+                                getHHmm((learning.date_from ?: 0) * 1000),
+                                getHHmm((learning.date_from ?: 0) * 1000),
+                                learning.video_file ?: "")
                             intent.putExtra("event", Gson().toJson(event))
                         }catch (e: Exception){
                             e.printStackTrace()
@@ -152,10 +176,10 @@ class LearningFragment : BaseFragment() {
     private fun initData() {
         viewModel?.getLearnings()?.clear()
         viewModel?.reqLearningResponse()?.value?.let {
-            it.data?.data?.learnings?.data?.let { learnings ->
-                viewModel?.getLearnings()?.addAll(learnings)
+            it.data?.data.let { learnings ->
+                viewModel?.getLearnings()?.addAll(learnings ?: mutableListOf())
                 initPagination()
-            } ?: emptyState()
+            }
         } ?: emptyState()
         initList()
     }
@@ -164,7 +188,7 @@ class LearningFragment : BaseFragment() {
         viewModel?.getLearnings()?.clear()
         try {
             viewModel?.reqNextLearningResponse()?.value?.let {
-                it.data?.data?.learnings?.data?.let { learnings ->
+                it.data?.data?.let { learnings ->
                     viewModel?.getLearnings()?.addAll(learnings)
                 }
             }
@@ -288,22 +312,31 @@ class LearningFragment : BaseFragment() {
 
 
     private fun setObserve() {
+        otpViewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
+            if (running_service == RunningServiceType.EVENT){
+                TOKEN = "${HashUtils.hash256Events("customer_id=${sessionManager?.authData?.code ?: ""}")}.${ENV.userKey()}.${it.data?.data ?: ""}"
+                Log.d("access_token", TOKEN)
+                lifecycleScope.launch {
+                    delay(500)
+                    viewModel?.apiGetLearnings(sessionManager, viewModel?.getKeyword()!!,viewModel?.getCategory()!!,viewModel?.getYear()!!,viewModel?.getMonthId()!!,viewModel?.getAbjad()!!)
+                }
+            } else if (running_service == RunningServiceType.EVENT_NEXT) {
+                TOKEN = "${HashUtils.hash256Events("customer_id=${sessionManager?.authData?.code ?: ""}&offset=${viewModel?.getNextPage()}")}.${ENV.userKey()}.${it.data?.data ?: ""}"
+                Log.d("access_token", TOKEN)
+                lifecycleScope.launch {
+                    delay(500)
+                    viewModel?.apiGetNextLearnings(sessionManager, viewModel?.getNextPage()!!, viewModel?.getKeyword()!!,viewModel?.getCategory()!!,viewModel?.getYear()!!,viewModel?.getMonthId()!!,viewModel?.getAbjad()!!)
+                }
+            }
+        }
         viewModel?.reqLearningResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
                 Status.SUCCESS ->{
                     binding.progressBar.visibility = View.GONE
-
-                    it.data?.data?.let { data ->
-                        viewModel?.lastPage = data.learnings.last_page?.toString() ?: "0"
-                        data.learnings.links.let { links ->
-                            viewModel?.setLinks(links as MutableList<Links>)
-                        }
-                        data.learnings.next_page_url?.let { _ ->
-                            data.learnings.current_page?.let { cp -> viewModel?.setNextPage((cp+1).toString()) }
-                            viewModel?.setCanLoadNext(true)
-                        } ?: viewModel?.setCanLoadNext(false)
-
+                    it.data?.let { data ->
                         initData()
+                        viewModel?.setNextPage(ResponseEvents.getNextPage(data).toString())
+                        viewModel?.setCanLoadNext(ResponseEvents.canLoadNext(data))
                     } ?: emptyState()
                 }
                 Status.LOADING ->{ binding.progressBar.visibility = View.VISIBLE}
@@ -320,9 +353,9 @@ class LearningFragment : BaseFragment() {
                     binding.progressBar.visibility = View.GONE
                     viewModel?.setLoadingNext(false)
                     it.data?.data?.let {data ->
-                        data.learnings.links.let { links ->
-                            viewModel?.setLinks(links as MutableList<Links>)
-                        }
+//                        data.learnings.links.let { links ->
+//                            viewModel?.setLinks(links as MutableList<Links>)
+//                        }
                         setNextData()
                     }
                 }
@@ -340,13 +373,17 @@ class LearningFragment : BaseFragment() {
     /**
      * Api
      * */
-
+    private fun apiGetOtp() {
+        otpViewModel?.apiGetOtp()
+    }
     private fun apiGetLearnings() {
-        viewModel?.apiGetLearnings(viewModel?.getKeyword()!!,viewModel?.getCategory()!!,viewModel?.getYear()!!,viewModel?.getMonthId()!!,viewModel?.getAbjad()!!)
+        running_service = RunningServiceType.EVENT
+        apiGetOtp()
     }
 
     private fun apiGetNextLearnings() {
-        viewModel?.apiGetNextLearnings(viewModel?.getNextPage()!!, viewModel?.getKeyword()!!,viewModel?.getCategory()!!,viewModel?.getYear()!!,viewModel?.getMonthId()!!,viewModel?.getAbjad()!!)
+        running_service = RunningServiceType.EVENT_NEXT
+        apiGetOtp()
     }
 
 }

@@ -10,30 +10,34 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
+import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.models.Links
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
+import id.co.ptn.hungrystock.models.main.home.ResponseEvents
+import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
 import id.co.ptn.hungrystock.models.main.learning.Learning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
 import id.co.ptn.hungrystock.repositories.AppRepository
+import id.co.ptn.hungrystock.repositories.EventRepository
 import id.co.ptn.hungrystock.utils.Resource
 import id.co.ptn.hungrystock.utils.currentYear
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LearningViewModel @Inject constructor(private val repository: AppRepository) : BaseViewModel() {
+class LearningViewModel @Inject constructor(private val repository: EventRepository) : BaseViewModel() {
     private val _sortingLabel = MutableLiveData("")
     val sortingLabel: LiveData<String> = _sortingLabel
     fun setSortingLabel(title: String) {
         _sortingLabel.value = title
     }
 
-    private var learnings: MutableList<Learning> = mutableListOf()
-    fun setLearnings(learnings: MutableList<Learning>) {
+    private var learnings: MutableList<ResponseEventsData> = mutableListOf()
+    fun setLearnings(learnings: MutableList<ResponseEventsData>) {
         this.learnings = learnings
     }
-    fun getLearnings(): MutableList<Learning> {
+    fun getLearnings(): MutableList<ResponseEventsData> {
         return learnings
     }
 
@@ -81,11 +85,11 @@ class LearningViewModel @Inject constructor(private val repository: AppRepositor
         abjad = a
     }
 
-    private var _reqLearningResponse: MutableLiveData<Resource<ResponseLearning>> = MutableLiveData()
-    fun reqLearningResponse(): MutableLiveData<Resource<ResponseLearning>> = _reqLearningResponse
+    private var _reqLearningResponse: MutableLiveData<Resource<ResponseEvents>> = MutableLiveData()
+    fun reqLearningResponse(): MutableLiveData<Resource<ResponseEvents>> = _reqLearningResponse
 
-    private var _reqNextLearningResponse: MutableLiveData<Resource<ResponseLearning>> = MutableLiveData()
-    fun reqNextLearningResponse(): MutableLiveData<Resource<ResponseLearning>> = _reqNextLearningResponse
+    private var _reqNextLearningResponse: MutableLiveData<Resource<ResponseEvents>> = MutableLiveData()
+    fun reqNextLearningResponse(): MutableLiveData<Resource<ResponseEvents>> = _reqNextLearningResponse
 
 
     private val _loadingNext = MutableLiveData(false)
@@ -111,46 +115,35 @@ class LearningViewModel @Inject constructor(private val repository: AppRepositor
      * Api
      * */
 
-    fun apiGetLearnings(k: String, c: String, y: String, m: String, ot: String) {
+    fun apiGetLearnings(sessionManager: SessionManager?, k: String, c: String, y: String, m: String, ot: String) {
         viewModelScope.launch {
-            /*try {
+            try {
                 _reqLearningResponse.postValue(Resource.loading(null))
-                repository.getLearnings(k, c, y, m, ot).let {
+                val param = "customer_id=${sessionManager?.authData?.code ?: ""}"
+                repository.getEvent(param).let {
                     if (it.isSuccessful){
                         _reqLearningResponse.postValue(Resource.success(it.body()))
                     } else {
-                        val type = object : TypeToken<ResponseLearning>() {}.type
-                        var errorResponse: ResponseLearning? = null
-                        try {
-                            errorResponse = Gson().fromJson(it.errorBody()?.charStream(), type)
-                        } catch(e: Exception) {
-                            e.printStackTrace()
-                        }
-                        _reqLearningResponse.postValue(Resource.error(it.errorBody().toString(), errorResponse))
+                        //
                     }
                 }
             }catch (e: Exception){
                 e.printStackTrace()
-            }*/
+            }
         }
     }
 
-    fun apiGetNextLearnings(p: String, k: String, c: String, y: String, m: String, ot: String) {
+    fun apiGetNextLearnings(sessionManager: SessionManager?,p: String, k: String, c: String, y: String, m: String, ot: String) {
         viewModelScope.launch {
             try {
                 _reqNextLearningResponse.postValue(Resource.loading(null))
-                repository.getNextLearnings(p, k, c, y, m, ot).let {
+                val param = "customer_id=${sessionManager?.authData?.code ?: ""}&offset=${nextPage}"
+                repository.getEvent(param).let {
                     if (it.isSuccessful){
                         _reqNextLearningResponse.postValue(Resource.success(it.body()))
                     } else {
-                        val type = object : TypeToken<ResponseLearning>() {}.type
-                        var errorResponse: ResponseLearning? = null
-                        try {
-                            errorResponse = Gson().fromJson(it.errorBody()?.charStream(), type)
-                        } catch(e: Exception) {
-                            e.printStackTrace()
-                        }
-                        _reqNextLearningResponse.postValue(Resource.error(it.errorBody().toString(), errorResponse))
+                        //
+                        _reqNextLearningResponse.postValue(Resource.error(it.errorBody().toString(), null))
                     }
                 }
             }catch (e: Exception){

@@ -24,6 +24,7 @@ import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.HomeFragmentBinding
 import id.co.ptn.hungrystock.models.User
 import id.co.ptn.hungrystock.models.main.home.*
+import id.co.ptn.hungrystock.ui.general.view_model.OtpViewModel
 import id.co.ptn.hungrystock.ui.main.home.adapters.EventListAdapter
 import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Status
@@ -39,7 +40,14 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var binding: HomeFragmentBinding
     private var viewModel: HomeViewModel? = null
+    private var otpViewModel: OtpViewModel? = null
     private lateinit var eventListAdapter: EventListAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
+        otpViewModel = ViewModelProvider(requireActivity())[OtpViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +59,6 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
         binding.vm = viewModel
         binding.lifecycleOwner = this
         init()

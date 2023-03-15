@@ -19,12 +19,10 @@ import id.co.ptn.hungrystock.ui.general.view_model.OtpViewModel
 open class BaseFragment: Fragment() {
     lateinit var router: Router
     var sessionManager: SessionManager? = null
-    var otpViewModel: OtpViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sessionManager = SessionManager.getInstance(requireContext())
-        otpViewModel = ViewModelProvider(requireActivity())[OtpViewModel::class.java]
     }
     override fun onCreateView(
         inflater: LayoutInflater,
