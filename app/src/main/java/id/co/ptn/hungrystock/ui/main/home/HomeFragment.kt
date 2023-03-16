@@ -134,19 +134,29 @@ class HomeFragment : BaseFragment() {
 
     private fun setObserve() {
         viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
-            if (running_service == RunningServiceType.EVENT){
-                TOKEN = "${HashUtils.hash256Events("customer_id=${sessionManager?.authData?.code ?: ""}")}.${ENV.userKey()}.${it.data?.data ?: ""}"
-                Log.d("access_token", TOKEN)
-                lifecycleScope.launch {
-                    delay(500)
-                    viewModel?.apiGetHome(sessionManager)
+            when(it.status) {
+                Status.SUCCESS -> {
+                    if (running_service == RunningServiceType.EVENT){
+                        TOKEN = "${HashUtils.hash256Events("customer_id=${sessionManager?.authData?.code ?: ""}")}.${ENV.userKey()}.${it.data?.data ?: ""}"
+                        Log.d("access_token_event", TOKEN)
+                        lifecycleScope.launch {
+                            delay(500)
+                            viewModel?.apiGetHome(sessionManager)
+                        }
+                    } else if (running_service == RunningServiceType.EVENT_NEXT) {
+                        TOKEN = "${HashUtils.hash256Events("customer_id=${sessionManager?.authData?.code ?: ""}&offset=${viewModel?.getNextPage()}")}.${ENV.userKey()}.${it.data?.data ?: ""}"
+                        Log.d("access_token_next_event", TOKEN)
+                        lifecycleScope.launch {
+                            delay(500)
+                            viewModel?.apiGetNextEvent(sessionManager)
+                        }
+                    }
                 }
-            } else if (running_service == RunningServiceType.EVENT_NEXT) {
-                TOKEN = "${HashUtils.hash256Events("customer_id=${sessionManager?.authData?.code ?: ""}&offset=${viewModel?.getNextPage()}")}.${ENV.userKey()}.${it.data?.data ?: ""}"
-                Log.d("access_token", TOKEN)
-                lifecycleScope.launch {
-                    delay(500)
-                    viewModel?.apiGetNextEvent(sessionManager)
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
                 }
             }
         }

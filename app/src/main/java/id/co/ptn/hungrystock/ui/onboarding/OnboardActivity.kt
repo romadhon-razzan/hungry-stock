@@ -87,7 +87,7 @@ class OnboardActivity : BaseActivity() {
             }
         }
 
-        otpViewModel?.reqOtpResponse()?.observe(this){
+        authViewModel?.reqOtpResponse()?.observe(this){
             when(it.status) {
                 Status.SUCCESS -> {
                     binding.progressBar.visibility = View.GONE
@@ -108,7 +108,7 @@ class OnboardActivity : BaseActivity() {
      * Api
      * */
     private fun apiGetOtp() {
-        otpViewModel?.apiGetOtp()
+        authViewModel?.apiGetOtp()
     }
 
 }

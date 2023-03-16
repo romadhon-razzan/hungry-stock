@@ -66,7 +66,7 @@ class AuthActivity : BaseActivity() {
     }
 
     private fun setObserve() {
-        otpViewModel?.reqOtpResponse()?.observe(this){
+        viewModel.reqOtpResponse().observe(this){
             when (it.status) {
                 Status.SUCCESS -> {
                     if (running_service == RunningServiceType.CUSTOMER_LOGIN){
@@ -100,7 +100,7 @@ class AuthActivity : BaseActivity() {
      * Api
      * */
     private fun apiGetOtp() {
-        otpViewModel?.apiGetOtp()
+        viewModel.apiGetOtp()
     }
     private fun apiAuth() {
         viewModel.apiAuth()

@@ -29,7 +29,6 @@ class ReferenceViewModel @Inject constructor(private val repository: ReferenceRe
 fun apiGetOtp() {
     viewModelScope.launch {
         try {
-            TOKEN = HashUtils.hash256Otp()
             _reqOtpResponse.postValue(Resource.loading(null))
             repository.otp().let {
                 if (it.isSuccessful){

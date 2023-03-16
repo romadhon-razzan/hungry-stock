@@ -83,7 +83,7 @@ class LearningFragment : BaseFragment() {
         initListener()
         initSearch()
         setObserve()
-        apiGetLearnings()
+//        apiGetLearnings()
     }
 
     private fun initListener() {
@@ -328,24 +328,34 @@ class LearningFragment : BaseFragment() {
 
     private fun setObserve() {
         viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
-            when (running_service) {
-                RunningServiceType.EVENT -> {
-                    lifecycleScope.launch {
-                        delay(500)
-                        viewModel?.apiGetLearnings(sessionManager, it?.data?.data ?: "")
+            when(it.status) {
+                Status.SUCCESS -> {
+                    when (running_service) {
+                        RunningServiceType.EVENT -> {
+                            lifecycleScope.launch {
+                                delay(500)
+                                viewModel?.apiGetLearnings(sessionManager, it?.data?.data ?: "")
+                            }
+                        }
+                        RunningServiceType.EVENT_NEXT -> {
+                            val parameter = StringBuilder()
+                            parameter.append("customer_id=${sessionManager?.authData?.code ?: ""}&offset=${viewModel?.getNextPage()}")
+                            TOKEN = "${HashUtils.hash256Events(parameter.toString())}.${ENV.userKey()}.${it.data?.data ?: ""}"
+                            Log.d("access_token", TOKEN)
+                            lifecycleScope.launch {
+                                delay(500)
+                                viewModel?.apiGetNextLearnings(parameter.toString())
+                            }
+                        }
+                        else -> {}
                     }
                 }
-                RunningServiceType.EVENT_NEXT -> {
-                    val parameter = StringBuilder()
-                    parameter.append("customer_id=${sessionManager?.authData?.code ?: ""}&offset=${viewModel?.getNextPage()}")
-                    TOKEN = "${HashUtils.hash256Events(parameter.toString())}.${ENV.userKey()}.${it.data?.data ?: ""}"
-                    Log.d("access_token", TOKEN)
-                    lifecycleScope.launch {
-                        delay(500)
-                        viewModel?.apiGetNextLearnings(parameter.toString())
-                    }
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
                 }
-                else -> {}
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                }
             }
         }
         viewModel?.reqLearningResponse()?.observe(viewLifecycleOwner){

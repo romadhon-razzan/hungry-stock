@@ -22,13 +22,11 @@ open class BaseActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
     lateinit var router: Router
     lateinit var keyboard: Keyboard
-    var otpViewModel: OtpViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sessionManager = SessionManager.getInstance(this)
         router = Router(this)
-        otpViewModel = ViewModelProvider(this)[OtpViewModel::class.java]
     }
 
     fun changeStatusBar() {
