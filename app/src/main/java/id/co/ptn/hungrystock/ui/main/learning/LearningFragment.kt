@@ -11,6 +11,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.*
 import androidx.lifecycle.ViewModelProvider
@@ -91,7 +93,6 @@ class LearningFragment : BaseFragment() {
     private fun initListener() {
         binding.btSorting.setOnClickListener { sortingPressed() }
         binding.btFilter.setOnClickListener { filterPressed() }
-        binding.btNext.setOnClickListener { apiGetNextLearnings() }
     }
 
     private fun initSearch() {
@@ -358,6 +359,9 @@ class LearningFragment : BaseFragment() {
                     } ?: emptyState()
                     if (referenceViewModel?.refEventCategories?.size == 0) {
                         apiEventCategories()
+                    }
+                    if (binding.relativeLayout.isGone) {
+                        binding.relativeLayout.visibility = View.VISIBLE
                     }
                 }
                 Status.LOADING ->{ binding.progressBar.visibility = View.VISIBLE}

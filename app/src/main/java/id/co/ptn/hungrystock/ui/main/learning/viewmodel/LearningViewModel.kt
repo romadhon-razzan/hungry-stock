@@ -1,13 +1,9 @@
 package id.co.ptn.hungrystock.ui.main.learning.viewmodel
 
-import android.text.format.DateUtils
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
 import id.co.ptn.hungrystock.config.ENV
@@ -15,17 +11,11 @@ import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.models.Links
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
-import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
-import id.co.ptn.hungrystock.models.main.learning.Learning
-import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
-import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
-import id.co.ptn.hungrystock.repositories.AppRepository
 import id.co.ptn.hungrystock.repositories.EventRepository
 import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Resource
-import id.co.ptn.hungrystock.utils.currentYear
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -158,9 +148,9 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
                 if (getAbjad().isNotEmpty()){
                     parameter.append("&order_by=title")
                     if (getAbjad() == "A-Z"){
-                        parameter.append("&order_type=0") // ASC
+                        parameter.append("&order_type=1") // ASC
                     } else {
-                        parameter.append("&order_type=1") // DESC
+                        parameter.append("&order_type=2") // DESC
                     }
                 }
                 TOKEN = "${HashUtils.hash256Events(parameter.toString())}.${ENV.userKey()}.$otp"

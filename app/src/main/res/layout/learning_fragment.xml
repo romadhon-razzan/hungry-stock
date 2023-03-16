@@ -12,15 +12,18 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background">
         <RelativeLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingStart="@dimen/normal2"
             android:paddingEnd="@dimen/normal2"
             android:paddingTop="@dimen/normal2"
             android:paddingBottom="0dp"
-            android:background="@color/background"
+            android:visibility="gone"
+            tools:visibility="visible"
             tools:context=".ui.main.home.HomeFragment">
 
             <com.google.android.material.card.MaterialCardView
@@ -125,21 +128,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/bt_next"
-                        android:layout_below="@id/recycler_view"
-                        android:layout_centerHorizontal="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:padding="@dimen/normal"
-                        android:fontFamily="@font/barlow_medium"
-                        android:textColor="@color/white_70"
-                        android:text="Lainnya"/>
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_pagination"
-                        android:layout_below="@id/bt_next"
+                        android:layout_below="@id/recycler_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/medium"
@@ -149,13 +140,13 @@
                 </RelativeLayout>
             </androidx.core.widget.NestedScrollView>
 
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"/>
-
         </RelativeLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
 
         <FrameLayout
             android:id="@+id/frame_container"
