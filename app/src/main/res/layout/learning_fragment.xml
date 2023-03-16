@@ -144,7 +144,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/medium"
                         android:layout_marginBottom="@dimen/medium"
-                        android:layout_centerHorizontal="true"/>
+                        android:layout_centerHorizontal="true"
+                        android:visibility="@{vm.singlePage ? View.GONE : View.VISIBLE}"/>
                 </RelativeLayout>
             </androidx.core.widget.NestedScrollView>
 

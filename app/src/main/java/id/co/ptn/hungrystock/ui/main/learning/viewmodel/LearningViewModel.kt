@@ -47,6 +47,7 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
 
     private var links: MutableList<Links> = mutableListOf()
     fun setLinks(totalPage: Int) {
+        _singlePage.postValue(totalPage == 1)
         links.clear()
         links.add(Links("", Links.previous, false)) // previous
         for (i in 1..totalPage){
@@ -113,6 +114,9 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
     var currentPage ="1"
     var requesting = false
     var pageFirstRequested = false
+
+    private val _singlePage = MutableLiveData(false)
+    val singlePage: LiveData<Boolean> = _singlePage
 
 
     /**
