@@ -7,6 +7,7 @@ import id.co.ptn.hungrystock.bases.BaseViewModel
 import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.reference.ResponseEventCategories
+import id.co.ptn.hungrystock.models.reference.ResponseEventCategoriesData
 import id.co.ptn.hungrystock.repositories.ReferenceRepository
 import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Resource
@@ -23,6 +24,8 @@ class ReferenceViewModel @Inject constructor(private val repository: ReferenceRe
 
     private var _reqResearchCategoriesResponse: MutableLiveData<Resource<ResponseEventCategories>> = MutableLiveData()
     fun reqResearchCategoriesResponse(): MutableLiveData<Resource<ResponseEventCategories>> = _reqResearchCategoriesResponse
+
+    var refEventCategories: MutableList<ResponseEventCategoriesData> = mutableListOf()
 /**
  * Api
  * */
@@ -49,6 +52,8 @@ fun apiGetOtp() {
                 _reqEventCategoriesResponse.postValue(Resource.loading(null))
                 repository.getEventCategories().let {
                     if (it.isSuccessful){
+                        refEventCategories.clear()
+                        refEventCategories.addAll(it.body()?.data ?: mutableListOf())
                         _reqEventCategoriesResponse.postValue(Resource.success(it.body()))
                     } else {
                         //

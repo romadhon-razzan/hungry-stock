@@ -112,6 +112,7 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
     var lastPage = ""
     var currentPage ="1"
     var requesting = false
+    var pageFirstRequested = false
 
 
     /**
@@ -146,6 +147,9 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
                 }
                 if (getYear().isNotEmpty()){
                     parameter.append("&year=${getYear()}")
+                }
+                if (getCategory().isNotEmpty()){
+                    parameter.append("&category_id=${getCategory()}")
                 }
                 if (getAbjad().isNotEmpty()){
                     parameter.append("&order_by=title")

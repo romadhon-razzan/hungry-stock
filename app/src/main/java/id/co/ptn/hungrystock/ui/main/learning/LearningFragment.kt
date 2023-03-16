@@ -37,6 +37,7 @@ import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningListAdapter
 import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningPaginationAdapter
 import id.co.ptn.hungrystock.ui.main.learning.dialogs.FilteLearningPageDialog
 import id.co.ptn.hungrystock.ui.main.learning.viewmodel.LearningViewModel
+import id.co.ptn.hungrystock.ui.main.viewmodel.MainViewModel
 import id.co.ptn.hungrystock.ui.main.viewmodel.ReferenceViewModel
 import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Status
@@ -52,6 +53,7 @@ class LearningFragment : BaseFragment() {
     }
 
     private lateinit var binding: LearningFragmentBinding
+    private var mainViewModel: MainViewModel? = null
     private var viewModel: LearningViewModel? = null
     private var referenceViewModel: ReferenceViewModel? = null
     private lateinit var learningListAdapter: LearningListAdapter
@@ -59,6 +61,7 @@ class LearningFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         viewModel = ViewModelProvider(requireActivity())[LearningViewModel::class.java]
         referenceViewModel = ViewModelProvider(requireActivity())[ReferenceViewModel::class.java]
     }
@@ -79,11 +82,10 @@ class LearningFragment : BaseFragment() {
     }
 
     private fun init() {
-        viewModel?.setSortingLabel(resources.getString(R.string.sorting_terbaru))
+        viewModel?.setSortingLabel(resources.getString(R.string.label_pilih_kategori))
         initListener()
         initSearch()
         setObserve()
-//        apiGetLearnings()
     }
 
     private fun initListener() {
@@ -232,44 +234,29 @@ class LearningFragment : BaseFragment() {
      * */
     private fun sortingPressed() {
         val popup = PopupMenu(requireContext(), binding.btSorting)
-        popup.inflate(R.menu.sorting_learning_menu)
-
+        popup.menu.add(resources.getString(R.string.sorting_semua))
+        referenceViewModel?.refEventCategories?.forEach {
+            popup.menu.add(it.name)
+        }
         popup.setOnMenuItemClickListener { item: MenuItem? ->
             item?.let {
-                when (it.itemId) {
-                    R.id.terbaru -> {
-                        viewModel?.setSortingLabel(resources.getString(R.string.sorting_terbaru))
-                        viewModel?.setCategory("")
+                val title = it.title?.toString() ?: ""
+                viewModel?.setSortingLabel(title)
+                if (title == resources.getString(R.string.sorting_semua)){
+                    viewModel?.setCategory("")
+                } else {
+                    referenceViewModel?.refEventCategories?.forEach {ref ->
+                        if (title == ref.name) {
+                            viewModel?.setCategory(ref.code ?: "")
+                            return@forEach
+                        }
                     }
-                    R.id.topup -> {
-                        viewModel?.setSortingLabel(resources.getString(R.string.sorting_top_up_knowledge_amp_wisdom))
-                        viewModel?.setCategory(viewModel?.sortingLabel?.value.toString())
-                    }
-                    R.id.temu -> {
-                        viewModel?.setSortingLabel(resources.getString(R.string.sorting_temu_emiten))
-                        viewModel?.setCategory(viewModel?.sortingLabel?.value.toString())
-                    }
-                    R.id.bedah -> {
-                        viewModel?.setSortingLabel(resources.getString(R.string.sorting_bedah_emiten))
-                        viewModel?.setCategory(viewModel?.sortingLabel?.value.toString())
-                    }
-                    R.id.stockScope -> {
-                        viewModel?.setSortingLabel(resources.getString(R.string.sorting_stockscope))
-                        viewModel?.setCategory(viewModel?.sortingLabel?.value.toString())
-                    }
-                    R.id.stock_discovery -> {
-                        viewModel?.setSortingLabel(resources.getString(R.string.stock_discovery))
-                        viewModel?.setCategory(viewModel?.sortingLabel?.value.toString())
-                    }
-                    else -> {}
                 }
-            }
             apiGetLearnings()
+            }
             true
         }
-
         popup.show()
-
     }
 
     private fun filterPressed() {
@@ -368,6 +355,9 @@ class LearningFragment : BaseFragment() {
                         viewModel?.setLinks(data.total_pages ?: 0)
                         viewModel?.setNextPage(ResponseEvents.getNextPage(data).toString())
                     } ?: emptyState()
+                    if (referenceViewModel?.refEventCategories?.size == 0) {
+                        apiEventCategories()
+                    }
                 }
                 Status.LOADING ->{ binding.progressBar.visibility = View.VISIBLE}
                 Status.ERROR ->{
@@ -397,26 +387,44 @@ class LearningFragment : BaseFragment() {
         }
 
         referenceViewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
-            when(running_service){
-                RunningServiceType.EVENT_CATEGORIES -> {
-                    TOKEN = "${HashUtils.hash256EventCategories()}.${ENV.userKey()}.${it.data?.data ?: ""}"
-                    Log.d("access_categories_token", TOKEN)
-                    referenceViewModel?.apiEventCategories()
-                }
-                else -> {}
-            }
-        }
-        referenceViewModel?.reqEventCategoriesResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
                 Status.SUCCESS ->{
                     binding.progressBar.visibility = View.GONE
-
+                    when(running_service){
+                        RunningServiceType.EVENT_CATEGORIES -> {
+                            TOKEN = "${HashUtils.hash256EventCategories()}.${ENV.userKey()}.${it.data?.data ?: ""}"
+                            Log.d("access_categories_token", TOKEN)
+                            referenceViewModel?.apiEventCategories()
+                        }
+                        else -> {}
+                    }
                 }
                 Status.LOADING ->{
                     binding.progressBar.visibility = View.VISIBLE
                 }
                 Status.ERROR ->{
                     binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
+        referenceViewModel?.reqEventCategoriesResponse()?.observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS ->{
+                    binding.progressBar.visibility = View.GONE
+                }
+                Status.LOADING ->{
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.ERROR ->{
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
+        mainViewModel?.learningPressed?.observe(requireActivity()){
+            if (it){
+                if (viewModel?.pageFirstRequested == false) {
+                    apiGetLearnings()
+                    viewModel?.pageFirstRequested = true
                 }
             }
         }
