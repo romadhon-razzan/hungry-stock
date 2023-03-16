@@ -7,10 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
 import id.co.ptn.hungrystock.repositories.AppRepository
-import id.co.ptn.hungrystock.utils.Resource
-import id.co.ptn.hungrystock.utils.indonesianTag
-import id.co.ptn.hungrystock.utils.iso8601
-import id.co.ptn.hungrystock.utils.stringToDate
+import id.co.ptn.hungrystock.utils.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -39,11 +36,9 @@ class ProfileViewModel @Inject constructor(private val repository: AppRepository
 
     private val _validDate = MutableStateFlow("")
     val validDate: StateFlow<String> = _validDate
-    fun setValidDate(validDate: String) {
+    fun setValidDate(validDate: Long) {
         viewModelScope.launch {
-            val stringToDate = stringToDate(iso8601, validDate)
-            val simpleDateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault() )
-            val finalDate: String = simpleDateFormat.format(stringToDate ?: "")
+            val finalDate: String = getDateMMMMddyyyy(validDate*1000)
             _validDate.value = finalDate
         }
     }

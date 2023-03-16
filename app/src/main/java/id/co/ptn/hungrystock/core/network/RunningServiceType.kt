@@ -4,6 +4,7 @@ enum class RunningServiceType {
     NONE,
     OTP,
     CUSTOMER_LOGIN,
+    PROFILE,
     REGISTER,
     EVENT,
     EVENT_NEXT,

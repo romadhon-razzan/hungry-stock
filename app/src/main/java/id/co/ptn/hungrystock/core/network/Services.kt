@@ -12,6 +12,7 @@ import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.reference.ResponseEventCategories
 import id.co.ptn.hungrystock.models.registration.ResponseRegister
+import id.co.ptn.hungrystock.models.user.ResponseProfile
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -27,6 +28,11 @@ interface Services {
         @Field("username") username: String,
         @Field("password") password: String,
     ): Response<ResponseAuthV2>
+
+    @GET("${PROFILE}/{param}")
+    suspend fun profile(
+        @Path("param") param: String,
+    ): Response<ResponseProfile>
 
     @GET("${EVENTS}/{param}")
     suspend fun events(

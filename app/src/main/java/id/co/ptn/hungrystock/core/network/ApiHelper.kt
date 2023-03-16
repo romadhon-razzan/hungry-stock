@@ -12,6 +12,7 @@ import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.reference.ResponseEventCategories
 import id.co.ptn.hungrystock.models.registration.ResponseRegister
+import id.co.ptn.hungrystock.models.user.ResponseProfile
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -20,6 +21,7 @@ interface ApiHelper {
 //    suspend fun getDrinkByFirstLetter(s: String): Response<DrinkResponse>
     suspend fun otp(): Response<ResponseOtp>
     suspend fun authV2(username: String, password: String): Response<ResponseAuthV2>
+    suspend fun profile(param: String): Response<ResponseProfile>
     suspend fun events(param: String): Response<ResponseEvents>
     suspend fun eventCategories(): Response<ResponseEventCategories>
     suspend fun researchCategories(): Response<ResponseEventCategories>

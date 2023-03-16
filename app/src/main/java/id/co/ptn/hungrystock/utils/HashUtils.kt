@@ -1,10 +1,7 @@
 package id.co.ptn.hungrystock.utils
 
 import id.co.ptn.hungrystock.config.ENV
-import id.co.ptn.hungrystock.core.network.CUSTOMER_LOGIN
-import id.co.ptn.hungrystock.core.network.EVENTS
-import id.co.ptn.hungrystock.core.network.EVENT_CATEGORIES
-import id.co.ptn.hungrystock.core.network.OTP
+import id.co.ptn.hungrystock.core.network.*
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
 import javax.crypto.Mac
@@ -19,6 +16,9 @@ class HashUtils {
 
         fun hash256CustomerLogin(): String{
             return HashUtils().generateHmac256("${ENV.serviceUrl()}$CUSTOMER_LOGIN", ENV.serviceSecretKey().toByteArray()) ?: ""
+        }
+        fun hash256Profile(parameter: String): String{
+            return HashUtils().generateHmac256("${ENV.serviceUrl()}$PROFILE/$parameter", ENV.serviceSecretKey().toByteArray()) ?: ""
         }
 
         fun hash256Events(parameter: String): String{

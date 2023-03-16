@@ -12,6 +12,7 @@ import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.reference.ResponseEventCategories
 import id.co.ptn.hungrystock.models.registration.ResponseRegister
+import id.co.ptn.hungrystock.models.user.ResponseProfile
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class ApiHelperImpl @Inject constructor(private val apiService: Services) : ApiHelper {
     override suspend fun otp(): Response<ResponseOtp> = apiService.otp()
     override suspend fun authV2(username: String, password: String): Response<ResponseAuthV2> = apiService.authV2(username, password)
+    override suspend fun profile(param: String): Response<ResponseProfile> = apiService.profile(param)
     override suspend fun events(param: String): Response<ResponseEvents> = apiService.events(param)
     override suspend fun eventCategories(): Response<ResponseEventCategories> = apiService.eventCategories()
     override suspend fun researchCategories(): Response<ResponseEventCategories> = apiService.researchCategories()

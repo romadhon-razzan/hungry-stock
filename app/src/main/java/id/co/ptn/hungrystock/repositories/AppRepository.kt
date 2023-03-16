@@ -8,6 +8,7 @@ import javax.inject.Inject
 class AppRepository @Inject constructor(private val apiHelper: ApiHelper) {
     suspend fun otp() =  apiHelper.otp()
     suspend fun authV2(username: String, password: String) =  apiHelper.authV2(username, password)
+    suspend fun profile(param: String) =  apiHelper.profile(param)
     suspend fun auth(nt: String, p: String) =  apiHelper.auth(nt, p)
     suspend fun resetPassword(e: String) =  apiHelper.resetPassword(e)
     suspend fun registerStepOne(

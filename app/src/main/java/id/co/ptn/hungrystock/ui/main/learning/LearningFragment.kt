@@ -114,7 +114,7 @@ class LearningFragment : BaseFragment() {
         viewModel?.getLearnings()?.let { learnings ->
             learningListAdapter = LearningListAdapter(learnings, object : LearningListAdapter.LearningListener{
                 override fun itemClicked(learning: ResponseEventsData) {
-                    if (!User.isExpired(childFragmentManager,sessionManager?.user?.membership_end_at ?: "")){
+                    if (!User.isExpired(childFragmentManager,sessionManager?.user?.membershipExpDate ?: 0)){
                         val intent =  router.toLearningDetail()
                         try {
                             val event = PastEvent(

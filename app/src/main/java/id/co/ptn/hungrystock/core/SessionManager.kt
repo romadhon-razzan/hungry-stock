@@ -5,6 +5,7 @@ import androidx.core.content.edit
 import com.google.gson.Gson
 import id.co.ptn.hungrystock.models.User
 import id.co.ptn.hungrystock.models.auth.ResponseAuthDataV2
+import id.co.ptn.hungrystock.models.user.ResponseProfileData
 
 private const val USER_PREFERENCES_NAME = "user_preferences"
 
@@ -42,13 +43,13 @@ class SessionManager private constructor(context: Context) {
         sharedPreferences.edit { putString(KEY_TOKEN, token) }
     }
 
-    val user: User
+    val user: ResponseProfileData?
         get() {
             val order = sharedPreferences.getString(KEY_USER, "")
-            return Gson().fromJson(order, User::class.java)
+            return Gson().fromJson(order, ResponseProfileData::class.java)
         }
 
-    fun setUser(user: User) {
+    fun setUser(user: ResponseProfileData) {
         val strUser = Gson().toJson(user)
         sharedPreferences.edit { putString(KEY_USER, strUser) }
     }

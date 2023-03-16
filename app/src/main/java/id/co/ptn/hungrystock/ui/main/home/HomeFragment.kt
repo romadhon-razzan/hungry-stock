@@ -82,7 +82,7 @@ class HomeFragment : BaseFragment() {
         binding.frameContainer.visibility = View.GONE
         eventListAdapter = EventListAdapter(viewModel?.getEvents() ?: mutableListOf(), object : EventListAdapter.Listener{
             override fun openConference(url: String) {
-                if (!User.isExpired(childFragmentManager, sessionManager?.user?.membership_end_at ?: "")){
+                if (!User.isExpired(childFragmentManager, sessionManager?.user?.membershipExpDate ?: 0)){
                     if (url.isNotEmpty()) {
                         openUrlPage(url)
                     } else {
@@ -96,7 +96,7 @@ class HomeFragment : BaseFragment() {
             }
 
             override fun openDetailPastEvent(event: ResponseEventsData) {
-                if (!User.isExpired(childFragmentManager,sessionManager?.user?.membership_end_at ?: "")){
+                if (!User.isExpired(childFragmentManager,sessionManager?.user?.membershipExpDate ?: 0)){
                     val intent =  router.toLearningDetail()
                     intent.putExtra("event", Gson().toJson(event))
                     requireContext().startActivity(intent)

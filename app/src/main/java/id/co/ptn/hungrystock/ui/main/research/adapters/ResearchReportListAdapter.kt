@@ -35,7 +35,7 @@ class ResearchReportListAdapter(
             item.file_url.let { url ->
                 binding.item.setOnClickListener {
                     val sessionManager = SessionManager.getInstance(context)
-                    if (!User.isExpired(fragmentManager, sessionManager.user.membership_end_at)){
+                    if (!User.isExpired(fragmentManager, sessionManager.user?.membershipExpDate ?: 0)){
                         context.startActivity(
                             PdfViewerActivity.launchPdfFromUrl(
                                 context,

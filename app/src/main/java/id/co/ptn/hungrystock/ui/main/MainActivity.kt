@@ -1,19 +1,30 @@
 package id.co.ptn.hungrystock.ui.main
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
 import id.co.ptn.hungrystock.config.ASSET_URL
+import id.co.ptn.hungrystock.config.ENV
+import id.co.ptn.hungrystock.config.TOKEN
+import id.co.ptn.hungrystock.core.network.RunningServiceType
+import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.ActivityMainBinding
 import id.co.ptn.hungrystock.ui.main.adapters.MainVPAdapter
 import id.co.ptn.hungrystock.ui.main.viewmodel.MainViewModel
 import id.co.ptn.hungrystock.ui.onboarding.adapters.OnboardVPAdapter
 import id.co.ptn.hungrystock.ui.privacy_police.view_model.PrivacyPoliceViewModel
+import id.co.ptn.hungrystock.utils.HashUtils
+import id.co.ptn.hungrystock.utils.Status
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
@@ -37,19 +48,19 @@ class MainActivity : BaseActivity() {
     private fun init() {
         binding.vm = viewModel
         binding.lifecycleOwner = this
-        setView()
         initListener()
-        initViewPager()
-        navHomePressed()
+        setObserve()
+        apiGetProfile()
     }
 
     private fun setView() {
-        try {
-            Glide.with(this).load("${ASSET_URL}${sessionManager.user.photo}").into(binding.imgProfile)
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
-
+//        try {
+//            Glide.with(this).load("${ASSET_URL}${sessionManager.user.photo}").into(binding.imgProfile)
+//        }catch (e: Exception){
+//            e.printStackTrace()
+//        }
+        initViewPager()
+        navHomePressed()
     }
 
     private fun initListener() {
@@ -100,7 +111,54 @@ class MainActivity : BaseActivity() {
         viewModel.hsroPressed(getString(R.string.title_hsro))
     }
 
+    private fun setObserve() {
+        viewModel.reqOtpResponse().observe(this){
+            when(it.status) {
+                Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
+                    if (running_service == RunningServiceType.PROFILE){
+                        lifecycleScope.launch {
+                            delay(500)
+                            viewModel.apiGetProfile(sessionManager, it.data?.data ?: "")
+                        }
+                    }
+                }
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
 
+        viewModel.reqProfileResponse().observe(this){
+            when(it.status) {
+                Status.SUCCESS -> {
+                    it?.data?.data?.forEach { data ->
+                        sessionManager.setUser(data)
+                    }
+                    setView()
+                    binding.constraint.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.GONE
+                }
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    /**
+     * Api
+     * */
+    private fun apiGetProfile() {
+        running_service = RunningServiceType.PROFILE
+        viewModel.apiGetOtp()
+    }
 
 
 }

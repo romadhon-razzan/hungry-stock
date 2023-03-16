@@ -7,256 +7,268 @@
             name="vm"
             type="id.co.ptn.hungrystock.ui.main.viewmodel.MainViewModel" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background">
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"
-            app:layout_constraintBottom_toTopOf="@+id/swipeLockableViewPager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="visible">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_title"
-                android:layout_toStartOf="@id/btn_profile"
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center|start"
-                android:fontFamily="@font/ft_coolvetica"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/font_large1_1"
-                android:text="@{ vm.title }"
-                />
-            
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btn_profile"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                app:cardCornerRadius="50dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true">
+                android:layout_height="60dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                app:layout_constraintBottom_toTopOf="@+id/swipeLockableViewPager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_title"
+                    android:layout_toStartOf="@id/btn_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center|start"
+                    android:fontFamily="@font/ft_coolvetica"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/font_large1_1"
+                    android:text="@{ vm.title }"
+                    />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btn_profile"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:cardCornerRadius="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true">
                     <ImageView
                         android:id="@+id/img_profile"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_avatar"/>
-            </com.google.android.material.card.MaterialCardView>
+                </com.google.android.material.card.MaterialCardView>
 
-        </RelativeLayout>
+            </RelativeLayout>
 
-        <id.co.ptn.hungrystock.helper.SwipeLockableViewPager
-            android:id="@+id/swipeLockableViewPager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/divider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+            <id.co.ptn.hungrystock.helper.SwipeLockableViewPager
+                android:id="@+id/swipeLockableViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/divider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#9E4C4C4C"
-            app:layout_constraintBottom_toTopOf="@id/linearLayoutCompat"/>
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#9E4C4C4C"
+                app:layout_constraintBottom_toTopOf="@id/linearLayoutCompat"/>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/linearLayoutCompat"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:background="@color/background"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/linearLayoutCompat"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="@color/background"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btn_nav_home"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:cardBackgroundColor="@color/transparent"
-                app:cardElevation="0dp">
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btn_nav_home"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/transparent"
+                    app:cardElevation="0dp">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                    <ImageView
-                        android:id="@+id/ic_home"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="@dimen/small"
-                        android:src="@{ vm.homePressed ? @drawable/ic_menu_home_actived : @drawable/ic_menu_home_normal }"
-                        tools:src="@drawable/ic_menu_home_actived"/>
+                        android:layout_gravity="center">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/ic_home"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="@dimen/small"
+                            android:src="@{ vm.homePressed ? @drawable/ic_menu_home_actived : @drawable/ic_menu_home_normal }"
+                            tools:src="@drawable/ic_menu_home_actived"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/ic_home"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/nav_menu_home"
+                            android:textColor="@{ vm.homePressed ? @color/secondary: @color/white_50 }"
+                            android:textSize="@dimen/font_normal"
+                            tools:textColor="@color/secondary" />
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btn_nav_learning"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/transparent"
+                    app:cardElevation="0dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/ic_home"
-                        android:layout_centerHorizontal="true"
-                        android:text="@string/nav_menu_home"
-                        android:textColor="@{ vm.homePressed ? @color/secondary: @color/white_50 }"
-                        android:textSize="@dimen/font_normal"
-                        tools:textColor="@color/secondary" />
-                </RelativeLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        android:layout_gravity="center">
+
+                        <ImageView
+                            android:id="@+id/ic_learning"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="@dimen/small"
+                            android:src="@{ vm.learningPressed ? @drawable/ic_menu_learning_actived : @drawable/ic_menu_learning_normal }"
+                            tools:src="@drawable/ic_menu_learning_normal"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/ic_learning"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/nav_menu_learning"
+                            android:textColor="@{ vm.learningPressed ? @color/secondary: @color/white_50 }"
+                            android:textSize="@dimen/font_normal"
+                            tools:textColor="@color/white_50"/>
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
 
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btn_nav_learning"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:cardBackgroundColor="@color/transparent"
-                app:cardElevation="0dp">
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btn_nav_research"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/transparent"
+                    app:cardElevation="0dp">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                    <ImageView
-                        android:id="@+id/ic_learning"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="@dimen/small"
-                        android:src="@{ vm.learningPressed ? @drawable/ic_menu_learning_actived : @drawable/ic_menu_learning_normal }"
-                        tools:src="@drawable/ic_menu_learning_normal"/>
+                        android:layout_gravity="center">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/ic_research"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="@dimen/small"
+                            android:src="@{ vm.researchPressed ? @drawable/ic_menu_research_actived : @drawable/ic_menu_research_normal }"
+                            tools:src="@drawable/ic_menu_research_normal"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/ic_research"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/nav_menu_research"
+                            android:textColor="@{ vm.researchPressed ? @color/secondary: @color/white_50 }"
+                            android:textSize="@dimen/font_normal"
+                            tools:textColor="@color/white_50"/>
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btn_nav_engine"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/transparent"
+                    app:cardElevation="0dp"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/ic_learning"
-                        android:layout_centerHorizontal="true"
-                        android:text="@string/nav_menu_learning"
-                        android:textColor="@{ vm.learningPressed ? @color/secondary: @color/white_50 }"
-                        android:textSize="@dimen/font_normal"
-                        tools:textColor="@color/white_50"/>
-                </RelativeLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        android:layout_gravity="center">
+
+                        <ImageView
+                            android:id="@+id/ic_engine"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="@dimen/small"
+                            android:src="@{ vm.enginePressed ? @drawable/ic_menu_engine_actived : @drawable/ic_menu_engine_normal }"
+                            tools:src="@drawable/ic_menu_engine_normal" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/ic_engine"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/nav_menu_engine"
+                            android:textColor="@{ vm.enginePressed ? @color/secondary : @color/white_50 }"
+                            android:textSize="@dimen/font_normal"
+                            tools:textColor="@color/white_50"/>
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
 
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btn_nav_research"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:cardBackgroundColor="@color/transparent"
-                app:cardElevation="0dp">
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btn_nav_hsro"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/transparent"
+                    app:cardElevation="0dp"
+                    android:visibility="gone">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                    <ImageView
-                        android:id="@+id/ic_research"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="@dimen/small"
-                        android:src="@{ vm.researchPressed ? @drawable/ic_menu_research_actived : @drawable/ic_menu_research_normal }"
-                        tools:src="@drawable/ic_menu_research_normal"/>
+                        android:layout_gravity="center">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/ic_research"
-                        android:layout_centerHorizontal="true"
-                        android:text="@string/nav_menu_research"
-                        android:textColor="@{ vm.researchPressed ? @color/secondary: @color/white_50 }"
-                        android:textSize="@dimen/font_normal"
-                        tools:textColor="@color/white_50"/>
-                </RelativeLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        <ImageView
+                            android:id="@+id/ic_hsro"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="@dimen/small"
+                            android:src="@{ vm.hsroPressed ? @drawable/ic_menu_hsro_actived : @drawable/ic_menu_hsro_normal }"
+                            tools:src="@drawable/ic_menu_hsro_normal" />
 
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btn_nav_engine"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:cardBackgroundColor="@color/transparent"
-                app:cardElevation="0dp"
-                android:visibility="gone">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                    <ImageView
-                        android:id="@+id/ic_engine"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="@dimen/small"
-                        android:src="@{ vm.enginePressed ? @drawable/ic_menu_engine_actived : @drawable/ic_menu_engine_normal }"
-                        tools:src="@drawable/ic_menu_engine_normal" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/ic_engine"
-                        android:layout_centerHorizontal="true"
-                        android:text="@string/nav_menu_engine"
-                        android:textColor="@{ vm.enginePressed ? @color/secondary : @color/white_50 }"
-                        android:textSize="@dimen/font_normal"
-                        tools:textColor="@color/white_50"/>
-                </RelativeLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/ic_hsro"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/nav_menu_hsro"
+                            android:textColor="@{ vm.hsroPressed ? @color/secondary : @color/white_50 }"
+                            android:textSize="@dimen/font_normal"
+                            tools:textColor="@color/white_50"/>
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
 
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btn_nav_hsro"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:cardBackgroundColor="@color/transparent"
-                app:cardElevation="0dp"
-                android:visibility="gone">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                    <ImageView
-                        android:id="@+id/ic_hsro"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="@dimen/small"
-                        android:src="@{ vm.hsroPressed ? @drawable/ic_menu_hsro_actived : @drawable/ic_menu_hsro_normal }"
-                        tools:src="@drawable/ic_menu_hsro_normal" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/ic_hsro"
-                        android:layout_centerHorizontal="true"
-                        android:text="@string/nav_menu_hsro"
-                        android:textColor="@{ vm.hsroPressed ? @color/secondary : @color/white_50 }"
-                        android:textSize="@dimen/font_normal"
-                        tools:textColor="@color/white_50"/>
-                </RelativeLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
