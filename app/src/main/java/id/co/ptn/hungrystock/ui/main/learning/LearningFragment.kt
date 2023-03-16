@@ -137,6 +137,7 @@ class LearningFragment : BaseFragment() {
                 adapter = learningListAdapter
             }
             binding.frameContainer.visibility = View.GONE
+            binding.nestedScrollView.smoothScrollTo(0,0)
         }
     }
 
