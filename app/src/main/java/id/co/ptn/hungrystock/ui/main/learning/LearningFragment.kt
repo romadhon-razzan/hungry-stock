@@ -37,6 +37,7 @@ import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningListAdapter
 import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningPaginationAdapter
 import id.co.ptn.hungrystock.ui.main.learning.dialogs.FilteLearningPageDialog
 import id.co.ptn.hungrystock.ui.main.learning.viewmodel.LearningViewModel
+import id.co.ptn.hungrystock.ui.main.viewmodel.ReferenceViewModel
 import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Status
 import id.co.ptn.hungrystock.utils.getHHmm
@@ -52,12 +53,14 @@ class LearningFragment : BaseFragment() {
 
     private lateinit var binding: LearningFragmentBinding
     private var viewModel: LearningViewModel? = null
+    private var referenceViewModel: ReferenceViewModel? = null
     private lateinit var learningListAdapter: LearningListAdapter
     private var paginationAdapter: LearningPaginationAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[LearningViewModel::class.java]
+        referenceViewModel = ViewModelProvider(requireActivity())[ReferenceViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -325,35 +328,24 @@ class LearningFragment : BaseFragment() {
 
     private fun setObserve() {
         viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
-            if (running_service == RunningServiceType.EVENT){
-                val parameter = StringBuilder()
-                parameter.append("customer_id=${sessionManager?.authData?.code ?: ""}")
-                if (viewModel?.getYear()?.isNotEmpty() == true){
-                    parameter.append("&year=${viewModel?.getYear()}")
-                }
-                if (viewModel?.getAbjad()?.isNotEmpty() ==  true){
-                    parameter.append("&order_by=title")
-                    if (viewModel?.getAbjad() == "A-Z"){
-                        parameter.append("&order_type=0") // ASC
-                    } else {
-                        parameter.append("&order_type=1") // DESC
+            when (running_service) {
+                RunningServiceType.EVENT -> {
+                    lifecycleScope.launch {
+                        delay(500)
+                        viewModel?.apiGetLearnings(sessionManager, it?.data?.data ?: "")
                     }
                 }
-                TOKEN = "${HashUtils.hash256Events(parameter.toString())}.${ENV.userKey()}.${it.data?.data ?: ""}"
-                Log.d("access_token", TOKEN)
-                lifecycleScope.launch {
-                    delay(500)
-                    viewModel?.apiGetLearnings(parameter.toString())
+                RunningServiceType.EVENT_NEXT -> {
+                    val parameter = StringBuilder()
+                    parameter.append("customer_id=${sessionManager?.authData?.code ?: ""}&offset=${viewModel?.getNextPage()}")
+                    TOKEN = "${HashUtils.hash256Events(parameter.toString())}.${ENV.userKey()}.${it.data?.data ?: ""}"
+                    Log.d("access_token", TOKEN)
+                    lifecycleScope.launch {
+                        delay(500)
+                        viewModel?.apiGetNextLearnings(parameter.toString())
+                    }
                 }
-            } else if (running_service == RunningServiceType.EVENT_NEXT) {
-                val parameter = StringBuilder()
-                parameter.append("customer_id=${sessionManager?.authData?.code ?: ""}&offset=${viewModel?.getNextPage()}")
-                TOKEN = "${HashUtils.hash256Events(parameter.toString())}.${ENV.userKey()}.${it.data?.data ?: ""}"
-                Log.d("access_token", TOKEN)
-                lifecycleScope.launch {
-                    delay(500)
-                    viewModel?.apiGetNextLearnings(parameter.toString())
-                }
+                else -> {}
             }
         }
         viewModel?.reqLearningResponse()?.observe(viewLifecycleOwner){
@@ -393,6 +385,31 @@ class LearningFragment : BaseFragment() {
                 }
             }
         }
+
+        referenceViewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
+            when(running_service){
+                RunningServiceType.EVENT_CATEGORIES -> {
+                    TOKEN = "${HashUtils.hash256EventCategories()}.${ENV.userKey()}.${it.data?.data ?: ""}"
+                    Log.d("access_categories_token", TOKEN)
+                    referenceViewModel?.apiEventCategories()
+                }
+                else -> {}
+            }
+        }
+        referenceViewModel?.reqEventCategoriesResponse()?.observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS ->{
+                    binding.progressBar.visibility = View.GONE
+
+                }
+                Status.LOADING ->{
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.ERROR ->{
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
     }
 
     /**
@@ -410,6 +427,11 @@ class LearningFragment : BaseFragment() {
         viewModel?.requesting = true
         running_service = RunningServiceType.EVENT_NEXT
         apiGetOtp()
+    }
+
+    private fun apiEventCategories() {
+        running_service = RunningServiceType.EVENT_CATEGORIES
+        referenceViewModel?.apiGetOtp()
     }
 
 }

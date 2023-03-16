@@ -3,6 +3,7 @@ package id.co.ptn.hungrystock.utils
 import id.co.ptn.hungrystock.config.ENV
 import id.co.ptn.hungrystock.core.network.CUSTOMER_LOGIN
 import id.co.ptn.hungrystock.core.network.EVENTS
+import id.co.ptn.hungrystock.core.network.EVENT_CATEGORIES
 import id.co.ptn.hungrystock.core.network.OTP
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
@@ -22,6 +23,10 @@ class HashUtils {
 
         fun hash256Events(parameter: String): String{
             return HashUtils().generateHmac256("${ENV.serviceUrl()}$EVENTS/$parameter", ENV.serviceSecretKey().toByteArray()) ?: ""
+        }
+
+        fun hash256EventCategories(): String{
+            return HashUtils().generateHmac256("${ENV.serviceUrl()}$EVENT_CATEGORIES", ENV.serviceSecretKey().toByteArray()) ?: ""
         }
     }
     @Throws(InvalidKeyException::class, NoSuchAlgorithmException::class)

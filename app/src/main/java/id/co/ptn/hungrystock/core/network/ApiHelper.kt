@@ -10,6 +10,7 @@ import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
 import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
 import id.co.ptn.hungrystock.models.password.ResponsePassword
+import id.co.ptn.hungrystock.models.reference.ResponseEventCategories
 import id.co.ptn.hungrystock.models.registration.ResponseRegister
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -20,6 +21,8 @@ interface ApiHelper {
     suspend fun otp(): Response<ResponseOtp>
     suspend fun authV2(username: String, password: String): Response<ResponseAuthV2>
     suspend fun events(param: String): Response<ResponseEvents>
+    suspend fun eventCategories(): Response<ResponseEventCategories>
+    suspend fun researchCategories(): Response<ResponseEventCategories>
 
 
     suspend fun auth(nt: String, p: String): Response<ResponseAuth>

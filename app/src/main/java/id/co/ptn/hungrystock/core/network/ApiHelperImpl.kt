@@ -10,6 +10,7 @@ import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
 import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
 import id.co.ptn.hungrystock.models.password.ResponsePassword
+import id.co.ptn.hungrystock.models.reference.ResponseEventCategories
 import id.co.ptn.hungrystock.models.registration.ResponseRegister
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -20,6 +21,9 @@ class ApiHelperImpl @Inject constructor(private val apiService: Services) : ApiH
     override suspend fun otp(): Response<ResponseOtp> = apiService.otp()
     override suspend fun authV2(username: String, password: String): Response<ResponseAuthV2> = apiService.authV2(username, password)
     override suspend fun events(param: String): Response<ResponseEvents> = apiService.events(param)
+    override suspend fun eventCategories(): Response<ResponseEventCategories> = apiService.eventCategories()
+    override suspend fun researchCategories(): Response<ResponseEventCategories> = apiService.researchCategories()
+
     override suspend fun auth(nt: String, p: String): Response<ResponseAuth> = apiService.auth(nt, p)
     override suspend fun resetPassword(e: String): Response<ResponsePassword> = apiService.resetPassword(e)
     override suspend fun registerStepOne(

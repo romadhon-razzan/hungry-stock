@@ -10,6 +10,7 @@ import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
 import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
 import id.co.ptn.hungrystock.models.password.ResponsePassword
+import id.co.ptn.hungrystock.models.reference.ResponseEventCategories
 import id.co.ptn.hungrystock.models.registration.ResponseRegister
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -31,6 +32,12 @@ interface Services {
     suspend fun events(
         @Path("param") param: String,
     ): Response<ResponseEvents>
+
+    @GET(EVENT_CATEGORIES)
+    suspend fun eventCategories(): Response<ResponseEventCategories>
+
+    @GET(RESEARCH_CATEGORIES)
+    suspend fun researchCategories(): Response<ResponseEventCategories>
 
 
 

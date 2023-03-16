@@ -10,6 +10,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
+import id.co.ptn.hungrystock.config.ENV
 import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.models.Links
@@ -135,11 +136,29 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
         }
     }
 
-    fun apiGetLearnings(parameter: String) {
+    fun apiGetLearnings(sessionManager: SessionManager?, otp: String) {
         viewModelScope.launch {
             try {
+                val parameter = StringBuilder()
+                parameter.append("customer_id=${sessionManager?.authData?.code ?: ""}")
+                if (getKeyword().isNotEmpty()){
+                    parameter.append("&title=${getKeyword()}")
+                }
+                if (getYear().isNotEmpty()){
+                    parameter.append("&year=${getYear()}")
+                }
+                if (getAbjad().isNotEmpty()){
+                    parameter.append("&order_by=title")
+                    if (getAbjad() == "A-Z"){
+                        parameter.append("&order_type=0") // ASC
+                    } else {
+                        parameter.append("&order_type=1") // DESC
+                    }
+                }
+                TOKEN = "${HashUtils.hash256Events(parameter.toString())}.${ENV.userKey()}.$otp"
+                Log.d("access_token", TOKEN)
                 _reqLearningResponse.postValue(Resource.loading(null))
-                repository.getEvent(parameter).let {
+                repository.getEvent(parameter.toString()).let {
                     if (it.isSuccessful){
                         _reqLearningResponse.postValue(Resource.success(it.body()))
                     } else {
