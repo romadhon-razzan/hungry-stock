@@ -18,6 +18,9 @@ import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.EmptyStateFragment
+import id.co.ptn.hungrystock.core.SessionManager
+import id.co.ptn.hungrystock.core.network.RunningServiceType
+import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.FragmentResearchReportBinding
 import id.co.ptn.hungrystock.models.main.research.*
 import id.co.ptn.hungrystock.ui.main.research.adapters.ResearchReportPageAdapter
@@ -116,6 +119,25 @@ class ResearchReportFragment : Fragment() {
     }
 
     private fun setObserve() {
+        viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS -> {
+                    binding?.progressBar?.visibility = View.GONE
+                    when(running_service){
+                        RunningServiceType.RESEARCH -> {
+                            viewModel?.apiResearch(SessionManager.getInstance(requireContext()), it.data?.data ?: "")
+                        }
+                        else -> {}
+                    }
+                }
+                Status.LOADING -> {
+                    binding?.progressBar?.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding?.progressBar?.visibility = View.GONE
+                }
+            }
+        }
 
         researchViewModel?.onFilter()?.observe(viewLifecycleOwner){
             if (it) {
@@ -140,7 +162,7 @@ class ResearchReportFragment : Fragment() {
                     binding?.progressBar?.visibility = View.GONE
                     var total = 0
 
-                    try {
+                    /*try {
                         binding?.frameContainer?.visibility = View.GONE
                         items.clear()
                         items.add(ResearchPage(ResearchPage.TYPE_SORTING, listOf(), listOf(), listOf(), ResearchSorting("n",viewModel?.getLabelSorting()!!)))
@@ -194,7 +216,7 @@ class ResearchReportFragment : Fragment() {
                         e.printStackTrace()
                         // empty state
                         emptyState()
-                    }
+                    }*/
 
                 }
                 Status.LOADING -> {
@@ -212,17 +234,12 @@ class ResearchReportFragment : Fragment() {
     * Api
     * */
 
-    private fun apiGetResearch() {
-        binding?.progressBar?.visibility = View.VISIBLE
-        if (viewModel?.getType().toString() == "Terbaru")
-            viewModel?.setType("")
+    private fun apiGetOtp() {
+        viewModel?.apiGetOtp()
+    }
 
-        viewModel?.apiResearch(
-            viewModel?.getType().toString(),
-            viewModel?.getKeyword().toString(),
-            viewModel?.getCategory().toString(),
-            viewModel?.getYear().toString(),
-            viewModel?.getMonth().toString(),
-            viewModel?.getInitial().toString())
+    private fun apiGetResearch() {
+        running_service = RunningServiceType.RESEARCH
+        apiGetOtp()
     }
 }

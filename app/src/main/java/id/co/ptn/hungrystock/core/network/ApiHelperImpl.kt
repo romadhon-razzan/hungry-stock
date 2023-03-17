@@ -25,6 +25,7 @@ class ApiHelperImpl @Inject constructor(private val apiService: Services) : ApiH
     override suspend fun events(param: String): Response<ResponseEvents> = apiService.events(param)
     override suspend fun eventCategories(): Response<ResponseEventCategories> = apiService.eventCategories()
     override suspend fun researchCategories(): Response<ResponseEventCategories> = apiService.researchCategories()
+    override suspend fun getResearch(param: String): Response<JsonObject> = apiService.getResearch(param)
 
     override suspend fun auth(nt: String, p: String): Response<ResponseAuth> = apiService.auth(nt, p)
     override suspend fun resetPassword(e: String): Response<ResponsePassword> = apiService.resetPassword(e)
@@ -61,7 +62,6 @@ class ApiHelperImpl @Inject constructor(private val apiService: Services) : ApiH
     override suspend fun getLearnings(k: String, c: String, y: String, m: String, ot: String): Response<ResponseLearning> = apiService.getLearnings(k, c, y, m, ot)
     override suspend fun getNextLearnings(p: String, k: String, c: String, y: String, m: String, ot: String): Response<ResponseLearning> = apiService.getNextLearnings(p,k, c, y, m, ot)
     override suspend fun getOnboard(): Response<ResponseOnboard> = apiService.getOnboard()
-    override suspend fun getResearch(t: String, k: String, c: String, y: String, m: String, i: String): Response<JsonObject> = apiService.getResearch(t,k, c, y, m, i)
 //    override suspend fun getRandom(): Response<DrinkResponse> = apiService.getRandom()
 //    override suspend fun searchName(s: String): Response<DrinkResponse> = apiService.searchName(s)
 //    override suspend fun detail(s: String): Response<DrinkResponse> = apiService.detail(s)

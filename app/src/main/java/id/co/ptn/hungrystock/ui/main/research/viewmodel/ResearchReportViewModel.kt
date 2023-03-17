@@ -7,14 +7,20 @@ import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
+import id.co.ptn.hungrystock.config.ENV
+import id.co.ptn.hungrystock.config.TOKEN
+import id.co.ptn.hungrystock.core.SessionManager
+import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.main.research.ResearchFilter
 import id.co.ptn.hungrystock.repositories.AppRepository
+import id.co.ptn.hungrystock.repositories.ResearchRepository
+import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Resource
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ResearchReportViewModel @Inject constructor(val repository: AppRepository) : BaseViewModel() {
+class ResearchReportViewModel @Inject constructor(val repository: ResearchRepository) : BaseViewModel() {
     private var keyword = ""
     fun getKeyword(): String = keyword
     fun setKeyword(k: String) {
@@ -64,6 +70,9 @@ class ResearchReportViewModel @Inject constructor(val repository: AppRepository)
         filters.addAll(v)
     }
 
+    private var _reqOtpResponse: MutableLiveData<Resource<ResponseOtp>> = MutableLiveData()
+    fun reqOtpResponse(): MutableLiveData<Resource<ResponseOtp>> = _reqOtpResponse
+
     private var _reqResearchResponse: MutableLiveData<Resource<JsonObject>> = MutableLiveData()
     fun reqResearchResponse(): MutableLiveData<Resource<JsonObject>> = _reqResearchResponse
 
@@ -71,22 +80,35 @@ class ResearchReportViewModel @Inject constructor(val repository: AppRepository)
      * Api
      * */
 
-    fun apiResearch(t: String, k: String, c: String, y: String, m: String, i: String) {
+    fun apiGetOtp() {
         viewModelScope.launch {
             try {
+                TOKEN = HashUtils.hash256Otp()
+                _reqOtpResponse.postValue(Resource.loading(null))
+                repository.otp().let {
+                    if (it.isSuccessful){
+                        _reqOtpResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        //
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+    fun apiResearch(sessionManager: SessionManager?, otp: String) {
+        viewModelScope.launch {
+            try {
+                val parameter = StringBuilder()
+                parameter.append("order_by=category_name")
+                TOKEN = "${HashUtils.hash256Research(parameter.toString())}.${ENV.userKey()}.$otp"
                 _reqResearchResponse.postValue(Resource.loading(null))
-                repository.getResearch(t,k, c, y, m, i).let {
+                repository.getResearch(parameter.toString()).let {
                     if (it.isSuccessful){
                         _reqResearchResponse.postValue(Resource.success(it.body()))
                     } else {
-                        val type = object : TypeToken<JsonObject>() {}.type
-                        var errorResponse: JsonObject? = null
-                        try {
-                            errorResponse = Gson().fromJson(it.errorBody()?.charStream(), type)
-                        } catch(e: Exception) {
-                            e.printStackTrace()
-                        }
-                        _reqResearchResponse.postValue(Resource.error(it.errorBody().toString(), errorResponse))
+                        //
                     }
                 }
             }catch (e: Exception){

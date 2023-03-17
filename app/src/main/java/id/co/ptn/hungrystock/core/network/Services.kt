@@ -120,13 +120,8 @@ interface Services {
     @GET(HOME)
     suspend fun getOnboard(): Response<ResponseOnboard>
 
-    @GET(RESEARCH)
+    @GET("$RESEARCH/{param}")
     suspend fun getResearch(
-        @Query("type") t: String,
-        @Query("keyword") k: String,
-        @Query("category") c: String,
-        @Query("year") y: String,
-        @Query("month") m: String,
-        @Query("initital") i: String): Response<JsonObject>
+        @Path("param") param: String): Response<JsonObject>
 
 }

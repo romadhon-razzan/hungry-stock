@@ -28,6 +28,10 @@ class HashUtils {
         fun hash256EventCategories(): String{
             return HashUtils().generateHmac256("${ENV.serviceUrl()}$EVENT_CATEGORIES", ENV.serviceSecretKey().toByteArray()) ?: ""
         }
+
+        fun hash256Research(parameter: String): String{
+            return HashUtils().generateHmac256("${ENV.serviceUrl()}$RESEARCH/$parameter", ENV.serviceSecretKey().toByteArray()) ?: ""
+        }
     }
     @Throws(InvalidKeyException::class, NoSuchAlgorithmException::class)
     fun generateHmac256(message: String, key: ByteArray?): String? {

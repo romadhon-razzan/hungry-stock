@@ -25,7 +25,7 @@ interface ApiHelper {
     suspend fun events(param: String): Response<ResponseEvents>
     suspend fun eventCategories(): Response<ResponseEventCategories>
     suspend fun researchCategories(): Response<ResponseEventCategories>
-
+    suspend fun getResearch(param: String): Response<JsonObject>
 
     suspend fun auth(nt: String, p: String): Response<ResponseAuth>
     suspend fun resetPassword(p: String): Response<ResponsePassword>
@@ -58,7 +58,7 @@ interface ApiHelper {
     suspend fun getLearnings(k: String, c: String, y: String, m: String, ot: String): Response<ResponseLearning>
     suspend fun getNextLearnings(p: String, k: String, c: String, y: String, m: String, ot: String): Response<ResponseLearning>
     suspend fun getOnboard(): Response<ResponseOnboard>
-    suspend fun getResearch(t: String, k: String, c: String, y: String, m: String, i: String): Response<JsonObject>
+
 //    suspend fun detail(s: String): Response<DrinkResponse>
 //    suspend fun getRecent(): Response<DrinkResponse>
 //    suspend fun getCategories(): Response<CategoryResponse>
