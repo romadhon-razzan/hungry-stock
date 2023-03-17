@@ -26,7 +26,7 @@ class ResearchReportListAdapter(
 
             binding.tvTitle.text = item.title ?: ""
             binding.tvDate.text = getDateMMMMddyyyy((item.date ?: 0) * 1000)
-            MediaUtils(context).setImageFromUrl(binding.image, item.imageFile ?: "")
+            MediaUtils(context).setImageFromUrl(binding.image, item.imageFile ?: "", R.drawable.img_reseach_placeholder)
             item.file?.let { url ->
                 binding.item.setOnClickListener {
                     val sessionManager = SessionManager.getInstance(context)

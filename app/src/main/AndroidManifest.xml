@@ -68,6 +68,7 @@
         <activity
             android:name=".ui.reference.ReferenceLayoutActivity"
             android:exported="true" />
+        <activity android:name="id.co.ptn.hungrystock.ui.profile.ProfileV2Activity" />
 
         <meta-data
             android:name="com.onesignal.NotificationServiceExtension"

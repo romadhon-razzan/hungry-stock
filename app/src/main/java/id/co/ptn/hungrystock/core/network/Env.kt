@@ -14,6 +14,10 @@ enum class Env {
             return "8000"
         }
 
+        override fun webUrl(): String {
+            return ""
+        }
+
         override fun debug(): Boolean {
             return false
         }
@@ -32,6 +36,10 @@ enum class Env {
             return "8000"
         }
 
+        override fun webUrl(): String {
+            return "https://hs.wintera.co.id/"
+        }
+
         override fun debug(): Boolean {
             return true
         }
@@ -41,5 +49,6 @@ enum class Env {
     abstract fun serviceUrl() : String
     abstract fun serviceSecretKey() : String
     abstract fun userKey() : String
+    abstract fun webUrl() : String
     abstract fun debug() : Boolean
 }

@@ -19,7 +19,7 @@ class SessionManager private constructor(context: Context) {
         context.applicationContext.getSharedPreferences(USER_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
 
-    val authData: ResponseAuthDataV2
+    val authData: ResponseAuthDataV2?
         get() {
             val result = sharedPreferences.getString(KEY_AUTH_DATA, "")
             return try {

@@ -13,6 +13,7 @@ import id.co.ptn.hungrystock.ui.main.learning.LearningDetailActivity
 import id.co.ptn.hungrystock.ui.onboarding.OnboardActivity
 import id.co.ptn.hungrystock.ui.privacy_police.PrivacyPoliceActivity
 import id.co.ptn.hungrystock.ui.profile.ProfileActivity
+import id.co.ptn.hungrystock.ui.profile.ProfileV2Activity
 import id.co.ptn.hungrystock.ui.reference.ReferenceLayoutActivity
 import id.co.ptn.hungrystock.ui.video_player.VideoPlayerActivity
 
@@ -58,7 +59,8 @@ class Router constructor(private val context: Context) {
     }
 
     fun toProfile() {
-        context.startActivity(Intent(context, ProfileActivity::class.java))
+        context.startActivity(Intent(context, ProfileV2Activity::class.java))
+//        context.startActivity(Intent(context, ProfileActivity::class.java))
     }
 
     fun toReference() {
