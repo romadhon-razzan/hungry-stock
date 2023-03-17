@@ -45,11 +45,9 @@ class ProfileViewModel @Inject constructor(private val repository: AppRepository
 
     private val _joinDate = MutableStateFlow("")
     val joinDate: StateFlow<String> = _joinDate
-    fun setJoinDate(joinDate: String) {
+    fun setJoinDate(joinDate: Long) {
         viewModelScope.launch {
-            val stringToDate = stringToDate(iso8601, joinDate)
-            val simpleDateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault() )
-            val finalDate: String = simpleDateFormat.format(stringToDate ?: "")
+            val finalDate: String = getDateMMMMddyyyy(joinDate*1000)
             _joinDate.value = finalDate
         }
     }

@@ -22,6 +22,7 @@ import id.co.ptn.hungrystock.ui.main.viewmodel.MainViewModel
 import id.co.ptn.hungrystock.ui.onboarding.adapters.OnboardVPAdapter
 import id.co.ptn.hungrystock.ui.privacy_police.view_model.PrivacyPoliceViewModel
 import id.co.ptn.hungrystock.utils.HashUtils
+import id.co.ptn.hungrystock.utils.MediaUtils
 import id.co.ptn.hungrystock.utils.Status
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -54,11 +55,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setView() {
-//        try {
-//            Glide.with(this).load("${ASSET_URL}${sessionManager.user.photo}").into(binding.imgProfile)
-//        }catch (e: Exception){
-//            e.printStackTrace()
-//        }
+        MediaUtils(this).setImageFromUrl(binding.imgProfile, sessionManager.user?.photo_file ?: "")
         initViewPager()
         navHomePressed()
     }

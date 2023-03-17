@@ -34,6 +34,8 @@ data class ResponseProfileData (
     @SerializedName("membership_level_key"  ) var membershipLevelKey   : String? = null,
     @SerializedName("membership_level_name" ) var membershipLevelName  : String? = null,
     @SerializedName("membership_exp_date"   ) var membershipExpDate    : Long?    = null,
+    @SerializedName("activation_date"   ) var activation_date    : Long?    = null,
+    @SerializedName("photo_file"              ) var photo_file             : String? = null,
     @SerializedName("domisili"              ) var domisili             : String? = null,
     @SerializedName("is_domisili_others"    ) var isDomisiliOthers     : String? = null,
     @SerializedName("experience_investment" ) var experienceInvestment : String? = null,
