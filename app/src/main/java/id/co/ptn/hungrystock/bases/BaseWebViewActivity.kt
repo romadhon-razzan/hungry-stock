@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
@@ -15,6 +16,8 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.databinding.DataBindingUtil
 import id.co.ptn.hungrystock.R
+import id.co.ptn.hungrystock.config.ENV
+import id.co.ptn.hungrystock.core.network.Env
 import id.co.ptn.hungrystock.databinding.ActivityWebviewBinding
 
 private const val REQUEST_SELECT_FILE = 100
@@ -132,14 +135,20 @@ open class BaseWebViewActivity: BaseActivity() {
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
             binding.progressBar.visibility = View.GONE
+            Log.d("onPageFinished", url ?: "")
         }
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
+            Log.d("onPageStarted", url ?: "")
+            if (url == ENV.webUrl()){
+                finish()
+            }
         }
 
         override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
             view.loadUrl(url!!)
+            Log.d("shouldOverrideUrlLoading", url ?: "")
             return super.shouldOverrideUrlLoading(view, url)
         }
     }
