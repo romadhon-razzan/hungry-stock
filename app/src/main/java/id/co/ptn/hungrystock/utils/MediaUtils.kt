@@ -16,4 +16,14 @@ class MediaUtils (val context: Context){
             e.printStackTrace()
         }
     }
+
+    fun setImageFromUrl(imageView: ImageView, url: String, placeholder: Int) {
+        try {
+            Glide.with(context)
+                .load(url)
+                .placeholder(ContextCompat.getDrawable(context, placeholder)).into(imageView)
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
 }

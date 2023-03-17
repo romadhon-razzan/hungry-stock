@@ -12,6 +12,7 @@ import id.co.ptn.hungrystock.databinding.ItemEventBinding
 import id.co.ptn.hungrystock.models.main.home.PastEvent
 import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
 import id.co.ptn.hungrystock.models.main.home.UpcomingEvent
+import id.co.ptn.hungrystock.utils.MediaUtils
 import id.co.ptn.hungrystock.utils.getDateMMMMddyyyy
 import id.co.ptn.hungrystock.utils.getHHmm
 
@@ -28,7 +29,7 @@ class EventListAdapter(private val items: MutableList<ResponseEventsData>,
 
     inner class EventHolder(var binding: ItemEventBinding) : ViewHolder(binding.root) {
         fun setView(item: ResponseEventsData, position: Int) {
-            Glide.with(context).load(item.image_file ?: "").into(binding.image)
+            MediaUtils(context).setImageFromUrl(binding.image, item.image_file ?: "", R.drawable.img_event_placeholder)
             binding.tvUpcomingTitle.text = item.title ?: ""
             binding.tvUpcomingDate.text = getDateMMMMddyyyy((item.date_from ?: 0) * 1000)
             binding.tvUpcomingDate.append(" ${getHHmm((item.date_from ?: 0) * 1000)}-${getHHmm((item.date_to ?: 0) * 1000)} WIB")

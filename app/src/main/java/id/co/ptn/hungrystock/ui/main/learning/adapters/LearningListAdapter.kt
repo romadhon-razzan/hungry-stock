@@ -10,13 +10,14 @@ import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.databinding.*
 import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
 import id.co.ptn.hungrystock.models.main.learning.Learning
+import id.co.ptn.hungrystock.utils.MediaUtils
 import id.co.ptn.hungrystock.utils.getDateMMMMddyyyy
 
 class LearningListAdapter(private val items: MutableList<ResponseEventsData>, private val listener: LearningListener):
     RecyclerView.Adapter<LearningListAdapter.ViewHolder>() {
     class ViewHolder(var binding: ItemLearningBinding, var context: Context) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ResponseEventsData) {
-            item.image_file.let { Glide.with(context).load(it).into(binding.image) }
+            MediaUtils(context).setImageFromUrl(binding.image, item.image_file ?: "", R.drawable.img_event_placeholder)
             binding.tvTitle.text = item.title ?: ""
             binding.tvSubTitle.text = getDateMMMMddyyyy((item.date_from ?: 0) * 1000)
         }
