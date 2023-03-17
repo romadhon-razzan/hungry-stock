@@ -37,20 +37,20 @@ class ProfileActivity : BaseActivity() {
     private fun setView() {
         binding.etEmail.isEnabled = false
         binding.etWa.isEnabled = false
-        MediaUtils(this).setImageFromUrl(binding.imgPhoto, sessionManager.user?.photo_file ?: "")
-        viewModel.setUserId(sessionManager.user?.code ?: "")
-        viewModel.setUsername(sessionManager.user?.name ?: "")
-        viewModel.setValidDate(sessionManager.user?.membershipExpDate ?: 0)
-        viewModel.setJoinDate(sessionManager.user?.activation_date ?: 0)
-        viewModel.setEmail(sessionManager.user?.email ?: "")
-        viewModel.setNoWa(sessionManager.user?.phone ?: "")
+        MediaUtils(this).setImageFromUrl(binding.imgPhoto, sessionManager?.user?.photo_file ?: "")
+        viewModel.setUserId(sessionManager?.user?.code ?: "")
+        viewModel.setUsername(sessionManager?.user?.name ?: "")
+        viewModel.setValidDate(sessionManager?.user?.membershipExpDate ?: 0)
+        viewModel.setJoinDate(sessionManager?.user?.activation_date ?: 0)
+        viewModel.setEmail(sessionManager?.user?.email ?: "")
+        viewModel.setNoWa(sessionManager?.user?.phone ?: "")
 
     }
 
     private fun setListener() {
         binding.btExit.setOnClickListener {
             TOKEN = ""
-            sessionManager.destroy()
+            sessionManager?.destroy()
             router.toExit()
             finishAffinity()
         }

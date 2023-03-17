@@ -44,7 +44,7 @@ class OnboardActivity : BaseActivity() {
 
     private fun setView() {
         viewModel?.setShowPrivacyPolicy(true)
-        if (!sessionManager.readPrivacyPolice)
+        if (sessionManager?.readPrivacyPolice == false)
             Handler(Looper.getMainLooper()).postDelayed({
                 resultLauncher.launch(router.toPrivacyPolice())
             },1000)
@@ -66,7 +66,7 @@ class OnboardActivity : BaseActivity() {
         if (result.resultCode == SUCCESS) {
             agree = true
             binding.checkbox.isChecked = true
-            sessionManager.setReadPrivacyPolice(true)
+            sessionManager?.setReadPrivacyPolice(true)
         }
     }
 

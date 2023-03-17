@@ -5,14 +5,13 @@ import android.content.Intent
 import id.co.ptn.hungrystock.ui.general.auth.AuthActivity
 import id.co.ptn.hungrystock.ui.general.forgot_password.ForgotPasswordActivity
 import id.co.ptn.hungrystock.ui.general.forgot_password.ResetPasswordSuccessActivity
-import id.co.ptn.hungrystock.ui.general.registration.RegistrationActivity
 import id.co.ptn.hungrystock.ui.general.registration.RegistrationSuccessActivity
+import id.co.ptn.hungrystock.ui.general.registration.RegistrationV2Activity
 import id.co.ptn.hungrystock.ui.main.MainActivity
 import id.co.ptn.hungrystock.ui.main.hsro.HsroDetailActivity
 import id.co.ptn.hungrystock.ui.main.learning.LearningDetailActivity
 import id.co.ptn.hungrystock.ui.onboarding.OnboardActivity
 import id.co.ptn.hungrystock.ui.privacy_police.PrivacyPoliceActivity
-import id.co.ptn.hungrystock.ui.profile.ProfileActivity
 import id.co.ptn.hungrystock.ui.profile.ProfileV2Activity
 import id.co.ptn.hungrystock.ui.reference.ReferenceLayoutActivity
 import id.co.ptn.hungrystock.ui.video_player.VideoPlayerActivity
@@ -47,7 +46,8 @@ class Router constructor(private val context: Context) {
     }
 
     fun toRegistration() {
-        context.startActivity(Intent(context, RegistrationActivity::class.java))
+        context.startActivity(Intent(context, RegistrationV2Activity::class.java))
+//        context.startActivity(Intent(context, RegistrationActivity::class.java))
     }
 
     fun toRegistrationSuccess() {
@@ -59,6 +59,7 @@ class Router constructor(private val context: Context) {
     }
 
     fun toProfile() {
+//        context.startActivity(Intent(context, WebViewUpload::class.java))
         context.startActivity(Intent(context, ProfileV2Activity::class.java))
 //        context.startActivity(Intent(context, ProfileActivity::class.java))
     }

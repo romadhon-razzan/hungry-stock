@@ -3,6 +3,8 @@ package id.co.ptn.hungrystock.ui.splashscreen
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
@@ -18,8 +20,13 @@ class SplashScreenActivity : BaseActivity() {
 
     private fun init() {
         Handler(Looper.getMainLooper()).postDelayed({
-            if (sessionManager.authData?.pkey?.isEmpty() == true) router.toOnboard()
-            else router.toMain()
+            if (sessionManager?.authData == null) {
+                Log.d("Splash01", "Masuk 1")
+                router.toOnboard()
+            } else {
+                Log.d("Splash01", "Masuk 2")
+                router.toMain()
+            }
             finish()
         }, 2000)
     }

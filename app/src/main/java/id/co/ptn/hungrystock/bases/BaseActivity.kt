@@ -19,7 +19,7 @@ import id.co.ptn.hungrystock.ui.general.view_model.OtpViewModel
 
 open class BaseActivity : AppCompatActivity() {
 
-    lateinit var sessionManager: SessionManager
+    var sessionManager: SessionManager? = null
     lateinit var router: Router
     lateinit var keyboard: Keyboard
 

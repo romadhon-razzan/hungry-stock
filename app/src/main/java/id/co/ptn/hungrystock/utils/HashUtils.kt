@@ -21,6 +21,10 @@ class HashUtils {
             return HashUtils().generateHmac256("${ENV.serviceUrl()}$PROFILE/$parameter", ENV.serviceSecretKey().toByteArray()) ?: ""
         }
 
+        fun hash256WebViewProfile(parameter: String): String{
+            return HashUtils().generateHmac256("${ENV.webUrl()}$parameter", ENV.serviceSecretKey().toByteArray()) ?: ""
+        }
+
         fun hash256Events(parameter: String): String{
             return HashUtils().generateHmac256("${ENV.serviceUrl()}$EVENTS/$parameter", ENV.serviceSecretKey().toByteArray()) ?: ""
         }

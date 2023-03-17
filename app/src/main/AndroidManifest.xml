@@ -69,6 +69,8 @@
             android:name=".ui.reference.ReferenceLayoutActivity"
             android:exported="true" />
         <activity android:name="id.co.ptn.hungrystock.ui.profile.ProfileV2Activity" />
+        <activity android:name="id.co.ptn.hungrystock.ui.general.registration.RegistrationV2Activity" />
+        <activity android:name="id.co.ptn.hungrystock.ui.profile.WebViewUpload" />
 
         <meta-data
             android:name="com.onesignal.NotificationServiceExtension"

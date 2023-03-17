@@ -16,12 +16,12 @@ class ConfirmDialog(val context: Context) {
 //    fun setListener(listener: Listener) {
 //        this.listener = listener
 //    }
-    fun show(listener: Listener) {
-        builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+    fun show(listener: Listener, positiveButton: String, negativeButton: String) {
+        builder.setPositiveButton(positiveButton) { dialog, which ->
             listener.onPositiveClick()
         }
 
-        builder.setNegativeButton(android.R.string.no) { dialog, which ->
+        builder.setNegativeButton(negativeButton) { dialog, which ->
             listener.onNegativeClick()
         }
         builder.show()

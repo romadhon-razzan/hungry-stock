@@ -55,7 +55,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setView() {
-        MediaUtils(this).setImageFromUrl(binding.imgProfile, sessionManager.user?.photo_file ?: "")
+        MediaUtils(this).setImageFromUrl(binding.imgProfile, sessionManager?.user?.photo_file ?: "")
         initViewPager()
         navHomePressed()
     }
@@ -133,7 +133,7 @@ class MainActivity : BaseActivity() {
             when(it.status) {
                 Status.SUCCESS -> {
                     it?.data?.data?.forEach { data ->
-                        sessionManager.setUser(data)
+                        sessionManager?.setUser(data)
                     }
                     setView()
                     binding.constraint.visibility = View.VISIBLE

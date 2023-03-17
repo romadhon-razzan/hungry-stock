@@ -84,7 +84,7 @@ class AuthActivity : BaseActivity() {
             when (it.status) {
                 Status.SUCCESS -> {
                     binding.btLogin.revertAnimation()
-                    sessionManager.setAuthData(Gson().toJson(it.data?.success_data?.get(0)?.data ?: ""))
+                    sessionManager?.setAuthData(Gson().toJson(it.data?.success_data?.get(0)?.data ?: ""))
                     router.toMain()
                     finishAffinity()
                 }
