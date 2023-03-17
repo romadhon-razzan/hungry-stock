@@ -30,7 +30,7 @@ class HsroDetailActivity : BaseActivity() {
     private lateinit var learningListAdapter: LearningListAdapter
     private var learnings: MutableList<ResponseEventsData> = mutableListOf()
 
-    private lateinit var researchReportListAdapter: ResearchReportListAdapter
+//    private lateinit var researchReportListAdapter: ResearchReportListAdapter
     private var researchReports: MutableList<ResearchReportData> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,10 +109,10 @@ class HsroDetailActivity : BaseActivity() {
     }
 
     private fun initResearchList() {
-        researchReportListAdapter = ResearchReportListAdapter(supportFragmentManager,researchReports)
-        binding.recyclerViewResearch.apply {
-            layoutManager = GridLayoutManager(this@HsroDetailActivity, 2)
-            adapter = researchReportListAdapter
-        }
+//        researchReportListAdapter = ResearchReportListAdapter(supportFragmentManager,researchReports)
+//        binding.recyclerViewResearch.apply {
+//            layoutManager = GridLayoutManager(this@HsroDetailActivity, 2)
+//            adapter = researchReportListAdapter
+//        }
     }
 }

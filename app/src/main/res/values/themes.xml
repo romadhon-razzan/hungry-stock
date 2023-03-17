@@ -79,6 +79,16 @@
         <item name="android:layout_marginStart">@dimen/spacing_16</item>
         <item name="android:layout_marginEnd">@dimen/spacing_16</item>
         <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/ft_barlow_medium</item>
+    </style>
+
+    <style name="Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/spacing_16</item>
+        <item name="android:layout_marginEnd">@dimen/spacing_16</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/ft_barlow_regular</item>
     </style>
 
     <style name="DialogThemeFullScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">

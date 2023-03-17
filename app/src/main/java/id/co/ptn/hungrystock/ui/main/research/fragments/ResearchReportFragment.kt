@@ -3,18 +3,16 @@ package id.co.ptn.hungrystock.ui.main.research.fragments
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.EmptyStateFragment
@@ -23,6 +21,8 @@ import id.co.ptn.hungrystock.core.network.RunningServiceType
 import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.FragmentResearchReportBinding
 import id.co.ptn.hungrystock.models.main.research.*
+import id.co.ptn.hungrystock.ui.main.research.adapters.MainResearchReportListAdapter
+import id.co.ptn.hungrystock.ui.main.research.adapters.ResearchReportListAdapter
 import id.co.ptn.hungrystock.ui.main.research.adapters.ResearchReportPageAdapter
 import id.co.ptn.hungrystock.ui.main.research.viewmodel.ResearchReportViewModel
 import id.co.ptn.hungrystock.ui.main.research.viewmodel.ResearchViewModel
@@ -40,7 +40,7 @@ class ResearchReportFragment : Fragment() {
     private var mainViewModel: MainViewModel? = null
     private var viewModel: ResearchReportViewModel? = null
     private var researchViewModel: ResearchViewModel? = null
-    private var researchReportPageAdapter: ResearchReportPageAdapter? = null
+    private var researchReportPageAdapter: ResearchReportListAdapter? = null
     private var items: MutableList<ResearchPage> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,36 +78,14 @@ class ResearchReportFragment : Fragment() {
         }
     }
 
-    private fun initList() {
-        researchReportPageAdapter = ResearchReportPageAdapter(
-            childFragmentManager,
-            items, object: ResearchReportPageAdapter.ResearchReportListener{
-            override fun onFilterClick() {
-
-            }
-
-            override fun onSorting(value: String) {
-                items.forEachIndexed { index, researchPage ->
-                    when(researchPage.type){
-                        ResearchPage.TYPE_SORTING -> {
-                            researchPage.sorting = ResearchSorting(value,value)
-                            researchReportPageAdapter?.notifyItemChanged(index)
-                            viewModel?.setLabelSorting(value)
-                            viewModel?.setType(value)
-                            Handler(Looper.getMainLooper()).postDelayed({
-                                apiGetResearch()
-                            },500)
-
-                        }
-                        else -> {}
-                    }
-                }
-            }
-
-        })
+    private fun initList(items: MutableList<ResponseResearchData>) {
+        researchReportPageAdapter = ResearchReportListAdapter(childFragmentManager,items)
         binding?.recyclerView?.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = researchReportPageAdapter
+        }
+        if (items.isEmpty()){
+            emptyState()
         }
     }
 
@@ -168,62 +146,63 @@ class ResearchReportFragment : Fragment() {
                     binding?.progressBar?.visibility = View.GONE
                     var total = 0
 
-                    /*try {
-                        binding?.frameContainer?.visibility = View.GONE
-                        items.clear()
-                        items.add(ResearchPage(ResearchPage.TYPE_SORTING, listOf(), listOf(), listOf(), ResearchSorting("n",viewModel?.getLabelSorting()!!)))
-//                        items.add(ResearchPage(ResearchPage.TYPE_FILTER, listOf(), listOf(), viewModel?.getFilters()!!, ResearchSorting("n","Terbaru")))
-                        val researchReport: MutableList<ResearchReport> = mutableListOf()
-                        it.data?.getAsJsonObject("data")?.let { data ->
-                            if (data.has("researchsCount"))
-                                total = data.get("researchsCount").asInt
-
-                            monthListDesc().forEach { month ->
-                                val researchReportData: MutableList<ResearchReportData> = mutableListOf()
-                                data.getAsJsonObject("researchs")?.
-                                getAsJsonArray("$month ${viewModel?.getYear()}")?.forEachIndexed { index, jsonElement ->
-                                    var id = ""
-                                    var title = ""
-                                    var photoUrl = ""
-                                    var fileUrl = ""
-                                    var extension = ""
-
-                                    if (jsonElement.asJsonObject.has("id")){
-                                        id = jsonElement.asJsonObject.get("id").toString()
-                                    }
-
-                                    if (jsonElement.asJsonObject.has("title")){
-                                        title = jsonElement.asJsonObject.get("title").asString
-                                    }
-
-                                    if (jsonElement.asJsonObject.has("photo_url")){
-                                        photoUrl = jsonElement.asJsonObject.get("photo_url").asString
-                                    }
-
-                                    if (jsonElement.asJsonObject.has("file_url")){
-                                        fileUrl = jsonElement.asJsonObject.get("file_url").asString
-                                    }
-
-                                    if (jsonElement.asJsonObject.has("file_extension")){
-                                        extension = jsonElement.asJsonObject.get("file_extension").asString
-                                    }
-                                    researchReportData.add(ResearchReportData(id, title, photoUrl, fileUrl, extension))
-                                }
-                                if (researchReportData.size > 0) {
-                                    researchReport.add(ResearchReport("$month ${viewModel?.getYear()}", researchReportData))
-                                }
-                            }
-
-                            items.add(ResearchPage(ResearchPage.TYPE_LIST, researchReport, listOf(), listOf(), ResearchSorting("n","Terbaru")))
-                            initList()
-                            researchViewModel?.researchTabTitle()?.value = total.toString()
-                        }
-                    }catch (e: Exception){
-                        e.printStackTrace()
-                        // empty state
-                        emptyState()
-                    }*/
-
+//                    try {
+//                        binding?.frameContainer?.visibility = View.GONE
+//                        items.clear()
+//                        items.add(ResearchPage(ResearchPage.TYPE_SORTING, listOf(), listOf(), listOf(), ResearchSorting("n",viewModel?.getLabelSorting()!!)))
+////                        items.add(ResearchPage(ResearchPage.TYPE_FILTER, listOf(), listOf(), viewModel?.getFilters()!!, ResearchSorting("n","Terbaru")))
+//                        val researchReport: MutableList<ResearchReport> = mutableListOf()
+//                        it.data?.getAsJsonObject("data")?.let { data ->
+//                            if (data.has("researchsCount"))
+//                                total = data.get("researchsCount").asInt
+//
+//                            monthListDesc().forEach { month ->
+//                                val researchReportData: MutableList<ResearchReportData> = mutableListOf()
+//                                data.getAsJsonObject("researchs")?.
+//                                getAsJsonArray("$month ${viewModel?.getYear()}")?.forEachIndexed { index, jsonElement ->
+//                                    var id = ""
+//                                    var title = ""
+//                                    var photoUrl = ""
+//                                    var fileUrl = ""
+//                                    var extension = ""
+//
+//                                    if (jsonElement.asJsonObject.has("id")){
+//                                        id = jsonElement.asJsonObject.get("id").toString()
+//                                    }
+//
+//                                    if (jsonElement.asJsonObject.has("title")){
+//                                        title = jsonElement.asJsonObject.get("title").asString
+//                                    }
+//
+//                                    if (jsonElement.asJsonObject.has("photo_url")){
+//                                        photoUrl = jsonElement.asJsonObject.get("photo_url").asString
+//                                    }
+//
+//                                    if (jsonElement.asJsonObject.has("file_url")){
+//                                        fileUrl = jsonElement.asJsonObject.get("file_url").asString
+//                                    }
+//
+//                                    if (jsonElement.asJsonObject.has("file_extension")){
+//                                        extension = jsonElement.asJsonObject.get("file_extension").asString
+//                                    }
+//                                    researchReportData.add(ResearchReportData(id, title, photoUrl, fileUrl, extension))
+//                                }
+//                                if (researchReportData.size > 0) {
+//                                    researchReport.add(ResearchReport("$month ${viewModel?.getYear()}", researchReportData))
+//                                }
+//                            }
+//
+//                            items.add(ResearchPage(ResearchPage.TYPE_LIST, researchReport, listOf(), listOf(), ResearchSorting("n","Terbaru")))
+//                            initList()
+//                            researchViewModel?.researchTabTitle()?.value = total.toString()
+//                        }
+//                    }catch (e: Exception){
+//                        e.printStackTrace()
+//                        // empty state
+//                        emptyState()
+//                    }
+                    researchViewModel?.researchTabTitle()?.value = (it.data?.totalRows ?: 0).toString()
+                    initList((it.data?.data ?: mutableListOf()) as MutableList<ResponseResearchData>)
                 }
                 Status.LOADING -> {
                     binding?.progressBar?.visibility = View.VISIBLE

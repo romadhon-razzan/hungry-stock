@@ -45,20 +45,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/icon_file"
-                android:layout_marginStart="@dimen/normal1"
                 android:layout_marginTop="@dimen/small"
-                android:layout_marginEnd="@dimen/medium1"
+                style="@style/Body2"
                 android:fontFamily="@font/ft_barlow_medium"
                 android:maxLines="2"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_small"
-                android:text="SRTG_HungryStock_StockData_020921" />
+                tools:text="SRTG_HungryStock_StockData_020921" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_title"
+                android:layout_marginTop="@dimen/small"
+                style="@style/Caption"
+                android:maxLines="2"
+                tools:text="24 Maret 2023" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_image_file"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_below="@id/flag"
+                android:layout_below="@id/tv_date"
                 android:layout_marginStart="@dimen/small1"
                 android:layout_marginTop="@dimen/small1"
                 android:layout_marginEnd="@dimen/small1"
