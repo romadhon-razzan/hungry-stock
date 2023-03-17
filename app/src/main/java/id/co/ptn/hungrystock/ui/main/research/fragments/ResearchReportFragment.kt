@@ -26,6 +26,7 @@ import id.co.ptn.hungrystock.models.main.research.*
 import id.co.ptn.hungrystock.ui.main.research.adapters.ResearchReportPageAdapter
 import id.co.ptn.hungrystock.ui.main.research.viewmodel.ResearchReportViewModel
 import id.co.ptn.hungrystock.ui.main.research.viewmodel.ResearchViewModel
+import id.co.ptn.hungrystock.ui.main.viewmodel.MainViewModel
 import id.co.ptn.hungrystock.utils.*
 
 @AndroidEntryPoint
@@ -36,10 +37,18 @@ class ResearchReportFragment : Fragment() {
     }
 
     private var binding: FragmentResearchReportBinding? = null
+    private var mainViewModel: MainViewModel? = null
     private var viewModel: ResearchReportViewModel? = null
     private var researchViewModel: ResearchViewModel? = null
     private var researchReportPageAdapter: ResearchReportPageAdapter? = null
     private var items: MutableList<ResearchPage> = mutableListOf()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        researchViewModel = ViewModelProvider(requireActivity())[ResearchViewModel::class.java]
+        viewModel = ViewModelProvider(this)[ResearchReportViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,8 +60,6 @@ class ResearchReportFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        researchViewModel = ViewModelProvider(requireActivity())[ResearchViewModel::class.java]
-        viewModel = ViewModelProvider(this)[ResearchReportViewModel::class.java]
         binding?.vm = viewModel
         init()
     }
@@ -63,7 +70,6 @@ class ResearchReportFragment : Fragment() {
         viewModel?.setYear(currentYear())
         viewModel?.getFilters()?.clear()
         viewModel?.getFilters()?.add(ResearchFilter("","${monthLabel(viewModel?.getMonth()!!)} ${currentYear()}"))
-        apiGetResearch()
     }
 
     private fun initListener() {
@@ -225,6 +231,16 @@ class ResearchReportFragment : Fragment() {
                 Status.ERROR -> {
                     binding?.swipeRefresh?.isRefreshing = false
                     binding?.progressBar?.visibility = View.GONE
+                }
+            }
+        }
+
+        mainViewModel?.researchPressed?.observe(requireActivity()){
+
+            if (it){
+                if (viewModel?.pageFirstRequested == false) {
+                    apiGetResearch()
+                    viewModel?.pageFirstRequested = true
                 }
             }
         }

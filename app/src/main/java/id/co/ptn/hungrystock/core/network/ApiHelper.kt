@@ -8,6 +8,7 @@ import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
+import id.co.ptn.hungrystock.models.main.research.ResponseResearch
 import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.reference.ResponseEventCategories
@@ -25,7 +26,7 @@ interface ApiHelper {
     suspend fun events(param: String): Response<ResponseEvents>
     suspend fun eventCategories(): Response<ResponseEventCategories>
     suspend fun researchCategories(): Response<ResponseEventCategories>
-    suspend fun getResearch(param: String): Response<JsonObject>
+    suspend fun getResearch(param: String): Response<ResponseResearch>
 
     suspend fun auth(nt: String, p: String): Response<ResponseAuth>
     suspend fun resetPassword(p: String): Response<ResponsePassword>

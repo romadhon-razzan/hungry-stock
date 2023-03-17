@@ -12,6 +12,7 @@ import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.main.research.ResearchFilter
+import id.co.ptn.hungrystock.models.main.research.ResponseResearch
 import id.co.ptn.hungrystock.repositories.AppRepository
 import id.co.ptn.hungrystock.repositories.ResearchRepository
 import id.co.ptn.hungrystock.utils.HashUtils
@@ -70,11 +71,13 @@ class ResearchReportViewModel @Inject constructor(val repository: ResearchReposi
         filters.addAll(v)
     }
 
+    var pageFirstRequested = false
+
     private var _reqOtpResponse: MutableLiveData<Resource<ResponseOtp>> = MutableLiveData()
     fun reqOtpResponse(): MutableLiveData<Resource<ResponseOtp>> = _reqOtpResponse
 
-    private var _reqResearchResponse: MutableLiveData<Resource<JsonObject>> = MutableLiveData()
-    fun reqResearchResponse(): MutableLiveData<Resource<JsonObject>> = _reqResearchResponse
+    private var _reqResearchResponse: MutableLiveData<Resource<ResponseResearch>> = MutableLiveData()
+    fun reqResearchResponse(): MutableLiveData<Resource<ResponseResearch>> = _reqResearchResponse
 
     /**
      * Api

@@ -8,6 +8,7 @@ import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
+import id.co.ptn.hungrystock.models.main.research.ResponseResearch
 import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.reference.ResponseEventCategories
@@ -122,6 +123,6 @@ interface Services {
 
     @GET("$RESEARCH/{param}")
     suspend fun getResearch(
-        @Path("param") param: String): Response<JsonObject>
+        @Path("param") param: String): Response<ResponseResearch>
 
 }

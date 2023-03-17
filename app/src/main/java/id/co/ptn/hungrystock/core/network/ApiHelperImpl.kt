@@ -8,6 +8,7 @@ import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
+import id.co.ptn.hungrystock.models.main.research.ResponseResearch
 import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.reference.ResponseEventCategories
@@ -25,7 +26,7 @@ class ApiHelperImpl @Inject constructor(private val apiService: Services) : ApiH
     override suspend fun events(param: String): Response<ResponseEvents> = apiService.events(param)
     override suspend fun eventCategories(): Response<ResponseEventCategories> = apiService.eventCategories()
     override suspend fun researchCategories(): Response<ResponseEventCategories> = apiService.researchCategories()
-    override suspend fun getResearch(param: String): Response<JsonObject> = apiService.getResearch(param)
+    override suspend fun getResearch(param: String): Response<ResponseResearch> = apiService.getResearch(param)
 
     override suspend fun auth(nt: String, p: String): Response<ResponseAuth> = apiService.auth(nt, p)
     override suspend fun resetPassword(e: String): Response<ResponsePassword> = apiService.resetPassword(e)
