@@ -7,9 +7,9 @@ data class ResponseResearch (
     @SerializedName("response_code" ) var responseCode : Int?            = null,
     @SerializedName("data"          ) var data         : List<ResponseResearchData> = mutableListOf(),
     @SerializedName("offset"        ) var offset       : Int?            = null,
-    @SerializedName("rows_per_page" ) var rowsPerPage  : String?         = null,
-    @SerializedName("total_pages"   ) var totalPages   : Int?            = null,
-    @SerializedName("total_rows"    ) var totalRows    : Int?            = null,
+    @SerializedName("rows_per_page" ) var rows_per_page  : String?         = null,
+    @SerializedName("total_pages"   ) var total_pages   : Int?            = null,
+    @SerializedName("total_rows"    ) var total_rows    : Int?            = null,
     @SerializedName("message"       ) var message      : String?         = null
         ){
     companion object {
@@ -19,7 +19,7 @@ data class ResponseResearch (
         }
         fun canLoadNext(responseResearch: ResponseResearch): Boolean{
             val offset = responseResearch.offset ?: 0
-            val totalPages = responseResearch.totalPages ?: 0
+            val totalPages = responseResearch.total_pages ?: 0
             return offset < totalPages
         }
     }

@@ -4,10 +4,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
+import id.co.ptn.hungrystock.config.ENV
 import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.reference.ResponseEventCategories
 import id.co.ptn.hungrystock.models.reference.ResponseEventCategoriesData
+import id.co.ptn.hungrystock.models.reference.ResponseResearchCategories
+import id.co.ptn.hungrystock.models.reference.ResponseResearchCategoriesData
 import id.co.ptn.hungrystock.repositories.ReferenceRepository
 import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Resource
@@ -22,10 +25,11 @@ class ReferenceViewModel @Inject constructor(private val repository: ReferenceRe
     private var _reqEventCategoriesResponse: MutableLiveData<Resource<ResponseEventCategories>> = MutableLiveData()
     fun reqEventCategoriesResponse(): MutableLiveData<Resource<ResponseEventCategories>> = _reqEventCategoriesResponse
 
-    private var _reqResearchCategoriesResponse: MutableLiveData<Resource<ResponseEventCategories>> = MutableLiveData()
-    fun reqResearchCategoriesResponse(): MutableLiveData<Resource<ResponseEventCategories>> = _reqResearchCategoriesResponse
+    private var _reqResearchCategoriesResponse: MutableLiveData<Resource<ResponseResearchCategories>> = MutableLiveData()
+    fun reqResearchCategoriesResponse(): MutableLiveData<Resource<ResponseResearchCategories>> = _reqResearchCategoriesResponse
 
     var refEventCategories: MutableList<ResponseEventCategoriesData> = mutableListOf()
+    var refResearchCategories: MutableList<ResponseResearchCategoriesData> = mutableListOf()
 /**
  * Api
  * */
@@ -46,9 +50,10 @@ fun apiGetOtp() {
     }
 }
 
-    fun apiEventCategories() {
+    fun apiEventCategories(otp: String) {
         viewModelScope.launch {
             try {
+                TOKEN = "${HashUtils.hash256EventCategories()}.${ENV.userKey()}.$otp"
                 _reqEventCategoriesResponse.postValue(Resource.loading(null))
                 repository.getEventCategories().let {
                     if (it.isSuccessful){
@@ -65,12 +70,15 @@ fun apiGetOtp() {
         }
     }
 
-    fun apiResearchCategories() {
+    fun apiResearchCategories(otp: String) {
         viewModelScope.launch {
             try {
+                TOKEN = "${HashUtils.hash256ResearchCategories()}.${ENV.userKey()}.$otp"
                 _reqResearchCategoriesResponse.postValue(Resource.loading(null))
                 repository.getResearchCategories().let {
                     if (it.isSuccessful){
+                        refResearchCategories.clear()
+                        refResearchCategories.addAll(it.body()?.data ?: mutableListOf())
                         _reqResearchCategoriesResponse.postValue(Resource.success(it.body()))
                     } else {
                         //

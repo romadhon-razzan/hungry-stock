@@ -6,6 +6,10 @@ import androidx.fragment.app.FragmentPagerAdapter
 import id.co.ptn.hungrystock.ui.onboarding.fragments.*
 
 class OnboardVPAdapter(fm: FragmentManager): FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    companion object {
+        const val PAGE_WEBINAR = 2
+        const val PAGE_BOOKS = 3
+    }
     override fun getCount(): Int {
         return 5
     }
@@ -18,10 +22,10 @@ class OnboardVPAdapter(fm: FragmentManager): FragmentPagerAdapter(fm, BEHAVIOR_R
             1 -> {
                 PageTwoFragment()
             }
-            2 -> {
+            PAGE_WEBINAR -> {
                 PageThreeFragment()
             }
-            3 -> {
+            PAGE_BOOKS -> {
                 PageFourFragment()
             }
             else -> {

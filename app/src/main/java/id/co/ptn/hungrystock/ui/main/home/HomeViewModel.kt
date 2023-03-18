@@ -1,6 +1,6 @@
 package id.co.ptn.hungrystock.ui.main.home
 
-import android.util.Log
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -70,7 +70,7 @@ class HomeViewModel @Inject constructor(private val repository: EventRepository)
                     if (it.isSuccessful){
                         _reqOtpResponse.postValue(Resource.success(it.body()))
                     } else {
-                        //
+                        _reqOtpResponse.postValue(Resource.error(it.body()?.message ?: "", null))
                     }
                 }
             }catch (e: Exception){
@@ -89,7 +89,7 @@ class HomeViewModel @Inject constructor(private val repository: EventRepository)
                     if (it.isSuccessful){
                         _reqHomeResponse.postValue(Resource.success(it.body()))
                     } else {
-                       //
+                       _reqHomeResponse.postValue(Resource.error(it.body()?.message ?: "", null))
                     }
                 }
             }catch (e: Exception){
@@ -107,8 +107,7 @@ class HomeViewModel @Inject constructor(private val repository: EventRepository)
                     if (it.isSuccessful){
                         _reqNextEventResponse.postValue(Resource.success(it.body()))
                     } else {
-                        //
-                        _reqNextEventResponse.postValue(Resource.error(it.errorBody().toString(), null))
+                        _reqNextEventResponse.postValue(Resource.error(it.body()?.message ?: "", null))
                     }
                 }
             }catch (e: Exception){

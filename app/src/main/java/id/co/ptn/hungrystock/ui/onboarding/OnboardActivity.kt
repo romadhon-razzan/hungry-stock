@@ -3,11 +3,11 @@ package id.co.ptn.hungrystock.ui.onboarding
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager.widget.ViewPager
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
@@ -16,7 +16,6 @@ import id.co.ptn.hungrystock.databinding.ActivityOnboardingBinding
 import id.co.ptn.hungrystock.ui.general.view_model.AuthViewModel
 import id.co.ptn.hungrystock.ui.onboarding.adapters.OnboardVPAdapter
 import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel
-import id.co.ptn.hungrystock.utils.Status
 
 @AndroidEntryPoint
 class OnboardActivity : BaseActivity() {
@@ -37,9 +36,8 @@ class OnboardActivity : BaseActivity() {
     }
 
     private fun init() {
-        setObserve()
-        apiGetOtp()
         listener()
+        setView()
     }
 
     private fun setView() {
@@ -52,6 +50,20 @@ class OnboardActivity : BaseActivity() {
             binding.checkbox.isChecked = true
 
         binding.viewPager.adapter = OnboardVPAdapter(supportFragmentManager)
+        binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+            }
+            override fun onPageSelected(position: Int) {
+                viewModel?.setPageWebinar(position == OnboardVPAdapter.PAGE_WEBINAR)
+                viewModel?.setPageWebinar(position == OnboardVPAdapter.PAGE_BOOKS)
+            }
+
+        })
         binding.viewPager.offscreenPageLimit = 5
     }
 
@@ -70,45 +82,5 @@ class OnboardActivity : BaseActivity() {
         }
     }
 
-    private fun setObserve() {
-        viewModel?.reqOnboardResponse()?.observe(this){
-            when(it.status) {
-                Status.SUCCESS -> {
-                    binding.progressBar.visibility = View.GONE
-                    setView()
-                }
-                Status.LOADING -> {
-
-                }
-                Status.ERROR -> {
-                    router.toAuth()
-                    binding.progressBar.visibility = View.GONE
-                }
-            }
-        }
-
-        authViewModel?.reqOtpResponse()?.observe(this){
-            when(it.status) {
-                Status.SUCCESS -> {
-                    binding.progressBar.visibility = View.GONE
-                    router.toAuth()
-                }
-                Status.LOADING -> {
-
-                }
-                Status.ERROR -> {
-                    router.toAuth()
-                    binding.progressBar.visibility = View.GONE
-                }
-            }
-        }
-    }
-
-    /**
-     * Api
-     * */
-    private fun apiGetOtp() {
-        authViewModel?.apiGetOtp()
-    }
 
 }

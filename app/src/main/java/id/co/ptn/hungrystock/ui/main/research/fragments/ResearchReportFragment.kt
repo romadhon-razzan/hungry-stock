@@ -3,8 +3,11 @@ package id.co.ptn.hungrystock.ui.main.research.fragments
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
@@ -26,6 +29,7 @@ import id.co.ptn.hungrystock.ui.main.research.adapters.ResearchReportListAdapter
 import id.co.ptn.hungrystock.ui.main.research.viewmodel.ResearchReportViewModel
 import id.co.ptn.hungrystock.ui.main.research.viewmodel.ResearchViewModel
 import id.co.ptn.hungrystock.ui.main.viewmodel.MainViewModel
+import id.co.ptn.hungrystock.ui.main.viewmodel.ReferenceViewModel
 import id.co.ptn.hungrystock.utils.*
 
 @AndroidEntryPoint
@@ -38,10 +42,10 @@ class ResearchReportFragment : Fragment() {
     private var binding: FragmentResearchReportBinding? = null
     private var mainViewModel: MainViewModel? = null
     private var viewModel: ResearchReportViewModel? = null
+    private var referenceViewModel: ReferenceViewModel? = null
     private var paginationViewModel: PaginationViewModel? = null
     private var researchViewModel: ResearchViewModel? = null
     private var researchReportPageAdapter: ResearchReportListAdapter? = null
-    private var items: MutableList<ResearchPage> = mutableListOf()
     private var paginationAdapter: LearningPaginationAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +54,7 @@ class ResearchReportFragment : Fragment() {
         researchViewModel = ViewModelProvider(requireActivity())[ResearchViewModel::class.java]
         viewModel = ViewModelProvider(this)[ResearchReportViewModel::class.java]
         paginationViewModel = ViewModelProvider(this)[PaginationViewModel::class.java]
+        referenceViewModel = ViewModelProvider(this)[ReferenceViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -63,20 +68,23 @@ class ResearchReportFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.vm = viewModel
+        binding?.pageVm = paginationViewModel
+        binding?.lifecycleOwner = this
         init()
     }
 
     private fun init() {
         setObserve()
         initListener()
-        viewModel?.setYear(currentYear())
-        viewModel?.getFilters()?.clear()
-        viewModel?.getFilters()?.add(ResearchFilter("","${monthLabel(viewModel?.getMonth()!!)} ${currentYear()}"))
+        viewModel?.setSortingLabel(resources.getString(R.string.label_pilih_kategori))
     }
 
     private fun initListener() {
         binding?.swipeRefresh?.setOnRefreshListener {
             apiGetResearch()
+        }
+        binding?.btSorting?.setOnClickListener {
+            sortingPressed()
         }
     }
 
@@ -155,6 +163,33 @@ class ResearchReportFragment : Fragment() {
 
     }
 
+    private fun sortingPressed() {
+        val popup = PopupMenu(requireContext(), binding?.btSorting!!)
+        popup.menu.add(resources.getString(R.string.sorting_semua))
+        referenceViewModel?.refResearchCategories?.forEach {
+            popup.menu.add(it.name)
+        }
+        popup.setOnMenuItemClickListener { item: MenuItem? ->
+            item?.let {
+                val title = it.title?.toString() ?: ""
+                viewModel?.setSortingLabel(title)
+                if (title == resources.getString(R.string.sorting_semua)){
+                    viewModel?.setCategory("")
+                } else {
+                    referenceViewModel?.refResearchCategories?.forEach {ref ->
+                        if (title == ref.name) {
+                            viewModel?.setCategory(ref.code ?: "")
+                            return@forEach
+                        }
+                    }
+                }
+                apiGetResearch()
+            }
+            true
+        }
+        popup.show()
+    }
+
     private fun setObserve() {
         viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
@@ -203,13 +238,16 @@ class ResearchReportFragment : Fragment() {
                     binding?.swipeRefresh?.isRefreshing = false
                     binding?.progressBar?.visibility = View.GONE
                     it.data?.let { responseResearch ->
-                        researchViewModel?.researchTabTitle()?.value = (responseResearch.totalRows ?: 0).toString()
+                        researchViewModel?.researchTabTitle()?.value = (responseResearch.total_rows ?: 0).toString()
                         viewModel?.researchData?.clear()
                         viewModel?.researchData?.addAll(responseResearch.data as MutableList<ResponseResearchData>)
                         initList()
-                        paginationViewModel?.setLinks(responseResearch.totalPages ?: 0)
+                        paginationViewModel?.setLinks(responseResearch.total_pages ?: 0)
                         paginationViewModel?.setNextPage(ResponseResearch.getNextPage(responseResearch).toString())
                         initPagination()
+                        if (referenceViewModel?.refResearchCategories?.size == 0) {
+                            apiGetResearchCategories()
+                        }
                     }
                 }
                 Status.LOADING -> {
@@ -246,6 +284,40 @@ class ResearchReportFragment : Fragment() {
             }
         }
 
+        referenceViewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS -> {
+                    binding?.progressBar?.visibility = View.GONE
+                    when(running_service){
+                        RunningServiceType.RESEARCH_CATEGORIES -> {
+                            referenceViewModel?.apiResearchCategories(it.data?.data ?: "")
+                        }
+                        else -> {}
+                    }
+                }
+                Status.LOADING -> {
+                    binding?.progressBar?.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding?.progressBar?.visibility = View.GONE
+                }
+            }
+        }
+
+        referenceViewModel?.reqResearchCategoriesResponse()?.observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS -> {
+                    binding?.progressBar?.visibility = View.GONE
+                }
+                Status.LOADING -> {
+                    binding?.progressBar?.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding?.progressBar?.visibility = View.GONE
+                }
+            }
+        }
+
         mainViewModel?.researchPressed?.observe(requireActivity()){
 
             if (it){
@@ -273,5 +345,10 @@ class ResearchReportFragment : Fragment() {
         paginationViewModel?.requesting = true
         running_service = RunningServiceType.RESEARCH_NEXT
         apiGetOtp()
+    }
+
+    private fun apiGetResearchCategories() {
+        running_service = RunningServiceType.RESEARCH_CATEGORIES
+        referenceViewModel?.apiGetOtp()
     }
 }

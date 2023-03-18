@@ -1,49 +1,29 @@
-package id.co.ptn.hungrystock.ui.general.view_model
+package id.co.ptn.hungrystock.ui.onboarding.view_model
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
+import id.co.ptn.hungrystock.config.ENV
 import id.co.ptn.hungrystock.config.TOKEN
-import id.co.ptn.hungrystock.models.auth.ResponseAuthV2
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
+import id.co.ptn.hungrystock.models.landing.ResponseWebinar
 import id.co.ptn.hungrystock.repositories.AppRepository
 import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Resource
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(private val repository: AppRepository): BaseViewModel() {
+class WebinarViewModel @Inject constructor(private val repository: AppRepository) : BaseViewModel() {
+
     private var _reqOtpResponse: MutableLiveData<Resource<ResponseOtp>> = MutableLiveData()
     fun reqOtpResponse(): MutableLiveData<Resource<ResponseOtp>> = _reqOtpResponse
 
-    private val _username = MutableStateFlow("")
-    val username: StateFlow<String> = _username
+    private var _reqWebinarResponse: MutableLiveData<Resource<ResponseWebinar>> = MutableLiveData()
+    fun reqWebinarResponse(): MutableLiveData<Resource<ResponseWebinar>> = _reqWebinarResponse
 
-    private val _password = MutableStateFlow("")
-    val password: StateFlow<String> = _username
-
-//    private var _reqAuthResponse: MutableLiveData<Resource<ResponseAuth>> = MutableLiveData()
-//    fun reqAuthResponse(): MutableLiveData<Resource<ResponseAuth>> = _reqAuthResponse
-    private var _reqAuthResponse: MutableLiveData<Resource<ResponseAuthV2>> = MutableLiveData()
-    fun reqAuthResponse(): MutableLiveData<Resource<ResponseAuthV2>> = _reqAuthResponse
-
-    fun setUsername(userName: String) {
-        viewModelScope.launch {
-            _username.value = userName
-        }
-    }
-
-    fun setPassword(password: String) {
-        viewModelScope.launch {
-            _password.value = password
-        }
-    }
 
     /**
      * Api
@@ -65,15 +45,17 @@ class AuthViewModel @Inject constructor(private val repository: AppRepository): 
             }
         }
     }
-    fun apiAuth() {
+    fun apiGetWebinar(otp: String) {
         viewModelScope.launch {
             try {
-                _reqAuthResponse.postValue(Resource.loading(null))
-                repository.authV2(_username.value,_password.value).let {
+                TOKEN = "${HashUtils.hash256Webinar()}.${ENV.userKey()}.$otp"
+                Log.d("webinar_access_token", TOKEN)
+                _reqWebinarResponse.postValue(Resource.loading(null))
+                repository.webinar().let {
                     if (it.isSuccessful){
-                        _reqAuthResponse.postValue(Resource.success(it.body()))
+                        _reqWebinarResponse.postValue(Resource.success(it.body()))
                     } else {
-                        _reqAuthResponse.postValue(Resource.error(it.body()?.message ?: "", null))
+                        _reqWebinarResponse.postValue(Resource.error(it.errorBody().toString(), null))
                     }
                 }
             }catch (e: Exception){

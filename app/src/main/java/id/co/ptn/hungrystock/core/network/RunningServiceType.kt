@@ -11,5 +11,7 @@ enum class RunningServiceType {
     RESEARCH,
     RESEARCH_NEXT,
     EVENT_CATEGORIES,
-    RESEARCH_CATEGORIES
+    RESEARCH_CATEGORIES,
+    WEBINAR,
+    BOOKS
 }

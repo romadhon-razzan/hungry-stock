@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel" />
+            type="id.co.ptn.hungrystock.ui.onboarding.view_model.WebinarViewModel" />
     </data>
 
     <RelativeLayout

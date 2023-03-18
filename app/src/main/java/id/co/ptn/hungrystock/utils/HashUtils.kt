@@ -36,6 +36,15 @@ class HashUtils {
         fun hash256Research(parameter: String): String{
             return HashUtils().generateHmac256("${ENV.serviceUrl()}$RESEARCH/$parameter", ENV.serviceSecretKey().toByteArray()) ?: ""
         }
+        fun hash256ResearchCategories(): String{
+            return HashUtils().generateHmac256("${ENV.serviceUrl()}$RESEARCH_CATEGORIES", ENV.serviceSecretKey().toByteArray()) ?: ""
+        }
+        fun hash256Books(): String{
+            return HashUtils().generateHmac256("${ENV.serviceUrl()}$BOOKS", ENV.serviceSecretKey().toByteArray()) ?: ""
+        }
+        fun hash256Webinar(): String{
+            return HashUtils().generateHmac256("${ENV.serviceUrl()}$WEBINAR", ENV.serviceSecretKey().toByteArray()) ?: ""
+        }
     }
     @Throws(InvalidKeyException::class, NoSuchAlgorithmException::class)
     fun generateHmac256(message: String, key: ByteArray?): String? {

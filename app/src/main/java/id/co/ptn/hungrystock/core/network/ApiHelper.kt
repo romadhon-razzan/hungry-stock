@@ -4,6 +4,8 @@ import com.google.gson.JsonObject
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
 import id.co.ptn.hungrystock.models.auth.ResponseAuthV2
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
+import id.co.ptn.hungrystock.models.landing.ResponseBooks
+import id.co.ptn.hungrystock.models.landing.ResponseWebinar
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
@@ -12,6 +14,8 @@ import id.co.ptn.hungrystock.models.main.research.ResponseResearch
 import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.reference.ResponseEventCategories
+import id.co.ptn.hungrystock.models.reference.ResponseResearchCategories
+import id.co.ptn.hungrystock.models.reference.ResponseResearchCategoriesData
 import id.co.ptn.hungrystock.models.registration.ResponseRegister
 import id.co.ptn.hungrystock.models.user.ResponseProfile
 import okhttp3.MultipartBody
@@ -25,8 +29,10 @@ interface ApiHelper {
     suspend fun profile(param: String): Response<ResponseProfile>
     suspend fun events(param: String): Response<ResponseEvents>
     suspend fun eventCategories(): Response<ResponseEventCategories>
-    suspend fun researchCategories(): Response<ResponseEventCategories>
+    suspend fun researchCategories(): Response<ResponseResearchCategories>
     suspend fun getResearch(param: String): Response<ResponseResearch>
+    suspend fun books(): Response<ResponseBooks>
+    suspend fun webinar(): Response<ResponseWebinar>
 
     suspend fun auth(nt: String, p: String): Response<ResponseAuth>
     suspend fun resetPassword(p: String): Response<ResponsePassword>

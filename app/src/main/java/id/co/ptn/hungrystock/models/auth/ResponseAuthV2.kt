@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ResponseAuthV2(
     @SerializedName("response_code" ) var status : Int,
+    @SerializedName("message" ) var message : String,
     @SerializedName("success_data"   ) var success_data : List<ResponseAuthSuccessDataV2>
 )
 data class ResponseAuthSuccessDataV2(

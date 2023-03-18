@@ -402,9 +402,7 @@ class LearningFragment : BaseFragment() {
                     binding.progressBar.visibility = View.GONE
                     when(running_service){
                         RunningServiceType.EVENT_CATEGORIES -> {
-                            TOKEN = "${HashUtils.hash256EventCategories()}.${ENV.userKey()}.${it.data?.data ?: ""}"
-                            Log.d("access_categories_token", TOKEN)
-                            referenceViewModel?.apiEventCategories()
+                            referenceViewModel?.apiEventCategories(it.data?.data ?: "")
                         }
                         else -> {}
                     }

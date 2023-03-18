@@ -1,5 +1,6 @@
 package id.co.ptn.hungrystock.ui.main.research.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
@@ -23,6 +24,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ResearchReportViewModel @Inject constructor(val repository: ResearchRepository) : BaseViewModel() {
+    private val _sortingLabel = MutableLiveData("")
+    val sortingLabel: LiveData<String> = _sortingLabel
+    fun setSortingLabel(title: String) {
+        _sortingLabel.value = title
+    }
+
     private var keyword = ""
     fun getKeyword(): String = keyword
     fun setKeyword(k: String) {
@@ -65,13 +72,6 @@ class ResearchReportViewModel @Inject constructor(val repository: ResearchReposi
         initial = i
     }
 
-    private var filters = mutableListOf<ResearchFilter>()
-    fun getFilters(): MutableList<ResearchFilter> = filters
-    fun setFilter(v: MutableList<ResearchFilter>) {
-        filters.clear()
-        filters.addAll(v)
-    }
-
     var pageFirstRequested = false
 
     private var _reqOtpResponse: MutableLiveData<Resource<ResponseOtp>> = MutableLiveData()
@@ -109,13 +109,19 @@ class ResearchReportViewModel @Inject constructor(val repository: ResearchReposi
             try {
                 val parameter = StringBuilder()
                 parameter.append("order_by=category_name")
+                if (getYear().isNotEmpty()){
+                    parameter.append("&year=${getYear()}")
+                }
+                if (getCategory().isNotEmpty()){
+                    parameter.append("&category_id=${getCategory()}")
+                }
                 TOKEN = "${HashUtils.hash256Research(parameter.toString())}.${ENV.userKey()}.$otp"
                 _reqResearchResponse.postValue(Resource.loading(null))
                 repository.getResearch(parameter.toString()).let {
                     if (it.isSuccessful){
                         _reqResearchResponse.postValue(Resource.success(it.body()))
                     } else {
-                        //
+                        _reqResearchResponse.postValue(Resource.error(it.body()?.message ?: "",it.body()))
                     }
                 }
             }catch (e: Exception){
@@ -136,7 +142,7 @@ class ResearchReportViewModel @Inject constructor(val repository: ResearchReposi
                         _reqNextResearchResponse.postValue(Resource.success(it.body()))
                     } else {
                         //
-                        _reqNextResearchResponse.postValue(Resource.error(it.errorBody().toString(), null))
+                        _reqNextResearchResponse.postValue(Resource.error(it.body()?.message ?: "", null))
                     }
                 }
             }catch (e: Exception){

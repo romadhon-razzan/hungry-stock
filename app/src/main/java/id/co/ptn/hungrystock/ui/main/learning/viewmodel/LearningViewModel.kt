@@ -122,7 +122,7 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
                     if (it.isSuccessful){
                         _reqOtpResponse.postValue(Resource.success(it.body()))
                     } else {
-                        //
+                        _reqOtpResponse.postValue(Resource.error(it.body()?.message ?: "", null))
                     }
                 }
             }catch (e: Exception){
@@ -160,7 +160,7 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
                     if (it.isSuccessful){
                         _reqLearningResponse.postValue(Resource.success(it.body()))
                     } else {
-                        //
+                        _reqLearningResponse.postValue(Resource.error(it.body()?.message ?: "", null))
                     }
                 }
             }catch (e: Exception){
@@ -180,8 +180,7 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
                     if (it.isSuccessful){
                         _reqNextLearningResponse.postValue(Resource.success(it.body()))
                     } else {
-                        //
-                        _reqNextLearningResponse.postValue(Resource.error(it.errorBody().toString(), null))
+                        _reqNextLearningResponse.postValue(Resource.error(it.body()?.message ?: "", null))
                     }
                 }
             }catch (e: Exception){

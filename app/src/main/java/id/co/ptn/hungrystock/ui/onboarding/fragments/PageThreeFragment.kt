@@ -13,8 +13,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseFragment
 import id.co.ptn.hungrystock.bases.WebViewFragment
+import id.co.ptn.hungrystock.core.network.RunningServiceType
+import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.FragmentPageThreeBinding
 import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel
+import id.co.ptn.hungrystock.ui.onboarding.view_model.WebinarViewModel
 import id.co.ptn.hungrystock.utils.Status
 import id.co.ptn.hungrystock.utils.getDateMMMMddyyyy
 import java.lang.Exception
@@ -28,7 +31,8 @@ class PageThreeFragment : BaseFragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var binding: FragmentPageThreeBinding? = null
-    private var viewModel: OnboardViewModel? = null
+    private var viewModel: WebinarViewModel? = null
+    private var onboardViewModel: OnboardViewModel? = null
 
     companion object {
 
@@ -48,6 +52,8 @@ class PageThreeFragment : BaseFragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        viewModel = ViewModelProvider(requireActivity())[WebinarViewModel::class.java]
+        onboardViewModel = ViewModelProvider(requireActivity())[OnboardViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -55,55 +61,54 @@ class PageThreeFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_page_three, container, false)
-
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[OnboardViewModel::class.java]
         binding?.viewModel = viewModel
         binding?.lifecycleOwner = this
+        setObserve()
         setView()
-
     }
 
     private fun setView() {
-        viewModel?.reqOnboardResponse()?.value?.data?.data?.latestEvent?.let { event ->
-            event.photo_url?.let { photo ->
-                binding?.image?.let { i -> Glide.with(requireActivity()).load(photo).into(i) }
-            }
-            event.title?.let { title -> binding?.tvTitle?.text = title }
-            event.event_date?.let { date ->
-                val stringBuilder = StringBuilder()
-                stringBuilder.append(getDateMMMMddyyyy(date))
 
-                try {
-                    stringBuilder.append(" ")
-                    event.event_hour_start?.let { start ->
-                        stringBuilder.append(start)
-                        stringBuilder.append(" - ")
+    }
+
+    private fun setObserve() {
+        viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS -> {
+                    if (running_service == RunningServiceType.WEBINAR){
+                        viewModel?.apiGetWebinar(it.data?.data ?: "")
                     }
-                    event.event_hour_end?.let { end ->
-                        stringBuilder.append(end)
-                        stringBuilder.append(" - ")
-                    }
-                    stringBuilder.append(" WIB")
-                }catch (e: Exception){
-                    e.printStackTrace()
                 }
-                binding?.tvDate?.text = stringBuilder.toString()
-            }
-            event.speaker?.let { speaker -> binding?.tvSpeaker?.text = speaker }
-            event.content?.let { content ->
-                childFragmentManager.commit {
-                    val bundle = Bundle()
-                    bundle.putString("content", content)
-                    bundle.putString("font_size","small")
-                    add<WebViewFragment>(R.id.frame_web, null, bundle)
-                }
+                Status.LOADING -> {}
+                Status.ERROR -> {}
             }
         }
+
+        viewModel?.reqWebinarResponse()?.observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS -> {}
+                Status.LOADING -> {}
+                Status.ERROR -> {}
+            }
+        }
+        onboardViewModel?.pageWebinar?.observe(requireActivity()){
+            if (it){
+                apiGetWebinar()
+            }
+        }
+    }
+
+    /**
+     * Api
+     * */
+    private fun apiGetWebinar() {
+        running_service = RunningServiceType.WEBINAR
+        viewModel?.apiGetOtp()
     }
 
 }

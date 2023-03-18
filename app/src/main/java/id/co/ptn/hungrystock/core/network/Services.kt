@@ -4,6 +4,8 @@ import com.google.gson.JsonObject
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
 import id.co.ptn.hungrystock.models.auth.ResponseAuthV2
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
+import id.co.ptn.hungrystock.models.landing.ResponseBooks
+import id.co.ptn.hungrystock.models.landing.ResponseWebinar
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
@@ -12,6 +14,8 @@ import id.co.ptn.hungrystock.models.main.research.ResponseResearch
 import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.reference.ResponseEventCategories
+import id.co.ptn.hungrystock.models.reference.ResponseResearchCategories
+import id.co.ptn.hungrystock.models.reference.ResponseResearchCategoriesData
 import id.co.ptn.hungrystock.models.registration.ResponseRegister
 import id.co.ptn.hungrystock.models.user.ResponseProfile
 import okhttp3.MultipartBody
@@ -44,7 +48,12 @@ interface Services {
     suspend fun eventCategories(): Response<ResponseEventCategories>
 
     @GET(RESEARCH_CATEGORIES)
-    suspend fun researchCategories(): Response<ResponseEventCategories>
+    suspend fun researchCategories(): Response<ResponseResearchCategories>
+
+    @GET(BOOKS)
+    suspend fun books(): Response<ResponseBooks>
+    @GET(WEBINAR)
+    suspend fun webinar(): Response<ResponseWebinar>
 
 
 

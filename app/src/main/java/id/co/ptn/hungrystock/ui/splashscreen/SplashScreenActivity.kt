@@ -21,10 +21,8 @@ class SplashScreenActivity : BaseActivity() {
     private fun init() {
         Handler(Looper.getMainLooper()).postDelayed({
             if (sessionManager?.authData == null) {
-                Log.d("Splash01", "Masuk 1")
                 router.toOnboard()
             } else {
-                Log.d("Splash01", "Masuk 2")
                 router.toMain()
             }
             finish()
