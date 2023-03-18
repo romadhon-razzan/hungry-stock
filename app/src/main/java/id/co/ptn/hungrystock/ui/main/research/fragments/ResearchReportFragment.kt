@@ -1,8 +1,6 @@
 package id.co.ptn.hungrystock.ui.main.research.fragments
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,17 +16,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.EmptyStateFragment
 import id.co.ptn.hungrystock.bases.view_model.PaginationViewModel
-import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.core.network.RunningServiceType
 import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.FragmentResearchReportBinding
 import id.co.ptn.hungrystock.models.Links
-import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 import id.co.ptn.hungrystock.models.main.research.*
 import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningPaginationAdapter
-import id.co.ptn.hungrystock.ui.main.research.adapters.MainResearchReportListAdapter
 import id.co.ptn.hungrystock.ui.main.research.adapters.ResearchReportListAdapter
-import id.co.ptn.hungrystock.ui.main.research.adapters.ResearchReportPageAdapter
 import id.co.ptn.hungrystock.ui.main.research.viewmodel.ResearchReportViewModel
 import id.co.ptn.hungrystock.ui.main.research.viewmodel.ResearchViewModel
 import id.co.ptn.hungrystock.ui.main.viewmodel.MainViewModel
@@ -86,8 +80,8 @@ class ResearchReportFragment : Fragment() {
         }
     }
 
-    private fun initList(items: MutableList<ResponseResearchData>) {
-        researchReportPageAdapter = ResearchReportListAdapter(childFragmentManager,items)
+    private fun initList() {
+        researchReportPageAdapter = ResearchReportListAdapter(childFragmentManager, viewModel?.researchData ?: mutableListOf())
         binding?.recyclerView?.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = researchReportPageAdapter
@@ -168,7 +162,10 @@ class ResearchReportFragment : Fragment() {
                     binding?.progressBar?.visibility = View.GONE
                     when(running_service){
                         RunningServiceType.RESEARCH -> {
-                            viewModel?.apiResearch(SessionManager.getInstance(requireContext()), it.data?.data ?: "")
+                            viewModel?.apiResearch(it.data?.data ?: "")
+                        }
+                        RunningServiceType.RESEARCH_NEXT -> {
+                            viewModel?.apiGetNextLearnings(it.data?.data ?: "", paginationViewModel?.getNextPage() ?: "1")
                         }
                         else -> {}
                     }
@@ -207,7 +204,8 @@ class ResearchReportFragment : Fragment() {
                     binding?.progressBar?.visibility = View.GONE
                     it.data?.let { responseResearch ->
                         researchViewModel?.researchTabTitle()?.value = (responseResearch.totalRows ?: 0).toString()
-                        initList(responseResearch.data as MutableList<ResponseResearchData>)
+                        viewModel?.setResearchData(responseResearch.data as MutableList<ResponseResearchData>)
+                        initList()
                         paginationViewModel?.setLinks(responseResearch.totalPages ?: 0)
                         paginationViewModel?.setNextPage(ResponseResearch.getNextPage(responseResearch).toString())
                         initPagination()
@@ -222,6 +220,20 @@ class ResearchReportFragment : Fragment() {
                     binding?.swipeRefresh?.isRefreshing = false
                     binding?.progressBar?.visibility = View.GONE
                 }
+            }
+        }
+
+        viewModel?.reqNextResearchResponse()?.observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS -> {
+                    it?.data?.data?.let {data ->
+                        viewModel?.researchData?.addAll(data)
+                        initList()
+                        binding?.nestedScrollView?.smoothScrollTo(0,0)
+                    }
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {}
             }
         }
 

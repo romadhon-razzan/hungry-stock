@@ -328,12 +328,9 @@ class LearningFragment : BaseFragment() {
                             }
                         }
                         RunningServiceType.EVENT_NEXT -> {
-                            val parameter = StringBuilder()
-                            parameter.append("customer_id=${sessionManager?.authData?.code ?: ""}&offset=${viewModel?.getNextPage()}")
-                            TOKEN = "${HashUtils.hash256Events(parameter.toString())}.${ENV.userKey()}.${it.data?.data ?: ""}"
                             lifecycleScope.launch {
                                 delay(500)
-                                viewModel?.apiGetNextLearnings(parameter.toString())
+                                viewModel?.apiGetNextLearnings(sessionManager, it.data?.data ?: "")
                             }
                         }
                         else -> {}

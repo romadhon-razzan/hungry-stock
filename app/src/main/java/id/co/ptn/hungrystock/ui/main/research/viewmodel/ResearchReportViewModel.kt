@@ -13,6 +13,7 @@ import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.main.research.ResearchFilter
 import id.co.ptn.hungrystock.models.main.research.ResponseResearch
+import id.co.ptn.hungrystock.models.main.research.ResponseResearchData
 import id.co.ptn.hungrystock.repositories.AppRepository
 import id.co.ptn.hungrystock.repositories.ResearchRepository
 import id.co.ptn.hungrystock.utils.HashUtils
@@ -78,6 +79,13 @@ class ResearchReportViewModel @Inject constructor(val repository: ResearchReposi
 
     private var _reqResearchResponse: MutableLiveData<Resource<ResponseResearch>> = MutableLiveData()
     fun reqResearchResponse(): MutableLiveData<Resource<ResponseResearch>> = _reqResearchResponse
+    private var _reqNextResearchResponse: MutableLiveData<Resource<ResponseResearch>> = MutableLiveData()
+    fun reqNextResearchResponse(): MutableLiveData<Resource<ResponseResearch>> = _reqNextResearchResponse
+    var researchData: MutableList<ResponseResearchData> = mutableListOf()
+    fun setResearchData(items: MutableList<ResponseResearchData>) {
+        researchData.clear()
+        researchData.addAll(items)
+    }
 
     /**
      * Api
@@ -100,7 +108,7 @@ class ResearchReportViewModel @Inject constructor(val repository: ResearchReposi
             }
         }
     }
-    fun apiResearch(sessionManager: SessionManager?, otp: String) {
+    fun apiResearch(otp: String) {
         viewModelScope.launch {
             try {
                 val parameter = StringBuilder()
@@ -112,6 +120,27 @@ class ResearchReportViewModel @Inject constructor(val repository: ResearchReposi
                         _reqResearchResponse.postValue(Resource.success(it.body()))
                     } else {
                         //
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun apiGetNextLearnings(otp: String, nextPage: String) {
+        viewModelScope.launch {
+            try {
+                val parameter = StringBuilder()
+                parameter.append("order_by=category_name&offset=${nextPage}")
+                TOKEN = "${HashUtils.hash256Research(parameter.toString())}.${ENV.userKey()}.$otp"
+                _reqNextResearchResponse.postValue(Resource.loading(null))
+                repository.getResearch(parameter.toString()).let {
+                    if (it.isSuccessful){
+                        _reqNextResearchResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        //
+                        _reqNextResearchResponse.postValue(Resource.error(it.errorBody().toString(), null))
                     }
                 }
             }catch (e: Exception){
