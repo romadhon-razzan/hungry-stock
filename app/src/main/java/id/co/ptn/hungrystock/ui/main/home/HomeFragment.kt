@@ -153,7 +153,9 @@ class HomeFragment : BaseFragment() {
                     }
                 }
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    if (!binding.swipeRefresh.isRefreshing) {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
                 }
                 Status.ERROR -> {
                     binding.progressBar.visibility = View.GONE
@@ -178,7 +180,9 @@ class HomeFragment : BaseFragment() {
                     }
                 }
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    if (!binding.swipeRefresh.isRefreshing) {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
                 }
                 Status.ERROR -> {
                     binding.progressBar.visibility = View.GONE

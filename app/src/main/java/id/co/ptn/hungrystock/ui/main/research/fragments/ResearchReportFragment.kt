@@ -174,7 +174,9 @@ class ResearchReportFragment : Fragment() {
                     }
                 }
                 Status.LOADING -> {
-                    binding?.progressBar?.visibility = View.VISIBLE
+                    if (binding?.swipeRefresh?.isRefreshing == false) {
+                        binding?.progressBar?.visibility = View.VISIBLE
+                    }
                 }
                 Status.ERROR -> {
                     binding?.progressBar?.visibility = View.GONE
@@ -212,7 +214,9 @@ class ResearchReportFragment : Fragment() {
                     }
                 }
                 Status.LOADING -> {
-                    binding?.progressBar?.visibility = View.VISIBLE
+                    if (binding?.swipeRefresh?.isRefreshing == false) {
+                        binding?.progressBar?.visibility = View.VISIBLE
+                    }
                 }
                 Status.ERROR -> {
                     binding?.swipeRefresh?.isRefreshing = false
