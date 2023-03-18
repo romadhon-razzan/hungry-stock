@@ -91,6 +91,7 @@ class LearningFragment : BaseFragment() {
     }
 
     private fun initListener() {
+        binding.swipeRefresh.setOnRefreshListener { apiGetLearnings() }
         binding.btSorting.setOnClickListener { sortingPressed() }
         binding.btFilter.setOnClickListener { filterPressed() }
     }
@@ -339,7 +340,9 @@ class LearningFragment : BaseFragment() {
                     }
                 }
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    if (!binding.swipeRefresh.isRefreshing) {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
                 }
                 Status.ERROR -> {
                     binding.progressBar.visibility = View.GONE
@@ -349,6 +352,7 @@ class LearningFragment : BaseFragment() {
         viewModel?.reqLearningResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
                 Status.SUCCESS ->{
+                    binding.swipeRefresh.isRefreshing = false
                     binding.progressBar.visibility = View.GONE
 
                     it.data?.let { data ->
@@ -363,8 +367,13 @@ class LearningFragment : BaseFragment() {
                         binding.relativeLayout.visibility = View.VISIBLE
                     }
                 }
-                Status.LOADING ->{ binding.progressBar.visibility = View.VISIBLE}
+                Status.LOADING ->{
+                    if (!binding.swipeRefresh.isRefreshing) {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+                }
                 Status.ERROR ->{
+                    binding.swipeRefresh.isRefreshing = false
                     binding.progressBar.visibility = View.GONE
                     emptyState()
                 }
