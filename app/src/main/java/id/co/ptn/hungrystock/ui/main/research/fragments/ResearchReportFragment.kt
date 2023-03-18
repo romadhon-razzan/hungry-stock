@@ -86,7 +86,7 @@ class ResearchReportFragment : Fragment() {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = researchReportPageAdapter
         }
-        if (items.isEmpty()){
+        if (viewModel?.researchData?.isEmpty() == true){
             emptyState()
         }
     }
@@ -204,7 +204,8 @@ class ResearchReportFragment : Fragment() {
                     binding?.progressBar?.visibility = View.GONE
                     it.data?.let { responseResearch ->
                         researchViewModel?.researchTabTitle()?.value = (responseResearch.totalRows ?: 0).toString()
-                        viewModel?.setResearchData(responseResearch.data as MutableList<ResponseResearchData>)
+                        viewModel?.researchData?.clear()
+                        viewModel?.researchData?.addAll(responseResearch.data as MutableList<ResponseResearchData>)
                         initList()
                         paginationViewModel?.setLinks(responseResearch.totalPages ?: 0)
                         paginationViewModel?.setNextPage(ResponseResearch.getNextPage(responseResearch).toString())
@@ -226,14 +227,22 @@ class ResearchReportFragment : Fragment() {
         viewModel?.reqNextResearchResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
                 Status.SUCCESS -> {
+                    binding?.progressBar?.visibility = View.GONE
+                    paginationViewModel?.requesting = false
                     it?.data?.data?.let {data ->
                         viewModel?.researchData?.addAll(data)
                         initList()
                         binding?.nestedScrollView?.smoothScrollTo(0,0)
                     }
                 }
-                Status.LOADING -> {}
-                Status.ERROR -> {}
+                Status.LOADING -> {
+                    binding?.progressBar?.visibility = View.VISIBLE
+                    paginationViewModel?.requesting = true
+                }
+                Status.ERROR -> {
+                    binding?.progressBar?.visibility = View.GONE
+                    paginationViewModel?.requesting = false
+                }
             }
         }
 

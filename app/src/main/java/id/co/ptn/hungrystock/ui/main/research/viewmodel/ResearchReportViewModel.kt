@@ -82,10 +82,6 @@ class ResearchReportViewModel @Inject constructor(val repository: ResearchReposi
     private var _reqNextResearchResponse: MutableLiveData<Resource<ResponseResearch>> = MutableLiveData()
     fun reqNextResearchResponse(): MutableLiveData<Resource<ResponseResearch>> = _reqNextResearchResponse
     var researchData: MutableList<ResponseResearchData> = mutableListOf()
-    fun setResearchData(items: MutableList<ResponseResearchData>) {
-        researchData.clear()
-        researchData.addAll(items)
-    }
 
     /**
      * Api
