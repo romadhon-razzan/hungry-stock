@@ -1,6 +1,7 @@
 package id.co.ptn.hungrystock.models.main.research
 
 import com.google.gson.annotations.SerializedName
+import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 
 data class ResponseResearch (
     @SerializedName("response_code" ) var responseCode : Int?            = null,
@@ -10,7 +11,19 @@ data class ResponseResearch (
     @SerializedName("total_pages"   ) var totalPages   : Int?            = null,
     @SerializedName("total_rows"    ) var totalRows    : Int?            = null,
     @SerializedName("message"       ) var message      : String?         = null
-        )
+        ){
+    companion object {
+        fun getNextPage(responseResearch: ResponseResearch): Int {
+            val offset = responseResearch.offset ?: 0
+            return offset + 1
+        }
+        fun canLoadNext(responseResearch: ResponseResearch): Boolean{
+            val offset = responseResearch.offset ?: 0
+            val totalPages = responseResearch.totalPages ?: 0
+            return offset < totalPages
+        }
+    }
+}
 
 data class ResponseResearchData (
     @SerializedName("key"           ) var key          : String?  = null,

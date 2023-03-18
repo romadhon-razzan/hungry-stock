@@ -13,14 +13,19 @@ import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.EmptyStateFragment
+import id.co.ptn.hungrystock.bases.view_model.PaginationViewModel
 import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.core.network.RunningServiceType
 import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.FragmentResearchReportBinding
+import id.co.ptn.hungrystock.models.Links
+import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 import id.co.ptn.hungrystock.models.main.research.*
+import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningPaginationAdapter
 import id.co.ptn.hungrystock.ui.main.research.adapters.MainResearchReportListAdapter
 import id.co.ptn.hungrystock.ui.main.research.adapters.ResearchReportListAdapter
 import id.co.ptn.hungrystock.ui.main.research.adapters.ResearchReportPageAdapter
@@ -39,15 +44,18 @@ class ResearchReportFragment : Fragment() {
     private var binding: FragmentResearchReportBinding? = null
     private var mainViewModel: MainViewModel? = null
     private var viewModel: ResearchReportViewModel? = null
+    private var paginationViewModel: PaginationViewModel? = null
     private var researchViewModel: ResearchViewModel? = null
     private var researchReportPageAdapter: ResearchReportListAdapter? = null
     private var items: MutableList<ResearchPage> = mutableListOf()
+    private var paginationAdapter: LearningPaginationAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         researchViewModel = ViewModelProvider(requireActivity())[ResearchViewModel::class.java]
         viewModel = ViewModelProvider(this)[ResearchReportViewModel::class.java]
+        paginationViewModel = ViewModelProvider(this)[PaginationViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -86,6 +94,57 @@ class ResearchReportFragment : Fragment() {
         }
         if (items.isEmpty()){
             emptyState()
+        }
+    }
+
+    private fun initPagination() {
+        paginationAdapter = LearningPaginationAdapter(paginationViewModel?.getLinks() ?: mutableListOf(), object : LearningPaginationAdapter.LearningListener{
+            override fun itemClicked(page: Links, position: Int) {
+                if (paginationViewModel?.requesting == false){
+                    // for inactive page button
+                    paginationViewModel?.getLinks()?.forEachIndexed { index, links ->
+                        if (links.active == true){
+                            links.active = false
+                            paginationAdapter?.notifyItemChanged(index)
+                            return@forEachIndexed
+                        }
+                    }
+
+                    val lastPage = paginationViewModel?.lastPage?.toInt() ?: 0
+                    val currentPage = paginationViewModel?.currentPage ?: "1"
+                    if (page.label?.lowercase()?.contains(Links.previous) == true) {
+                        var prevPage = Links.previousPage(currentPage).toInt()
+                        if (prevPage < 1){
+                            prevPage = 1
+                        }
+
+                        paginationViewModel?.getLinks()?.get(prevPage)?.active = true
+                        paginationAdapter?.notifyItemChanged(prevPage)
+
+                        paginationViewModel?.setNextPage(prevPage.toString())
+                    } else if (page.label?.lowercase()?.contains(Links.next) == true) {
+                        var nextPage = Links.nextPage(currentPage).toInt()
+                        if (nextPage > lastPage) {
+                            nextPage = lastPage
+                        }
+
+                        paginationViewModel?.getLinks()?.get(nextPage)?.active = true
+                        paginationAdapter?.notifyItemChanged(nextPage)
+
+                        paginationViewModel?.setNextPage(nextPage.toString())
+                    } else {
+                        paginationViewModel?.getLinks()?.get(position)?.active = true
+                        paginationAdapter?.notifyItemChanged(position)
+                        paginationViewModel?.setNextPage(page.label ?: "0")
+                    }
+                    paginationViewModel?.currentPage = paginationViewModel?.getNextPage() ?: "1"
+                    apiGetNextResearch()
+                }
+            }
+        })
+        binding?.recyclerViewPagination?.apply {
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+            adapter = paginationAdapter
         }
     }
 
@@ -144,65 +203,13 @@ class ResearchReportFragment : Fragment() {
                 Status.SUCCESS -> {
                     binding?.swipeRefresh?.isRefreshing = false
                     binding?.progressBar?.visibility = View.GONE
-                    var total = 0
-
-//                    try {
-//                        binding?.frameContainer?.visibility = View.GONE
-//                        items.clear()
-//                        items.add(ResearchPage(ResearchPage.TYPE_SORTING, listOf(), listOf(), listOf(), ResearchSorting("n",viewModel?.getLabelSorting()!!)))
-////                        items.add(ResearchPage(ResearchPage.TYPE_FILTER, listOf(), listOf(), viewModel?.getFilters()!!, ResearchSorting("n","Terbaru")))
-//                        val researchReport: MutableList<ResearchReport> = mutableListOf()
-//                        it.data?.getAsJsonObject("data")?.let { data ->
-//                            if (data.has("researchsCount"))
-//                                total = data.get("researchsCount").asInt
-//
-//                            monthListDesc().forEach { month ->
-//                                val researchReportData: MutableList<ResearchReportData> = mutableListOf()
-//                                data.getAsJsonObject("researchs")?.
-//                                getAsJsonArray("$month ${viewModel?.getYear()}")?.forEachIndexed { index, jsonElement ->
-//                                    var id = ""
-//                                    var title = ""
-//                                    var photoUrl = ""
-//                                    var fileUrl = ""
-//                                    var extension = ""
-//
-//                                    if (jsonElement.asJsonObject.has("id")){
-//                                        id = jsonElement.asJsonObject.get("id").toString()
-//                                    }
-//
-//                                    if (jsonElement.asJsonObject.has("title")){
-//                                        title = jsonElement.asJsonObject.get("title").asString
-//                                    }
-//
-//                                    if (jsonElement.asJsonObject.has("photo_url")){
-//                                        photoUrl = jsonElement.asJsonObject.get("photo_url").asString
-//                                    }
-//
-//                                    if (jsonElement.asJsonObject.has("file_url")){
-//                                        fileUrl = jsonElement.asJsonObject.get("file_url").asString
-//                                    }
-//
-//                                    if (jsonElement.asJsonObject.has("file_extension")){
-//                                        extension = jsonElement.asJsonObject.get("file_extension").asString
-//                                    }
-//                                    researchReportData.add(ResearchReportData(id, title, photoUrl, fileUrl, extension))
-//                                }
-//                                if (researchReportData.size > 0) {
-//                                    researchReport.add(ResearchReport("$month ${viewModel?.getYear()}", researchReportData))
-//                                }
-//                            }
-//
-//                            items.add(ResearchPage(ResearchPage.TYPE_LIST, researchReport, listOf(), listOf(), ResearchSorting("n","Terbaru")))
-//                            initList()
-//                            researchViewModel?.researchTabTitle()?.value = total.toString()
-//                        }
-//                    }catch (e: Exception){
-//                        e.printStackTrace()
-//                        // empty state
-//                        emptyState()
-//                    }
-                    researchViewModel?.researchTabTitle()?.value = (it.data?.totalRows ?: 0).toString()
-                    initList((it.data?.data ?: mutableListOf()) as MutableList<ResponseResearchData>)
+                    it.data?.let { responseResearch ->
+                        researchViewModel?.researchTabTitle()?.value = (responseResearch.totalRows ?: 0).toString()
+                        initList(responseResearch.data as MutableList<ResponseResearchData>)
+                        paginationViewModel?.setLinks(responseResearch.totalPages ?: 0)
+                        paginationViewModel?.setNextPage(ResponseResearch.getNextPage(responseResearch).toString())
+                        initPagination()
+                    }
                 }
                 Status.LOADING -> {
                     binding?.progressBar?.visibility = View.VISIBLE
@@ -235,6 +242,11 @@ class ResearchReportFragment : Fragment() {
 
     private fun apiGetResearch() {
         running_service = RunningServiceType.RESEARCH
+        apiGetOtp()
+    }
+    private fun apiGetNextResearch() {
+        paginationViewModel?.requesting = true
+        running_service = RunningServiceType.RESEARCH_NEXT
         apiGetOtp()
     }
 }

@@ -9,6 +9,7 @@ enum class RunningServiceType {
     EVENT,
     EVENT_NEXT,
     RESEARCH,
+    RESEARCH_NEXT,
     EVENT_CATEGORIES,
     RESEARCH_CATEGORIES
 }

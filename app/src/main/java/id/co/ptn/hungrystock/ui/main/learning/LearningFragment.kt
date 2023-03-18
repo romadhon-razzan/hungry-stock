@@ -330,7 +330,6 @@ class LearningFragment : BaseFragment() {
                             val parameter = StringBuilder()
                             parameter.append("customer_id=${sessionManager?.authData?.code ?: ""}&offset=${viewModel?.getNextPage()}")
                             TOKEN = "${HashUtils.hash256Events(parameter.toString())}.${ENV.userKey()}.${it.data?.data ?: ""}"
-                            Log.d("access_token", TOKEN)
                             lifecycleScope.launch {
                                 delay(500)
                                 viewModel?.apiGetNextLearnings(parameter.toString())
