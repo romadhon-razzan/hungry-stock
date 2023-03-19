@@ -17,6 +17,7 @@ import id.co.ptn.hungrystock.bases.WebViewFragment
 import id.co.ptn.hungrystock.core.network.RunningServiceType
 import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.FragmentPageThreeBinding
+import id.co.ptn.hungrystock.helper.extension.gone
 import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardLatestEventViewModel
 import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel
 import id.co.ptn.hungrystock.ui.onboarding.view_model.WebinarViewModel
@@ -74,7 +75,14 @@ class PageThreeFragment : BaseFragment() {
 
     private fun setView() {
         binding?.card?.visibility = View.VISIBLE
-        MediaUtils(requireContext()).setImageFromUrl(binding?.image!!, viewModel?.latestEvent?.image_file ?: "")
+        if (viewModel?.latestEvent?.image_file?.isNullOrEmpty() == true){
+            binding?.image?.gone()
+        } else {
+            viewModel?.latestEvent?.image_file?.let { url ->
+                MediaUtils(requireContext()).setImageFromUrl(binding?.image!!, url, R.drawable.img_event_placeholder)
+            }
+        }
+
         binding?.tvTitle?.text = viewModel?.latestEvent?.title ?: ""
         binding?.tvDescription?.text = viewModel?.latestEvent?.description ?: "-"
         binding?.tvDate?.text = "${getDateMMMMddyyyy((viewModel?.latestEvent?.date_from ?: 0) * 1000)}"
