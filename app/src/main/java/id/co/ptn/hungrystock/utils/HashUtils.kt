@@ -29,6 +29,10 @@ class HashUtils {
             return HashUtils().generateHmac256("${ENV.serviceUrl()}$EVENTS/$parameter", ENV.serviceSecretKey().toByteArray()) ?: ""
         }
 
+        fun hash256EventsRelated(parameter: String): String{
+            return HashUtils().generateHmac256("${ENV.serviceUrl()}$EVENT_RELATED/$parameter", ENV.serviceSecretKey().toByteArray()) ?: ""
+        }
+
         fun hash256EventCategories(): String{
             return HashUtils().generateHmac256("${ENV.serviceUrl()}$EVENT_CATEGORIES", ENV.serviceSecretKey().toByteArray()) ?: ""
         }

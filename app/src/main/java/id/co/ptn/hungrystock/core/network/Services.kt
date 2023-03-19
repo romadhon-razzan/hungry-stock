@@ -8,6 +8,7 @@ import id.co.ptn.hungrystock.models.landing.ResponseBooks
 import id.co.ptn.hungrystock.models.landing.ResponseWebinar
 import id.co.ptn.hungrystock.models.main.home.ResponseEvent
 import id.co.ptn.hungrystock.models.main.home.ResponseEvents
+import id.co.ptn.hungrystock.models.main.home.ResponseEventsRelated
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
 import id.co.ptn.hungrystock.models.main.research.ResponseResearch
@@ -44,6 +45,10 @@ interface Services {
     suspend fun events(
         @Path("param") param: String,
     ): Response<ResponseEvents>
+    @GET("${EVENT_RELATED}/{param}")
+    suspend fun eventsRelated(
+        @Path("param") param: String,
+    ): Response<ResponseEventsRelated>
 
     @GET(EVENT_CATEGORIES)
     suspend fun eventCategories(): Response<ResponseEventCategories>

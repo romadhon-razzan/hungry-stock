@@ -1,26 +1,27 @@
 package id.co.ptn.hungrystock.ui.main.learning
 
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
-import id.co.ptn.hungrystock.bases.PlayVideoFragment
 import id.co.ptn.hungrystock.bases.WebViewFragment
+import id.co.ptn.hungrystock.core.network.RunningServiceType
+import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.ActivityLearningDetailBinding
-import id.co.ptn.hungrystock.models.main.home.PastEvent
-import id.co.ptn.hungrystock.models.main.learning.SimiliarLearnings
+import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
+import id.co.ptn.hungrystock.models.main.home.ResponseEventsRelated
+import id.co.ptn.hungrystock.models.main.home.ResponseEventsRelatedData
 import id.co.ptn.hungrystock.ui.main.learning.adapters.SimillarLearningListAdapter
 import id.co.ptn.hungrystock.ui.main.learning.viewmodel.LearningDetailViewModel
-import id.co.ptn.hungrystock.utils.PLAYBACK_POSITION
+import id.co.ptn.hungrystock.utils.MediaUtils
 import id.co.ptn.hungrystock.utils.Status
 
 @AndroidEntryPoint
@@ -30,7 +31,7 @@ class LearningDetailActivity : BaseActivity() {
 
     private lateinit var learningListAdapter: SimillarLearningListAdapter
 
-    private var event: PastEvent? = null
+    private var event: ResponseEventsData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,70 +46,46 @@ class LearningDetailActivity : BaseActivity() {
         changeStatusBar()
         setToolbar(binding.toolbar,getString(R.string.title_learning_detail))
         initIntent()
-        apiGetLearningDetail()
+        setListener()
         setObserve()
+        setView()
+        apiGetEventsRelated()
     }
 
     private fun initIntent() {
         intent.extras?.let {
             if (it.containsKey("event")){
-                event = Gson().fromJson(it.getString("event"), PastEvent::class.java)
+                event = Gson().fromJson(it.getString("event"), ResponseEventsData::class.java)
             }
         }
        }
 
     private fun setView() {
+        MediaUtils(this).setImageFromUrl(binding.image, event?.image_file ?: "", R.drawable.img_event_placeholder)
+        viewModel.setTitle(event?.title ?: "")
+        viewModel.setSubTitle("Bersama ${event?.speakers ?: "-"}")
+        supportFragmentManager.commit {
+            val bundle = Bundle()
+            bundle.putString("content", event?.description ?: "")
+            add<WebViewFragment>(R.id.frame_desc, null, bundle)
+        }
+        initList()
+    }
 
-        viewModel.reqLearningDetailResponse().value?.data?.data?.let { v ->
-            v.learning.photo_url.let { p ->
-                Glide.with(this@LearningDetailActivity).load(p).into(binding.image)
-            }
-            v.learning.video_url.let { url ->
-                binding.imagePlay.setOnClickListener {
-                    val intent = router.toPlayVideo()
-                    intent.putExtra("url", url)
-                    startActivity(intent)
-//                    viewModel.setPlayed(true)
-//                    supportFragmentManager.commit {
-//                        val bundle = Bundle()
-//                        bundle.putString("url", url)
-//                        bundle.putLong("paramPlayBackPosition", PLAYBACK_POSITION.toLong())
-//                        add<PlayVideoFragment>(R.id.frame_video, null, bundle)
-//                    }
-                }
-            }
-            v.learning.title?.let { t -> viewModel.setTitle(t)}
-            v.learning.speaker?.let { sp -> viewModel.setSubTitle("Bersama $sp")  }
-            v.learning.content?.let { c ->
-                supportFragmentManager.commit {
-                    val bundle = Bundle()
-                    bundle.putString("content", c)
-                    add<WebViewFragment>(R.id.frame_desc, null, bundle)
-                }
-            }
-            v.similiarLearnings.let { sl ->
-                viewModel.getLearnings().clear()
-                viewModel.getLearnings().addAll(sl)
-                initList()
-            }
+    private fun setListener() {
+        binding.imagePlay.setOnClickListener {
+            val intent = router.toPlayVideo()
+            intent.putExtra("url", event?.video_file ?: "")
+            startActivity(intent)
         }
     }
 
     private fun initList() {
-        learningListAdapter = SimillarLearningListAdapter(viewModel.getLearnings(), object : SimillarLearningListAdapter.LearningListener{
-            override fun itemClicked(learning: SimiliarLearnings) {
+        learningListAdapter = SimillarLearningListAdapter(viewModel.getEventsRelated(), object : SimillarLearningListAdapter.LearningListener{
+            override fun itemClicked(learning: ResponseEventsData) {
                 try {
-                    val event = PastEvent(
-                        learning.slug.toString(),
-                        learning.title.toString(),
-                        learning.speaker.toString(),
-//                        learning.event_date.toString(),
-                        0,
-                        learning.event_hour_start.toString(),
-                        learning.event_hour_end.toString(),
-                        learning.zoom_link.toString())
                     val intent = router.toLearningDetail()
-                    intent.putExtra("event", Gson().toJson(event))
+                    intent.putExtra("event", Gson().toJson(learning))
                     startActivity(intent)
                 }catch (e: Exception){
                     e.printStackTrace()
@@ -122,15 +99,37 @@ class LearningDetailActivity : BaseActivity() {
         }
     }
 
+
     private fun setObserve() {
-        viewModel.reqLearningDetailResponse().observe(this){
+        viewModel.reqOtpResponse().observe(this){
             when(it.status){
                 Status.SUCCESS -> {
                     viewModel.setLoadingReqDetail(false)
-                    setView()
+                    if (running_service == RunningServiceType.EVENT_RELATED){
+                        viewModel.apiGetEventsRelated(event?.code ?: "", it.data?.data ?: "")
+                    }
                 }
                 Status.LOADING -> {
-
+                    viewModel.setLoadingReqDetail(true)
+                }
+                Status.ERROR -> {
+                    viewModel.setLoadingReqDetail(false)
+                }
+            }
+        }
+        viewModel.reqEventsRelatedResponse().observe(this){
+            when(it.status){
+                Status.SUCCESS -> {
+                    viewModel.setLoadingReqDetail(false)
+                    if (it.data?.successData?.isNotEmpty() == true){
+                        val responseEventsRelatedData = it.data.successData[0]
+                        viewModel.getEventsRelated().clear()
+                        viewModel.getEventsRelated().addAll(responseEventsRelatedData.data)
+                        initList()
+                    }
+                }
+                Status.LOADING -> {
+                    viewModel.setLoadingReqDetail(true)
                 }
                 Status.ERROR -> {
                     viewModel.setLoadingReqDetail(false)
@@ -144,7 +143,8 @@ class LearningDetailActivity : BaseActivity() {
      * Api
      * */
 
-    private fun apiGetLearningDetail() {
-        event?.slug?.let { viewModel.apiGetLearningDetail(it) }
+    private fun apiGetEventsRelated() {
+        running_service = RunningServiceType.EVENT_RELATED
+        viewModel.apiGetOtp()
     }
 }

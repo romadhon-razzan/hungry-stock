@@ -8,6 +8,7 @@ import javax.inject.Inject
 class EventRepository @Inject constructor(private val apiHelper: ApiHelper) {
     suspend fun otp() =  apiHelper.otp()
     suspend fun getEvent(param: String) =  apiHelper.events(param)
+    suspend fun getEventRelated(param: String) =  apiHelper.eventsRelated(param)
     suspend fun codeOfConduct() =  apiHelper.codeOfConduct()
 
 }

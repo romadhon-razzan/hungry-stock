@@ -1,22 +1,26 @@
 package id.co.ptn.hungrystock.ui.main.learning.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
-import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
-import id.co.ptn.hungrystock.models.main.learning.SimiliarLearnings
-import id.co.ptn.hungrystock.repositories.AppRepository
+import id.co.ptn.hungrystock.config.ENV
+import id.co.ptn.hungrystock.config.TOKEN
+import id.co.ptn.hungrystock.models.auth.ResponseOtp
+import id.co.ptn.hungrystock.models.main.home.ResponseEvents
+import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
+import id.co.ptn.hungrystock.models.main.home.ResponseEventsRelated
+import id.co.ptn.hungrystock.models.main.home.ResponseEventsRelatedData
+import id.co.ptn.hungrystock.repositories.EventRepository
+import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Resource
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LearningDetailViewModel @Inject constructor(private val repository: AppRepository) : BaseViewModel() {
+class LearningDetailViewModel @Inject constructor(private val repository: EventRepository) : BaseViewModel() {
 
     private val _played = MutableLiveData(false)
     val played: LiveData<Boolean> = _played
@@ -43,40 +47,55 @@ class LearningDetailViewModel @Inject constructor(private val repository: AppRep
         _loadingReqDetail.value = value
     }
 
-    private var learnings: MutableList<SimiliarLearnings> = mutableListOf()
+    private var eventsRelated: MutableList<ResponseEventsData> = mutableListOf()
 
-    fun setLearnings(learnings: MutableList<SimiliarLearnings>) {
-        this.learnings = learnings
+    fun setEventsRelated(learnings: MutableList<ResponseEventsData>) {
+        this.eventsRelated = learnings
     }
 
-    fun getLearnings(): MutableList<SimiliarLearnings> {
-        return learnings
+    fun getEventsRelated(): MutableList<ResponseEventsData> {
+        return eventsRelated
     }
 
-    private var _reqLearningDetailResponse: MutableLiveData<Resource<ResponseLearningDetail>> = MutableLiveData()
-    fun reqLearningDetailResponse(): MutableLiveData<Resource<ResponseLearningDetail>> = _reqLearningDetailResponse
+    private var _reqOtpResponse: MutableLiveData<Resource<ResponseOtp>> = MutableLiveData()
+    fun reqOtpResponse(): MutableLiveData<Resource<ResponseOtp>> = _reqOtpResponse
+    private var _reqEventsRelatedResponse: MutableLiveData<Resource<ResponseEventsRelated>> = MutableLiveData()
+    fun reqEventsRelatedResponse(): MutableLiveData<Resource<ResponseEventsRelated>> = _reqEventsRelatedResponse
 
 
     /**
      * Api
      * */
-
-    fun apiGetLearningDetail(s: String) {
+    fun apiGetOtp() {
         viewModelScope.launch {
             try {
-                _reqLearningDetailResponse.postValue(Resource.loading(null))
-                repository.getLearningDetail(s).let {
+                TOKEN = HashUtils.hash256Otp()
+                _reqOtpResponse.postValue(Resource.loading(null))
+                repository.otp().let {
                     if (it.isSuccessful){
-                        _reqLearningDetailResponse.postValue(Resource.success(it.body()))
+                        _reqOtpResponse.postValue(Resource.success(it.body()))
                     } else {
-                        val type = object : TypeToken<ResponseLearningDetail>() {}.type
-                        var errorResponse: ResponseLearningDetail? = null
-                        try {
-                            errorResponse = Gson().fromJson(it.errorBody()?.charStream(), type)
-                        } catch(e: Exception) {
-                            e.printStackTrace()
-                        }
-                        _reqLearningDetailResponse.postValue(Resource.error(it.errorBody().toString(), errorResponse))
+                        _reqOtpResponse.postValue(Resource.error(it.body()?.message ?: "", null))
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+    fun apiGetEventsRelated(id: String?, otp: String) {
+        viewModelScope.launch {
+            try {
+                val parameter = StringBuilder()
+                parameter.append("id=${id ?: ""}")
+                TOKEN = "${HashUtils.hash256EventsRelated(parameter.toString())}.${ENV.userKey()}.$otp"
+                Log.d("access_token", TOKEN)
+                _reqEventsRelatedResponse.postValue(Resource.loading(null))
+                repository.getEventRelated(parameter.toString()).let {
+                    if (it.isSuccessful){
+                        _reqEventsRelatedResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        _reqEventsRelatedResponse.postValue(Resource.error( "", null))
                     }
                 }
             }catch (e: Exception){

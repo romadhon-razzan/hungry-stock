@@ -7,6 +7,7 @@ enum class RunningServiceType {
     PROFILE,
     REGISTER,
     EVENT,
+    EVENT_RELATED,
     EVENT_NEXT,
     RESEARCH,
     RESEARCH_NEXT,
