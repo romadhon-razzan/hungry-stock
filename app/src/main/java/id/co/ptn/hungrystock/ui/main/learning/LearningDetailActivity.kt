@@ -1,7 +1,6 @@
 package id.co.ptn.hungrystock.ui.main.learning
 
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -17,8 +16,6 @@ import id.co.ptn.hungrystock.core.network.RunningServiceType
 import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.ActivityLearningDetailBinding
 import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
-import id.co.ptn.hungrystock.models.main.home.ResponseEventsRelated
-import id.co.ptn.hungrystock.models.main.home.ResponseEventsRelatedData
 import id.co.ptn.hungrystock.ui.main.learning.adapters.SimillarLearningListAdapter
 import id.co.ptn.hungrystock.ui.main.learning.viewmodel.LearningDetailViewModel
 import id.co.ptn.hungrystock.utils.MediaUtils
