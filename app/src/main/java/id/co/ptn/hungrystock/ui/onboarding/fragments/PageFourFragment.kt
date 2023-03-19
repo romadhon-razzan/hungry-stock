@@ -12,6 +12,8 @@ import id.co.ptn.hungrystock.bases.BaseFragment
 import id.co.ptn.hungrystock.core.network.RunningServiceType
 import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.FragmentPageFourBinding
+import id.co.ptn.hungrystock.helper.extension.toDate
+import id.co.ptn.hungrystock.helper.extension.toStringFormat
 import id.co.ptn.hungrystock.ui.onboarding.view_model.BooksViewModel
 import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel
 import id.co.ptn.hungrystock.ui.onboarding.view_model.WebinarViewModel
@@ -70,7 +72,10 @@ class PageFourFragment : BaseFragment() {
         MediaUtils(requireContext()).setImageFromUrl(binding.image, viewModel?.webinar?.image_file ?: "")
         binding.tvTitle.text = viewModel?.webinar?.title ?: ""
         binding.tvDescription.text = viewModel?.webinar?.description ?: ""
-        binding.tvDate.text = "${viewModel?.webinar?.date_from} - ${viewModel?.webinar?.dateTo}"
+
+        val dateFrom = viewModel?.webinar?.date_from?.toDate()?.toStringFormat("EEEE, MMMM dd")
+        val dateTo = viewModel?.webinar?.dateTo?.toDate()?.toStringFormat("EEEE, MMMM dd yyyy")
+        binding.tvDate.text = "$dateFrom - $dateTo"
         binding.tvSpeaker.text = "Pembicara: ${viewModel?.webinar?.speakers ?: ""}"
     }
 
