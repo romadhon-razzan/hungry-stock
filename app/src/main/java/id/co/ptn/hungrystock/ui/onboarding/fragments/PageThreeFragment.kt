@@ -16,8 +16,10 @@ import id.co.ptn.hungrystock.bases.WebViewFragment
 import id.co.ptn.hungrystock.core.network.RunningServiceType
 import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.FragmentPageThreeBinding
+import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardLatestEventViewModel
 import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel
 import id.co.ptn.hungrystock.ui.onboarding.view_model.WebinarViewModel
+import id.co.ptn.hungrystock.utils.MediaUtils
 import id.co.ptn.hungrystock.utils.Status
 import id.co.ptn.hungrystock.utils.getDateMMMMddyyyy
 import java.lang.Exception
@@ -31,7 +33,7 @@ class PageThreeFragment : BaseFragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var binding: FragmentPageThreeBinding? = null
-    private var viewModel: WebinarViewModel? = null
+    private var viewModel: OnboardLatestEventViewModel? = null
     private var onboardViewModel: OnboardViewModel? = null
 
     companion object {
@@ -52,7 +54,7 @@ class PageThreeFragment : BaseFragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        viewModel = ViewModelProvider(requireActivity())[WebinarViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[OnboardLatestEventViewModel::class.java]
         onboardViewModel = ViewModelProvider(requireActivity())[OnboardViewModel::class.java]
     }
 
@@ -69,19 +71,21 @@ class PageThreeFragment : BaseFragment() {
         binding?.viewModel = viewModel
         binding?.lifecycleOwner = this
         setObserve()
-        setView()
     }
 
     private fun setView() {
-
+        MediaUtils(requireContext()).setImageFromUrl(binding?.image!!, viewModel?.latestEvent?.image_file ?: "")
+        binding?.tvTitle?.text = viewModel?.latestEvent?.title ?: ""
+        binding?.tvDescription?.text = viewModel?.latestEvent?.description ?: ""
+        binding?.tvSpeaker?.text = "Pembicara: ${viewModel?.latestEvent?.speakers ?: ""}"
     }
 
     private fun setObserve() {
         viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
                 Status.SUCCESS -> {
-                    if (running_service == RunningServiceType.WEBINAR){
-                        viewModel?.apiGetWebinar(it.data?.data ?: "")
+                    if (running_service == RunningServiceType.EVENT){
+                        viewModel?.apiGetLatestEvent(it.data?.data ?: "")
                     }
                 }
                 Status.LOADING -> {}
@@ -89,16 +93,24 @@ class PageThreeFragment : BaseFragment() {
             }
         }
 
-        viewModel?.reqWebinarResponse()?.observe(viewLifecycleOwner){
+        viewModel?.reqEventsResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
-                Status.SUCCESS -> {}
+                Status.SUCCESS -> {
+                    it.data?.data?.forEachIndexed { index, responseEventsData ->
+                        if (index == 0){
+                            viewModel?.latestEvent = responseEventsData
+                            setView()
+                            return@forEachIndexed
+                        }
+                    }
+                }
                 Status.LOADING -> {}
                 Status.ERROR -> {}
             }
         }
-        onboardViewModel?.pageWebinar?.observe(requireActivity()){
+        onboardViewModel?.pageLatestEvent?.observe(requireActivity()){
             if (it){
-                apiGetWebinar()
+                apiGetLatestEvent()
             }
         }
     }
@@ -106,8 +118,8 @@ class PageThreeFragment : BaseFragment() {
     /**
      * Api
      * */
-    private fun apiGetWebinar() {
-        running_service = RunningServiceType.WEBINAR
+    private fun apiGetLatestEvent() {
+        running_service = RunningServiceType.EVENT
         viewModel?.apiGetOtp()
     }
 

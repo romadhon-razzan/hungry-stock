@@ -14,6 +14,8 @@ import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.FragmentPageFourBinding
 import id.co.ptn.hungrystock.ui.onboarding.view_model.BooksViewModel
 import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel
+import id.co.ptn.hungrystock.ui.onboarding.view_model.WebinarViewModel
+import id.co.ptn.hungrystock.utils.MediaUtils
 import id.co.ptn.hungrystock.utils.Status
 
 private const val ARG_PARAM1 = "param1"
@@ -24,7 +26,7 @@ class PageFourFragment : BaseFragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentPageFourBinding
-    private var viewModel: BooksViewModel? = null
+    private var viewModel: WebinarViewModel? = null
     private var onboardViewModel: OnboardViewModel? = null
 
     companion object {
@@ -44,7 +46,7 @@ class PageFourFragment : BaseFragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        viewModel = ViewModelProvider(requireActivity())[BooksViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[WebinarViewModel::class.java]
         onboardViewModel = ViewModelProvider(requireActivity())[OnboardViewModel::class.java]
     }
 
@@ -61,35 +63,44 @@ class PageFourFragment : BaseFragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
         setObserve()
-        setView()
     }
 
     private fun setView() {
-
+        MediaUtils(requireContext()).setImageFromUrl(binding.image, viewModel?.webinar?.iamgeFile ?: "")
+        binding.tvTitle.text = viewModel?.webinar?.title ?: ""
+        binding.tvDescription.text = viewModel?.webinar?.description ?: ""
+        binding.tvDate.text = "${viewModel?.webinar?.date_from} - ${viewModel?.webinar?.dateTo}"
+        binding.tvSpeaker.text = "Pembicara: ${viewModel?.webinar?.speakers ?: ""}"
     }
 
     private fun setObserve() {
         viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
                 Status.SUCCESS -> {
-                    if (running_service == RunningServiceType.BOOKS){
-                        viewModel?.apiGetBooks(it.data?.data ?: "")
+                    if (running_service == RunningServiceType.WEBINAR){
+                        viewModel?.apiGetWebinar(it.data?.data ?: "")
                     }
                 }
                 Status.LOADING -> {}
                 Status.ERROR -> {}
             }
         }
-        viewModel?.reqBooksResponse()?.observe(viewLifecycleOwner){
+
+        viewModel?.reqWebinarResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
-                Status.SUCCESS -> {}
+                Status.SUCCESS -> {
+                    it.data?.data?.forEach { data ->
+                        viewModel?.webinar = data
+                    }
+                    setView()
+                }
                 Status.LOADING -> {}
                 Status.ERROR -> {}
             }
         }
-        onboardViewModel?.pageBooks?.observe(requireActivity()){
+        onboardViewModel?.pageWebinar?.observe(requireActivity()){
             if (it){
-                apiGetBooks()
+                apiGetWebinar()
             }
         }
     }
@@ -97,8 +108,8 @@ class PageFourFragment : BaseFragment() {
     /**
      * Api
      * */
-    private fun apiGetBooks() {
-        running_service = RunningServiceType.BOOKS
+    private fun apiGetWebinar() {
+        running_service = RunningServiceType.WEBINAR
         viewModel?.apiGetOtp()
     }
 }

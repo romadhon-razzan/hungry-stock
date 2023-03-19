@@ -10,11 +10,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseFragment
+import id.co.ptn.hungrystock.core.network.RunningServiceType
+import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.FragmentPageFiveBinding
 import id.co.ptn.hungrystock.models.onboard.Books
 import id.co.ptn.hungrystock.router.Router
 import id.co.ptn.hungrystock.ui.onboarding.adapters.BookListAdapter
+import id.co.ptn.hungrystock.ui.onboarding.view_model.BooksViewModel
 import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel
+import id.co.ptn.hungrystock.utils.Status
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -24,7 +28,8 @@ class PageFiveFragment : BaseFragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentPageFiveBinding
-    private var viewModel: OnboardViewModel? = null
+    private var viewModel: BooksViewModel? = null
+    private var onboardViewModel: OnboardViewModel? = null
     private var bookListAdapter: BookListAdapter? = null
 
 
@@ -45,6 +50,8 @@ class PageFiveFragment : BaseFragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        viewModel = ViewModelProvider(requireActivity())[BooksViewModel::class.java]
+        onboardViewModel = ViewModelProvider(requireActivity())[OnboardViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -57,7 +64,6 @@ class PageFiveFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[OnboardViewModel::class.java]
         binding.lifecycleOwner = this
         init()
     }
@@ -72,18 +78,49 @@ class PageFiveFragment : BaseFragment() {
     }
 
     private fun initList() {
-        viewModel?.reqOnboardResponse()?.value?.data?.data?.books?.let { books ->
-            if (books.isNotEmpty()){
-                bookListAdapter = BookListAdapter(books as MutableList<Books>, object : BookListAdapter.Listener{
-                    override fun itemClicked(books: Books) {
-                        books.link_tokopedia?.let { url -> openUrlPage(url) }
+        bookListAdapter = BookListAdapter(mutableListOf(), object : BookListAdapter.Listener{
+            override fun itemClicked(books: Books) {
+                books.link_tokopedia?.let { url -> openUrlPage(url) }
+            }
+        })
+        binding.recyclerView.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            adapter = bookListAdapter
+        }
+    }
+
+    private fun setObserve() {
+        viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS -> {
+                    if (running_service == RunningServiceType.BOOKS){
+                        viewModel?.apiGetBooks(it.data?.data ?: "")
                     }
-                })
-                binding.recyclerView.apply {
-                    layoutManager = GridLayoutManager(requireContext(), 2)
-                    adapter = bookListAdapter
                 }
+                Status.LOADING -> {}
+                Status.ERROR -> {}
             }
         }
+        viewModel?.reqBooksResponse()?.observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS -> {}
+                Status.LOADING -> {}
+                Status.ERROR -> {}
+            }
+        }
+        onboardViewModel?.pageBooks?.observe(requireActivity()){
+            if (it){
+                apiGetBooks()
+            }
+        }
+    }
+
+
+    /**
+     * Api
+     * */
+    private fun apiGetBooks() {
+        running_service = RunningServiceType.BOOKS
+        viewModel?.apiGetOtp()
     }
 }

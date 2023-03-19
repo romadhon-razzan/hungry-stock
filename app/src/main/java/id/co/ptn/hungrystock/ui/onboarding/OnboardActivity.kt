@@ -59,8 +59,9 @@ class OnboardActivity : BaseActivity() {
 
             }
             override fun onPageSelected(position: Int) {
+                viewModel?.setPageLatestEvent(position == OnboardVPAdapter.PAGE_LATEST_EVENT)
                 viewModel?.setPageWebinar(position == OnboardVPAdapter.PAGE_WEBINAR)
-                viewModel?.setPageWebinar(position == OnboardVPAdapter.PAGE_BOOKS)
+                viewModel?.setPageBooks(position == OnboardVPAdapter.PAGE_BOOKS)
             }
 
         })

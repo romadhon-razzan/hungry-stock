@@ -8,24 +8,26 @@ import id.co.ptn.hungrystock.bases.BaseViewModel
 import id.co.ptn.hungrystock.config.ENV
 import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
-import id.co.ptn.hungrystock.models.landing.ResponseWebinar
-import id.co.ptn.hungrystock.models.landing.ResponseWebinarData
+import id.co.ptn.hungrystock.models.landing.ResponseBooks
+import id.co.ptn.hungrystock.models.main.home.ResponseEvents
+import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
 import id.co.ptn.hungrystock.repositories.AppRepository
+import id.co.ptn.hungrystock.repositories.EventRepository
 import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Resource
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WebinarViewModel @Inject constructor(private val repository: AppRepository) : BaseViewModel() {
+class OnboardLatestEventViewModel @Inject constructor(private val repository: EventRepository) : BaseViewModel() {
 
-    var webinar : ResponseWebinarData? = null
+    var latestEvent: ResponseEventsData? = null
 
     private var _reqOtpResponse: MutableLiveData<Resource<ResponseOtp>> = MutableLiveData()
     fun reqOtpResponse(): MutableLiveData<Resource<ResponseOtp>> = _reqOtpResponse
 
-    private var _reqWebinarResponse: MutableLiveData<Resource<ResponseWebinar>> = MutableLiveData()
-    fun reqWebinarResponse(): MutableLiveData<Resource<ResponseWebinar>> = _reqWebinarResponse
+    private var _reqEventsResponse: MutableLiveData<Resource<ResponseEvents>> = MutableLiveData()
+    fun reqEventsResponse(): MutableLiveData<Resource<ResponseEvents>> = _reqEventsResponse
 
 
     /**
@@ -48,17 +50,21 @@ class WebinarViewModel @Inject constructor(private val repository: AppRepository
             }
         }
     }
-    fun apiGetWebinar(otp: String) {
+
+    fun apiGetLatestEvent(otp: String) {
         viewModelScope.launch {
             try {
-                TOKEN = "${HashUtils.hash256Webinar()}.${ENV.userKey()}.$otp"
-                Log.d("webinar_access_token", TOKEN)
-                _reqWebinarResponse.postValue(Resource.loading(null))
-                repository.webinar().let {
+                val parameter = StringBuilder()
+                parameter.append("&order_by=event_date")
+                parameter.append("&order_type=2") // DESC
+                TOKEN = "${HashUtils.hash256Events(parameter.toString())}.${ENV.userKey()}.$otp"
+                Log.d("event_access_token", TOKEN)
+                _reqEventsResponse.postValue(Resource.loading(null))
+                repository.getEvent(parameter.toString()).let {
                     if (it.isSuccessful){
-                        _reqWebinarResponse.postValue(Resource.success(it.body()))
+                        _reqEventsResponse.postValue(Resource.success(it.body()))
                     } else {
-                        _reqWebinarResponse.postValue(Resource.error(it.errorBody().toString(), null))
+                        _reqEventsResponse.postValue(Resource.error(it.errorBody().toString(), null))
                     }
                 }
             }catch (e: Exception){
@@ -66,5 +72,4 @@ class WebinarViewModel @Inject constructor(private val repository: AppRepository
             }
         }
     }
-
 }

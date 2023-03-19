@@ -55,6 +55,11 @@ class OnboardViewModel @Inject constructor(private val repository: AppRepository
     /**
      * OnPageViewPager Changed
      * */
+    private val _pageLatestEvent = MutableLiveData(false)
+    val pageLatestEvent: LiveData<Boolean> = _pageLatestEvent
+    fun setPageLatestEvent(selected: Boolean) {
+        _pageLatestEvent.postValue(selected)
+    }
     private val _pageWebinar = MutableLiveData(false)
     val pageWebinar: LiveData<Boolean> = _pageWebinar
     fun setPageWebinar(selected: Boolean) {
