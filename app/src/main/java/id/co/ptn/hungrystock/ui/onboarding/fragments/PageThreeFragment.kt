@@ -74,13 +74,20 @@ class PageThreeFragment : BaseFragment() {
 
     private fun setView() {
         binding?.card?.visibility = View.VISIBLE
-        Log.d("IMAGE EVENT", viewModel?.latestEvent?.image_file ?: "")
         MediaUtils(requireContext()).setImageFromUrl(binding?.image!!, viewModel?.latestEvent?.image_file ?: "")
         binding?.tvTitle?.text = viewModel?.latestEvent?.title ?: ""
         binding?.tvDescription?.text = viewModel?.latestEvent?.description ?: "-"
         binding?.tvDate?.text = "${getDateMMMMddyyyy((viewModel?.latestEvent?.date_from ?: 0) * 1000)}"
         binding?.tvDate?.append(" ${getHHmm((viewModel?.latestEvent?.date_from ?: 0) * 1000)} - ${getHHmm((viewModel?.latestEvent?.date_to ?: 0) * 1000)} WIB")
         binding?.tvSpeaker?.text = "Pembicara: ${viewModel?.latestEvent?.speakers ?: "-"}"
+    }
+
+    private fun setCodeOfConduct(title: String) {
+        childFragmentManager.commit {
+            val bundle = Bundle()
+            bundle.putString("content", title)
+            add<WebViewFragment>(R.id.frame_web, null, bundle)
+        }
     }
 
     private fun setObserve() {
@@ -90,6 +97,8 @@ class PageThreeFragment : BaseFragment() {
                     binding?.progressBar?.visibility = View.GONE
                     if (running_service == RunningServiceType.EVENT){
                         viewModel?.apiGetLatestEvent(it.data?.data ?: "")
+                    } else if (running_service == RunningServiceType.CODE_OF_CONDUCT) {
+                        viewModel?.apiGetCodeOfConduct(it.data?.data ?: "")
                     }
                 }
                 Status.LOADING -> {
@@ -109,8 +118,26 @@ class PageThreeFragment : BaseFragment() {
                         if (index == 0){
                             viewModel?.latestEvent = responseEventsData
                             setView()
+                            apiGetCodeOfConduct()
                             return@forEachIndexed
                         }
+                    }
+                }
+                Status.LOADING -> {
+                    binding?.progressBar?.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding?.progressBar?.visibility = View.GONE
+                }
+            }
+        }
+
+        viewModel?.reqCodeOfConductResponse()?.observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS -> {
+                    binding?.progressBar?.visibility = View.GONE
+                    it.data?.data?.forEach {data ->
+                        setCodeOfConduct(data.title ?: "")
                     }
                 }
                 Status.LOADING -> {
@@ -135,6 +162,10 @@ class PageThreeFragment : BaseFragment() {
      * */
     private fun apiGetLatestEvent() {
         running_service = RunningServiceType.EVENT
+        viewModel?.apiGetOtp()
+    }
+    private fun apiGetCodeOfConduct() {
+        running_service = RunningServiceType.CODE_OF_CONDUCT
         viewModel?.apiGetOtp()
     }
 

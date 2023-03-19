@@ -11,6 +11,7 @@ import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
 import id.co.ptn.hungrystock.models.main.research.ResponseResearch
+import id.co.ptn.hungrystock.models.onboard.ResponseCodeOfConduct
 import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.reference.ResponseEventCategories
@@ -54,6 +55,9 @@ interface Services {
     suspend fun books(): Response<ResponseBooks>
     @GET(WEBINAR)
     suspend fun webinar(): Response<ResponseWebinar>
+
+    @GET(CODE_OF_CONDUCT)
+    suspend fun codeOfConduct(): Response<ResponseCodeOfConduct>
 
 
 

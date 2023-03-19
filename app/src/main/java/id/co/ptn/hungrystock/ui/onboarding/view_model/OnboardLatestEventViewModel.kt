@@ -11,6 +11,7 @@ import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.landing.ResponseBooks
 import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
+import id.co.ptn.hungrystock.models.onboard.ResponseCodeOfConduct
 import id.co.ptn.hungrystock.repositories.AppRepository
 import id.co.ptn.hungrystock.repositories.EventRepository
 import id.co.ptn.hungrystock.utils.HashUtils
@@ -28,6 +29,9 @@ class OnboardLatestEventViewModel @Inject constructor(private val repository: Ev
 
     private var _reqEventsResponse: MutableLiveData<Resource<ResponseEvents>> = MutableLiveData()
     fun reqEventsResponse(): MutableLiveData<Resource<ResponseEvents>> = _reqEventsResponse
+
+    private var _reqCodeOfConductResponse: MutableLiveData<Resource<ResponseCodeOfConduct>> = MutableLiveData()
+    fun reqCodeOfConductResponse(): MutableLiveData<Resource<ResponseCodeOfConduct>> = _reqCodeOfConductResponse
 
 
     /**
@@ -65,6 +69,24 @@ class OnboardLatestEventViewModel @Inject constructor(private val repository: Ev
                         _reqEventsResponse.postValue(Resource.success(it.body()))
                     } else {
                         _reqEventsResponse.postValue(Resource.error(it.errorBody().toString(), null))
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun apiGetCodeOfConduct(otp: String) {
+        viewModelScope.launch {
+            try {
+                TOKEN = "${HashUtils.hash256CodeOfConduct()}.${ENV.userKey()}.$otp"
+                _reqCodeOfConductResponse.postValue(Resource.loading(null))
+                repository.codeOfConduct().let {
+                    if (it.isSuccessful){
+                        _reqCodeOfConductResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        _reqCodeOfConductResponse.postValue(Resource.error(it.errorBody().toString(), null))
                     }
                 }
             }catch (e: Exception){

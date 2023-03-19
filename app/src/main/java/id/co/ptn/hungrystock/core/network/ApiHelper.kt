@@ -11,6 +11,7 @@ import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearning
 import id.co.ptn.hungrystock.models.main.learning.ResponseLearningDetail
 import id.co.ptn.hungrystock.models.main.research.ResponseResearch
+import id.co.ptn.hungrystock.models.onboard.ResponseCodeOfConduct
 import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
 import id.co.ptn.hungrystock.models.password.ResponsePassword
 import id.co.ptn.hungrystock.models.reference.ResponseEventCategories
@@ -33,6 +34,7 @@ interface ApiHelper {
     suspend fun getResearch(param: String): Response<ResponseResearch>
     suspend fun books(): Response<ResponseBooks>
     suspend fun webinar(): Response<ResponseWebinar>
+    suspend fun codeOfConduct(): Response<ResponseCodeOfConduct>
 
     suspend fun auth(nt: String, p: String): Response<ResponseAuth>
     suspend fun resetPassword(p: String): Response<ResponsePassword>
