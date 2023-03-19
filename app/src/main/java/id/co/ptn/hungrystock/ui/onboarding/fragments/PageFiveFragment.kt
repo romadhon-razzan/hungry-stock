@@ -71,6 +71,7 @@ class PageFiveFragment : BaseFragment() {
     private fun init() {
         initList()
         initListener()
+        setObserve()
     }
 
     private fun initListener() {

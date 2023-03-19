@@ -66,6 +66,7 @@ class PageFourFragment : BaseFragment() {
     }
 
     private fun setView() {
+        binding.card.visibility = View.VISIBLE
         MediaUtils(requireContext()).setImageFromUrl(binding.image, viewModel?.webinar?.iamgeFile ?: "")
         binding.tvTitle.text = viewModel?.webinar?.title ?: ""
         binding.tvDescription.text = viewModel?.webinar?.description ?: ""
@@ -77,30 +78,42 @@ class PageFourFragment : BaseFragment() {
         viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
                 Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
                     if (running_service == RunningServiceType.WEBINAR){
                         viewModel?.apiGetWebinar(it.data?.data ?: "")
                     }
                 }
-                Status.LOADING -> {}
-                Status.ERROR -> {}
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                }
             }
         }
 
         viewModel?.reqWebinarResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
                 Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
                     it.data?.data?.forEach { data ->
                         viewModel?.webinar = data
                     }
                     setView()
                 }
-                Status.LOADING -> {}
-                Status.ERROR -> {}
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                }
             }
         }
         onboardViewModel?.pageWebinar?.observe(requireActivity()){
             if (it){
-                apiGetWebinar()
+                if (viewModel?.webinar == null) {
+                    apiGetWebinar()
+                }
             }
         }
     }

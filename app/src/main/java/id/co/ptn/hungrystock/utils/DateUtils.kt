@@ -21,6 +21,11 @@ fun getDateMMMMddyyyy(date: Long): String {
     return simpleDateFormat.format(date)
 }
 
+fun getDateMMMMddyyyyHHmm(date: Long): String {
+    val simpleDateFormat = SimpleDateFormat("MMMM, dd yyyy HH:mm", Locale.getDefault() )
+    return simpleDateFormat.format(date)
+}
+
 fun getHHmm(date: Long): String {
     val simpleDateFormat = SimpleDateFormat("HH:mm", Locale.getDefault() )
     return simpleDateFormat.format(date)

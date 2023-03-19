@@ -22,6 +22,7 @@ import id.co.ptn.hungrystock.ui.onboarding.view_model.WebinarViewModel
 import id.co.ptn.hungrystock.utils.MediaUtils
 import id.co.ptn.hungrystock.utils.Status
 import id.co.ptn.hungrystock.utils.getDateMMMMddyyyy
+import id.co.ptn.hungrystock.utils.getDateMMMMddyyyyHHmm
 import java.lang.Exception
 import java.lang.StringBuilder
 
@@ -74,28 +75,36 @@ class PageThreeFragment : BaseFragment() {
     }
 
     private fun setView() {
+        binding?.card?.visibility = View.VISIBLE
         MediaUtils(requireContext()).setImageFromUrl(binding?.image!!, viewModel?.latestEvent?.image_file ?: "")
         binding?.tvTitle?.text = viewModel?.latestEvent?.title ?: ""
-        binding?.tvDescription?.text = viewModel?.latestEvent?.description ?: ""
-        binding?.tvSpeaker?.text = "Pembicara: ${viewModel?.latestEvent?.speakers ?: ""}"
+        binding?.tvDescription?.text = viewModel?.latestEvent?.description ?: "-"
+        binding?.tvDate?.text = "${getDateMMMMddyyyyHHmm((viewModel?.latestEvent?.date_from ?: 0) * 1000)} - ${getDateMMMMddyyyyHHmm((viewModel?.latestEvent?.date_to ?: 0) * 1000)}"
+        binding?.tvSpeaker?.text = "Pembicara: ${viewModel?.latestEvent?.speakers ?: "-"}"
     }
 
     private fun setObserve() {
         viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
                 Status.SUCCESS -> {
+                    binding?.progressBar?.visibility = View.GONE
                     if (running_service == RunningServiceType.EVENT){
                         viewModel?.apiGetLatestEvent(it.data?.data ?: "")
                     }
                 }
-                Status.LOADING -> {}
-                Status.ERROR -> {}
+                Status.LOADING -> {
+                    binding?.progressBar?.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding?.progressBar?.visibility = View.GONE
+                }
             }
         }
 
         viewModel?.reqEventsResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
                 Status.SUCCESS -> {
+                    binding?.progressBar?.visibility = View.GONE
                     it.data?.data?.forEachIndexed { index, responseEventsData ->
                         if (index == 0){
                             viewModel?.latestEvent = responseEventsData
@@ -104,13 +113,19 @@ class PageThreeFragment : BaseFragment() {
                         }
                     }
                 }
-                Status.LOADING -> {}
-                Status.ERROR -> {}
+                Status.LOADING -> {
+                    binding?.progressBar?.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding?.progressBar?.visibility = View.GONE
+                }
             }
         }
         onboardViewModel?.pageLatestEvent?.observe(requireActivity()){
             if (it){
-                apiGetLatestEvent()
+                if (viewModel?.latestEvent == null) {
+                    apiGetLatestEvent()
+                }
             }
         }
     }
