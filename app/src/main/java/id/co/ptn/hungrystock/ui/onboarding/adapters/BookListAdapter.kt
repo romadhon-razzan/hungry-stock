@@ -16,7 +16,7 @@ class BookListAdapter(private val items: MutableList<ResponseBooksData>, private
     RecyclerView.Adapter<BookListAdapter.ViewHolder>() {
     class ViewHolder(var binding: ItemBookBinding, var context: Context) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ResponseBooksData) {
-            MediaUtils(context).setImageFromUrl(binding.image, item.imageFile ?: "")
+            MediaUtils(context).setImageFromUrl(binding.image, item.imageFile ?: "", R.drawable.img_reseach_placeholder)
             binding.tvTitle.text = item.name ?: ""
         }
     }

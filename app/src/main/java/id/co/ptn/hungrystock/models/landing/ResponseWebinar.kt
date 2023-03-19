@@ -26,5 +26,5 @@ data class ResponseWebinarData (
     @SerializedName("youtube_link" ) var youtubeLink : String? = null,
     @SerializedName("price"        ) var price       : String? = null,
     @SerializedName("status_key"   ) var statusKey   : String? = null,
-    @SerializedName("iamge_file"   ) var iamgeFile   : String? = null
+    @SerializedName("image_file"   ) var image_file   : String? = null
 )

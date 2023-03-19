@@ -61,7 +61,7 @@ open class ProfileV2Activity : BaseWebViewActivity() {
             when(it.status) {
                 Status.SUCCESS -> {
                     binding.progressBar.visibility = View.GONE
-                    val parameter = "mobile-profile?customer=${sessionManager?.authData?.code ?: ""}&otp=${it.data?.data ?: ""}"
+                    val parameter = "mobile-profile?customer_id=${sessionManager?.authData?.code ?: ""}&otp=${it.data?.data ?: ""}"
                     loadUrl("${ENV.webUrl()}$parameter")
                 }
                 Status.LOADING -> {

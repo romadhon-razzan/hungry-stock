@@ -1,6 +1,7 @@
 package id.co.ptn.hungrystock.ui.onboarding.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,10 +20,7 @@ import id.co.ptn.hungrystock.databinding.FragmentPageThreeBinding
 import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardLatestEventViewModel
 import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel
 import id.co.ptn.hungrystock.ui.onboarding.view_model.WebinarViewModel
-import id.co.ptn.hungrystock.utils.MediaUtils
-import id.co.ptn.hungrystock.utils.Status
-import id.co.ptn.hungrystock.utils.getDateMMMMddyyyy
-import id.co.ptn.hungrystock.utils.getDateMMMMddyyyyHHmm
+import id.co.ptn.hungrystock.utils.*
 import java.lang.Exception
 import java.lang.StringBuilder
 
@@ -76,10 +74,12 @@ class PageThreeFragment : BaseFragment() {
 
     private fun setView() {
         binding?.card?.visibility = View.VISIBLE
+        Log.d("IMAGE EVENT", viewModel?.latestEvent?.image_file ?: "")
         MediaUtils(requireContext()).setImageFromUrl(binding?.image!!, viewModel?.latestEvent?.image_file ?: "")
         binding?.tvTitle?.text = viewModel?.latestEvent?.title ?: ""
         binding?.tvDescription?.text = viewModel?.latestEvent?.description ?: "-"
-        binding?.tvDate?.text = "${getDateMMMMddyyyyHHmm((viewModel?.latestEvent?.date_from ?: 0) * 1000)} - ${getDateMMMMddyyyyHHmm((viewModel?.latestEvent?.date_to ?: 0) * 1000)}"
+        binding?.tvDate?.text = "${getDateMMMMddyyyy((viewModel?.latestEvent?.date_from ?: 0) * 1000)}"
+        binding?.tvDate?.append(" ${getHHmm((viewModel?.latestEvent?.date_from ?: 0) * 1000)} - ${getHHmm((viewModel?.latestEvent?.date_to ?: 0) * 1000)} WIB")
         binding?.tvSpeaker?.text = "Pembicara: ${viewModel?.latestEvent?.speakers ?: "-"}"
     }
 

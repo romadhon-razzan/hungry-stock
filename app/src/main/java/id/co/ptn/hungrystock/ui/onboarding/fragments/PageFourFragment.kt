@@ -67,7 +67,7 @@ class PageFourFragment : BaseFragment() {
 
     private fun setView() {
         binding.card.visibility = View.VISIBLE
-        MediaUtils(requireContext()).setImageFromUrl(binding.image, viewModel?.webinar?.iamgeFile ?: "")
+        MediaUtils(requireContext()).setImageFromUrl(binding.image, viewModel?.webinar?.image_file ?: "")
         binding.tvTitle.text = viewModel?.webinar?.title ?: ""
         binding.tvDescription.text = viewModel?.webinar?.description ?: ""
         binding.tvDate.text = "${viewModel?.webinar?.date_from} - ${viewModel?.webinar?.dateTo}"
