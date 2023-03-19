@@ -18,6 +18,7 @@ import id.co.ptn.hungrystock.core.network.RunningServiceType
 import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.FragmentPageThreeBinding
 import id.co.ptn.hungrystock.helper.extension.gone
+import id.co.ptn.hungrystock.helper.extension.toDate
 import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardLatestEventViewModel
 import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel
 import id.co.ptn.hungrystock.ui.onboarding.view_model.WebinarViewModel
@@ -85,7 +86,7 @@ class PageThreeFragment : BaseFragment() {
 
         binding?.tvTitle?.text = viewModel?.latestEvent?.title ?: ""
         binding?.tvDescription?.text = viewModel?.latestEvent?.description ?: "-"
-        binding?.tvDate?.text = "${getDateMMMMddyyyy((viewModel?.latestEvent?.date_from ?: 0) * 1000)}"
+        binding?.tvDate?.text = "${((viewModel?.latestEvent?.date_from ?: 0) * 1000).toDate("MMMM, dd yyyy")}"
         binding?.tvDate?.append(" ${getHHmm((viewModel?.latestEvent?.date_from ?: 0) * 1000)} - ${getHHmm((viewModel?.latestEvent?.date_to ?: 0) * 1000)} WIB")
         binding?.tvSpeaker?.text = "Pembicara: ${viewModel?.latestEvent?.speakers ?: "-"}"
     }
