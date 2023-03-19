@@ -9,6 +9,7 @@ import id.co.ptn.hungrystock.config.ENV
 import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.landing.ResponseBooks
+import id.co.ptn.hungrystock.models.landing.ResponseBooksData
 import id.co.ptn.hungrystock.repositories.AppRepository
 import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Resource
@@ -17,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BooksViewModel @Inject constructor(private val repository: AppRepository) : BaseViewModel() {
-
+    var books: MutableList<ResponseBooksData> = mutableListOf()
 
     private var _reqOtpResponse: MutableLiveData<Resource<ResponseOtp>> = MutableLiveData()
     fun reqOtpResponse(): MutableLiveData<Resource<ResponseOtp>> = _reqOtpResponse

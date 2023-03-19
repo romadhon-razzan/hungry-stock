@@ -8,14 +8,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.databinding.*
+import id.co.ptn.hungrystock.models.landing.ResponseBooksData
 import id.co.ptn.hungrystock.models.onboard.Books
+import id.co.ptn.hungrystock.utils.MediaUtils
 
-class BookListAdapter(private val items: MutableList<Books>, private val listener: Listener):
+class BookListAdapter(private val items: MutableList<ResponseBooksData>, private val listener: Listener):
     RecyclerView.Adapter<BookListAdapter.ViewHolder>() {
     class ViewHolder(var binding: ItemBookBinding, var context: Context) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Books) {
-            item.photo_url.let { Glide.with(context).load(it).into(binding.image) }
-            item.title.let { binding.tvTitle.text = it }
+        fun bind(item: ResponseBooksData) {
+            MediaUtils(context).setImageFromUrl(binding.image, item.imageFile ?: "")
+            binding.tvTitle.text = item.name ?: ""
         }
     }
 
@@ -35,6 +37,6 @@ class BookListAdapter(private val items: MutableList<Books>, private val listene
     }
 
     public interface Listener {
-        fun itemClicked(books: Books)
+        fun itemClicked(books: ResponseBooksData)
     }
 }

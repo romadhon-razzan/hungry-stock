@@ -13,6 +13,7 @@ import id.co.ptn.hungrystock.bases.BaseFragment
 import id.co.ptn.hungrystock.core.network.RunningServiceType
 import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.FragmentPageFiveBinding
+import id.co.ptn.hungrystock.models.landing.ResponseBooksData
 import id.co.ptn.hungrystock.models.onboard.Books
 import id.co.ptn.hungrystock.router.Router
 import id.co.ptn.hungrystock.ui.onboarding.adapters.BookListAdapter
@@ -69,7 +70,6 @@ class PageFiveFragment : BaseFragment() {
     }
 
     private fun init() {
-        initList()
         initListener()
         setObserve()
     }
@@ -79,9 +79,9 @@ class PageFiveFragment : BaseFragment() {
     }
 
     private fun initList() {
-        bookListAdapter = BookListAdapter(mutableListOf(), object : BookListAdapter.Listener{
-            override fun itemClicked(books: Books) {
-                books.link_tokopedia?.let { url -> openUrlPage(url) }
+        bookListAdapter = BookListAdapter(viewModel?.books ?: mutableListOf(), object : BookListAdapter.Listener{
+            override fun itemClicked(books: ResponseBooksData) {
+                books.tokopediaUrl?.let { url -> openUrlPage(url) }
             }
         })
         binding.recyclerView.apply {
@@ -94,24 +94,42 @@ class PageFiveFragment : BaseFragment() {
         viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
                 Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
                     if (running_service == RunningServiceType.BOOKS){
                         viewModel?.apiGetBooks(it.data?.data ?: "")
                     }
                 }
-                Status.LOADING -> {}
-                Status.ERROR -> {}
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                }
             }
         }
         viewModel?.reqBooksResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
-                Status.SUCCESS -> {}
-                Status.LOADING -> {}
-                Status.ERROR -> {}
+                Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
+                    it.data?.data?.let { items ->
+                        viewModel?.books?.clear()
+                        viewModel?.books?.addAll(items)
+                        initList()
+                    }
+                }
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                }
             }
         }
         onboardViewModel?.pageBooks?.observe(requireActivity()){
             if (it){
-                apiGetBooks()
+                if (viewModel?.books?.isEmpty() == true) {
+                    apiGetBooks()
+                }
             }
         }
     }
