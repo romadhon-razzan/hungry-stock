@@ -164,6 +164,7 @@ class MainActivity : BaseActivity() {
                     binding.progressBar.visibility = View.VISIBLE
                 }
                 Status.ERROR -> {
+                    setView()
                     binding.progressBar.visibility = View.GONE
                 }
             }

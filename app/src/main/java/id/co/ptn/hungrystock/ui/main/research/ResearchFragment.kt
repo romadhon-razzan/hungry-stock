@@ -21,6 +21,7 @@ import id.co.ptn.hungrystock.ui.main.research.dialogs.FilterResearchPageDialog
 import id.co.ptn.hungrystock.ui.main.research.fragments.ResearchReportFragment
 import id.co.ptn.hungrystock.ui.main.research.fragments.StockDataFragment
 import id.co.ptn.hungrystock.ui.main.research.viewmodel.ResearchViewModel
+import id.co.ptn.hungrystock.utils.currentYear
 import java.lang.Exception
 
 @AndroidEntryPoint
@@ -116,6 +117,7 @@ class ResearchFragment : Fragment() {
 
             }
         })
+        dialog.setYearSelected(currentYear())
         dialog.show(childFragmentManager,"filter_dialog")
     }
 

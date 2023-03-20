@@ -11,6 +11,7 @@ import id.co.ptn.hungrystock.bases.BaseViewModel
 import id.co.ptn.hungrystock.config.ENV
 import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.core.SessionManager
+import id.co.ptn.hungrystock.helper.extension.printToLog
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.main.research.ResearchFilter
 import id.co.ptn.hungrystock.models.main.research.ResponseResearch
@@ -112,10 +113,17 @@ class ResearchReportViewModel @Inject constructor(val repository: ResearchReposi
                 if (getYear().isNotEmpty()){
                     parameter.append("&year=${getYear()}")
                 }
+                if (getMonth().isNotEmpty()){
+                    parameter.append("&month=${getMonth()}")
+                }
+                if (getInitial().isNotEmpty()){
+                    parameter.append("&initial=${getInitial()}")
+                }
                 if (getCategory().isNotEmpty()){
                     parameter.append("&category_id=${getCategory()}")
                 }
                 TOKEN = "${HashUtils.hash256Research(parameter.toString())}.${ENV.userKey()}.$otp"
+                TOKEN.printToLog("access_token_research")
                 _reqResearchResponse.postValue(Resource.loading(null))
                 repository.getResearch(parameter.toString()).let {
                     if (it.isSuccessful){

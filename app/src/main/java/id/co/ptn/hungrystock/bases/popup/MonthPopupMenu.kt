@@ -16,31 +16,31 @@ class MonthPopupMenu(private val context: Context, private val listener: Listene
             item?.let {
                 when (it.itemId) {
                     R.id.m1 -> {
-                        listener.onSelected("Januari","01")
+                        listener.onSelected("Januari","1")
                     }
                     R.id.m2 -> {
-                        listener.onSelected("Februari","02")
+                        listener.onSelected("Februari","2")
                     }
                     R.id.m3 -> {
-                        listener.onSelected("Maret","03")
+                        listener.onSelected("Maret","3")
                     }
                     R.id.m4 -> {
-                        listener.onSelected("April","04")
+                        listener.onSelected("April","4")
                     }
                     R.id.m5 -> {
-                        listener.onSelected("Mei","05")
+                        listener.onSelected("Mei","5")
                     }
                     R.id.m6 -> {
-                        listener.onSelected("Juni","06")
+                        listener.onSelected("Juni","6")
                     }
                     R.id.m7 -> {
-                        listener.onSelected("Juli","07")
+                        listener.onSelected("Juli","7")
                     }
                     R.id.m8 -> {
-                        listener.onSelected("Agustus","08")
+                        listener.onSelected("Agustus","8")
                     }
                     R.id.m9 -> {
-                        listener.onSelected("September","09")
+                        listener.onSelected("September","9")
                     }
                     R.id.m10 -> {
                         listener.onSelected("Oktober","10")
