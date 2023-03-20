@@ -124,13 +124,16 @@ class ResearchFragment : Fragment() {
             override fun onFilter(year: String, month: String, monthId: String, abjad: String) {
                 viewModel?.setYear(year)
                 viewModel?.setMonth(monthId)
+                viewModel?.monthName = month
                 viewModel?.setInitial(abjad)
                 viewModel?.onFilter()?.value = true
 
                 viewModel?.setFilterValues()
             }
         })
-        dialog.setYearSelected(currentYear())
+        dialog.setYearSelected(viewModel?.getYear() ?: "")
+        dialog.setMonthSelected(viewModel?.monthName ?: "")
+        dialog.setInitialSelected(viewModel?.getInitial() ?: "")
         dialog.show(childFragmentManager,"filter_dialog")
     }
 

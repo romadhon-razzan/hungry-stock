@@ -17,7 +17,7 @@
         app:cardBackgroundColor="@color/background">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_year"
+            android:id="@+id/tv_initial"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"

@@ -56,6 +56,8 @@ class ResearchViewModel @Inject constructor(val repository: AppRepository) : Bas
         month = m
     }
 
+    var monthName = ""
+
     private var initial = ""
     fun getInitial(): String = initial
     fun setInitial(i: String) {
@@ -70,8 +72,8 @@ class ResearchViewModel @Inject constructor(val repository: AppRepository) : Bas
         if (getYear().isNotEmpty()){
             parameter.append(" [Tahun ${getYear()}]")
         }
-        if (getMonth().isNotEmpty()){
-            parameter.append(" [Bulan ${getMonth()}]")
+        if (monthName.isNotEmpty()){
+            parameter.append(" [Bulan ${monthName}]")
         }
         if (getInitial().isNotEmpty()){
             parameter.append(" [Inisial: ${getInitial()}]")

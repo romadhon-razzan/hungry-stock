@@ -24,7 +24,7 @@ class FilterEmitenListAdapter(
     var context: Context) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: String, itemSelected: String) {
             item.let {
-                binding.tvYear.text = it
+                binding.tvInitial.text = it
                 if (it == itemSelected){
                     setViewSelected(context)
                 } else {
@@ -35,12 +35,12 @@ class FilterEmitenListAdapter(
 
         private fun setViewSelected(context: Context) {
             binding.container.setCardBackgroundColor(ContextCompat.getColor(context, R.color.secondary))
-            binding.tvYear.setTextColor(ContextCompat.getColor(context, R.color.background))
+            binding.tvInitial.setTextColor(ContextCompat.getColor(context, R.color.background))
         }
 
         private fun setViewUnSelected(context: Context) {
             binding.container.setCardBackgroundColor(ContextCompat.getColor(context, R.color.background))
-            binding.tvYear.setTextColor(ContextCompat.getColor(context, R.color.secondary))
+            binding.tvInitial.setTextColor(ContextCompat.getColor(context, R.color.secondary))
         }
     }
 

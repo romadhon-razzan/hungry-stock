@@ -35,8 +35,12 @@ class FilterResearchPageDialog(private val listener: Listener): BaseBottomSheetM
         yearSelected = year
     }
 
-    private fun setMontSelected(month: String) {
+    fun setMonthSelected(month: String) {
         monthSelected = month
+    }
+
+    fun setInitialSelected(initial: String) {
+        abjadSelected = initial
     }
 
     override fun onCreateView(
@@ -128,7 +132,7 @@ class FilterResearchPageDialog(private val listener: Listener): BaseBottomSheetM
     }
 
     private fun initSpinnerMonth() {
-
+        binding.tvMonth.text = monthSelected.ifEmpty { requireContext().getText(R.string.hint_pilih_bulan) }
     }
 
     private fun initDataFilterEmiten() {
