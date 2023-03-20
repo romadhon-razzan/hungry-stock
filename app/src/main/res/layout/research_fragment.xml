@@ -62,11 +62,24 @@
                 app:drawableStartCompat="@drawable/ic_filter"/>
         </com.google.android.material.card.MaterialCardView>
 
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_filter_value"
+            android:layout_below="@id/card_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_10"
+            android:paddingStart="@dimen/spacing_16"
+            android:paddingEnd="0dp"
+            android:fontFamily="@font/ft_barlow_regular"
+            android:textColor="@color/white"
+            android:text="@{vm.filterValues}"/>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/card_search"
+            android:layout_below="@id/tv_filter_value"
             android:layout_marginStart="@dimen/normal2"
             android:layout_marginTop="@dimen/medium"
             android:layout_marginEnd="@dimen/normal2"

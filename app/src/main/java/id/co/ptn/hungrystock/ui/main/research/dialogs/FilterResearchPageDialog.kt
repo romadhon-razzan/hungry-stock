@@ -95,6 +95,10 @@ class FilterResearchPageDialog(private val listener: Listener): BaseBottomSheetM
             dismiss()
         }
         binding.btSpinnerMonth.setOnClickListener { monthPressed() }
+        binding.buttonReset.setOnClickListener {
+            listener.onFilter(currentYear(),"","","")
+            dismiss()
+        }
     }
 
 

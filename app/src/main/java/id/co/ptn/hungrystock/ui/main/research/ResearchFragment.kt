@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
@@ -22,6 +23,8 @@ import id.co.ptn.hungrystock.ui.main.research.fragments.ResearchReportFragment
 import id.co.ptn.hungrystock.ui.main.research.fragments.StockDataFragment
 import id.co.ptn.hungrystock.ui.main.research.viewmodel.ResearchViewModel
 import id.co.ptn.hungrystock.utils.currentYear
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.lang.Exception
 
 @AndroidEntryPoint
@@ -47,6 +50,7 @@ class ResearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[ResearchViewModel::class.java]
         binding.vm = viewModel
+        binding.lifecycleOwner = this
         init()
     }
 
@@ -72,6 +76,14 @@ class ResearchFragment : Fragment() {
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = researchPageAdapter.getTabTitle(position)
         }.attach()
+
+        //initial filter
+        lifecycleScope.launch {
+            delay(1000)
+            viewModel?.setYear(currentYear())
+            viewModel?.onFilter()?.value = true
+            viewModel?.setFilterValues()
+        }
     }
 
     private fun initSearch() {
@@ -115,6 +127,7 @@ class ResearchFragment : Fragment() {
                 viewModel?.setInitial(abjad)
                 viewModel?.onFilter()?.value = true
 
+                viewModel?.setFilterValues()
             }
         })
         dialog.setYearSelected(currentYear())

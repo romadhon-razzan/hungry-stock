@@ -54,9 +54,9 @@ fun currentYear() : String {
 fun currentMonth() : String {
     val calendar = Calendar.getInstance()
     val m = calendar[Calendar.MONTH] + 1
-    val month = StringBuilder()
-    if (m < 10) month.append("0$m") else month.append(m.toString())
-    return month.toString()
+//    val month = StringBuilder()
+//    if (m < 10) month.append("0$m") else month.append(m.toString())
+    return m.toString()
 }
 
 fun monthLabel(id: String) : String {
