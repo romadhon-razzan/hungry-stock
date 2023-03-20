@@ -79,9 +79,7 @@ class ResearchFragment : Fragment() {
 
         //initial filter
         lifecycleScope.launch {
-            delay(1000)
             viewModel?.setYear(currentYear())
-            viewModel?.onFilter()?.value = true
             viewModel?.setFilterValues()
         }
     }

@@ -77,6 +77,7 @@ class ResearchReportFragment : Fragment() {
     private fun init() {
         setObserve()
         initListener()
+        viewModel?.setYear(currentYear())
         viewModel?.setSortingLabel(resources.getString(R.string.label_pilih_kategori))
     }
 
