@@ -60,4 +60,11 @@ open class BaseActivity : AppCompatActivity() {
         if (loading) view.visibility = View.VISIBLE
         else view.visibility = View.GONE
     }
+
+    fun logout() {
+        TOKEN = ""
+        sessionManager?.destroy()
+        router.toExit()
+        finishAffinity()
+    }
 }

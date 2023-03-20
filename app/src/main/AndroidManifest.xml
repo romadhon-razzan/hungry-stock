@@ -70,13 +70,13 @@
             android:exported="true" />
         <activity android:name="id.co.ptn.hungrystock.ui.profile.ProfileV2Activity" />
         <activity android:name="id.co.ptn.hungrystock.ui.general.registration.RegistrationV2Activity" />
-        <activity android:name="id.co.ptn.hungrystock.ui.profile.WebViewUpload" />
 
         <meta-data
             android:name="com.onesignal.NotificationServiceExtension"
             android:value="id.co.ptn.hungrystock.notification.NotificationServiceExtension" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>

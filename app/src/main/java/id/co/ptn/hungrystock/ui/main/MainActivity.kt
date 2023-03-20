@@ -11,12 +11,15 @@ import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
+import id.co.ptn.hungrystock.bases.dialogs.InfoDialog
 import id.co.ptn.hungrystock.config.ASSET_URL
 import id.co.ptn.hungrystock.config.ENV
 import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.core.network.RunningServiceType
 import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.ActivityMainBinding
+import id.co.ptn.hungrystock.models.User
+import id.co.ptn.hungrystock.models.auth.ResponseCheckUserLogin
 import id.co.ptn.hungrystock.ui.main.adapters.MainVPAdapter
 import id.co.ptn.hungrystock.ui.main.viewmodel.MainViewModel
 import id.co.ptn.hungrystock.ui.onboarding.adapters.OnboardVPAdapter
@@ -121,7 +124,7 @@ class MainActivity : BaseActivity() {
                     } else if (running_service == RunningServiceType.CHECK_USER_LOGIN) {
                         lifecycleScope.launch {
                             delay(500)
-                            viewModel.apiCheckUserLogin(sessionManager, it.data?.data ?: "")
+                            viewModel.apiCheckUserLogin(sessionManager, it.data?.data ?: "", this@MainActivity)
                         }
                     }
                 }
@@ -158,7 +161,19 @@ class MainActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     binding.constraint.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.GONE
-                    setView()
+                    if (ResponseCheckUserLogin.userLoginInAnotherDevice(it.data)){
+                        val dialog = InfoDialog(this)
+                        dialog.setTitle("Pesan")
+                        dialog.setMessage("Maaf akun ini sudah digunakan pada perangkat lain. Silakan logout akun Anda, kemudian coba login kembali menggunakan perangkat ini.")
+                        dialog.setListener(object : InfoDialog.Listener{
+                            override fun onPositiveClick() {
+                                logout()
+                            }
+                        })
+                        dialog.show("Keluar")
+                    } else {
+                        setView()
+                    }
                 }
                 Status.LOADING -> {
                     binding.progressBar.visibility = View.VISIBLE

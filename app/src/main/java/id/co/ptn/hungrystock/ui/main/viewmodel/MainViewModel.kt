@@ -1,5 +1,6 @@
 package id.co.ptn.hungrystock.ui.main.viewmodel
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -16,6 +17,8 @@ import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.user.ResponseProfile
 import id.co.ptn.hungrystock.repositories.AppRepository
 import id.co.ptn.hungrystock.utils.HashUtils
+import id.co.ptn.hungrystock.utils.MediaUtils
+import id.co.ptn.hungrystock.utils.NetUtils
 import id.co.ptn.hungrystock.utils.Resource
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -132,10 +135,10 @@ class MainViewModel @Inject constructor(private val repository: AppRepository): 
         }
     }
 
-    fun apiCheckUserLogin(sessionManager: SessionManager?, otp: String) {
+    fun apiCheckUserLogin(sessionManager: SessionManager?, otp: String, activity: Activity) {
         viewModelScope.launch {
             try {
-                val parameter = "customer_id=${sessionManager?.authData?.code ?: ""}"
+                val parameter = "customer_id=${sessionManager?.authData?.code ?: ""}&ip_address=${NetUtils(activity).getLocalIpAddress() ?: ""}"
                 TOKEN = "${HashUtils.hash256CheckUserLogin(parameter)}.${ ENV.userKey()}.$otp"
                 _reqProfileResponse.postValue(Resource.loading(null))
                 repository.checkUserLogin(parameter).let {
