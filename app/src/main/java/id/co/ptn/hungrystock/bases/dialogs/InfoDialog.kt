@@ -16,6 +16,9 @@ class InfoDialog(val context: Context) {
     fun setListener(listener: Listener) {
         this.listener = listener
     }
+    fun setCancelable(cancelable: Boolean) {
+        builder.setCancelable(cancelable)
+    }
     fun show(positiveButton: String) {
         builder.setPositiveButton(positiveButton) { dialog, which ->
             listener?.onPositiveClick()
