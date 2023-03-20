@@ -19,8 +19,6 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val repository: EventRepository) : ViewModel() {
     private var events: MutableList<ResponseEventsData> = mutableListOf()
-    private var upcomingEvents: MutableList<UpcomingEvent> = mutableListOf()
-    private var pastEvents: MutableList<PastEvent> = mutableListOf()
 
     fun setEvents(events: MutableList<ResponseEventsData>) {
         this.events = events

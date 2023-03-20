@@ -52,6 +52,9 @@ class HashUtils {
         fun hash256CodeOfConduct(): String{
             return HashUtils().generateHmac256("${ENV.serviceUrl()}$CODE_OF_CONDUCT", ENV.serviceSecretKey().toByteArray()) ?: ""
         }
+        fun hash256CheckUserLogin(parameter: String): String{
+            return HashUtils().generateHmac256("${ENV.serviceUrl()}$CHECK_USER_LOGIN/$parameter", ENV.serviceSecretKey().toByteArray()) ?: ""
+        }
     }
     @Throws(InvalidKeyException::class, NoSuchAlgorithmException::class)
     fun generateHmac256(message: String, key: ByteArray?): String? {

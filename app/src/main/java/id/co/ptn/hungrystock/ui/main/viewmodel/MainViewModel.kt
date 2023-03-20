@@ -11,6 +11,7 @@ import id.co.ptn.hungrystock.bases.BaseViewModel
 import id.co.ptn.hungrystock.config.ENV
 import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.core.SessionManager
+import id.co.ptn.hungrystock.models.auth.ResponseCheckUserLogin
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.user.ResponseProfile
 import id.co.ptn.hungrystock.repositories.AppRepository
@@ -88,6 +89,8 @@ class MainViewModel @Inject constructor(private val repository: AppRepository): 
 
     private var _reqProfileResponse: MutableLiveData<Resource<ResponseProfile>> = MutableLiveData()
     fun reqProfileResponse(): MutableLiveData<Resource<ResponseProfile>> = _reqProfileResponse
+    private var _reqUserLoginResponse: MutableLiveData<Resource<ResponseCheckUserLogin>> = MutableLiveData()
+    fun reqUserLoginResponse(): MutableLiveData<Resource<ResponseCheckUserLogin>> = _reqUserLoginResponse
 
     /**
      * Api
@@ -121,6 +124,25 @@ class MainViewModel @Inject constructor(private val repository: AppRepository): 
                         _reqProfileResponse.postValue(Resource.success(it.body()))
                     } else {
                         //
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun apiCheckUserLogin(sessionManager: SessionManager?, otp: String) {
+        viewModelScope.launch {
+            try {
+                val parameter = "customer_id=${sessionManager?.authData?.code ?: ""}"
+                TOKEN = "${HashUtils.hash256CheckUserLogin(parameter)}.${ ENV.userKey()}.$otp"
+                _reqProfileResponse.postValue(Resource.loading(null))
+                repository.checkUserLogin(parameter).let {
+                    if (it.isSuccessful){
+                        _reqUserLoginResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        _reqUserLoginResponse.postValue(Resource.error("",null))
                     }
                 }
             }catch (e: Exception){

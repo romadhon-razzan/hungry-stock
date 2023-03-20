@@ -3,6 +3,7 @@ package id.co.ptn.hungrystock.core.network
 import com.google.gson.JsonObject
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
 import id.co.ptn.hungrystock.models.auth.ResponseAuthV2
+import id.co.ptn.hungrystock.models.auth.ResponseCheckUserLogin
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.landing.ResponseBooks
 import id.co.ptn.hungrystock.models.landing.ResponseWebinar
@@ -37,6 +38,7 @@ class ApiHelperImpl @Inject constructor(private val apiService: Services) : ApiH
     override suspend fun books(): Response<ResponseBooks> = apiService.books()
     override suspend fun webinar(): Response<ResponseWebinar> = apiService.webinar()
     override suspend fun codeOfConduct(): Response<ResponseCodeOfConduct> = apiService.codeOfConduct()
+    override suspend fun checkUserLogin(param: String): Response<ResponseCheckUserLogin> = apiService.checkUserLogin(param)
 
     override suspend fun auth(nt: String, p: String): Response<ResponseAuth> = apiService.auth(nt, p)
     override suspend fun resetPassword(e: String): Response<ResponsePassword> = apiService.resetPassword(e)

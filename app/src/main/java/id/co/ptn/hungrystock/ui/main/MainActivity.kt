@@ -118,6 +118,11 @@ class MainActivity : BaseActivity() {
                             delay(500)
                             viewModel.apiGetProfile(sessionManager, it.data?.data ?: "")
                         }
+                    } else if (running_service == RunningServiceType.CHECK_USER_LOGIN) {
+                        lifecycleScope.launch {
+                            delay(500)
+                            viewModel.apiCheckUserLogin(sessionManager, it.data?.data ?: "")
+                        }
                     }
                 }
                 Status.LOADING -> {
@@ -135,9 +140,25 @@ class MainActivity : BaseActivity() {
                     it?.data?.data?.forEach { data ->
                         sessionManager?.setUser(data)
                     }
-                    setView()
+                    apiCheckUserLogin()
                     binding.constraint.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.GONE
+                }
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
+
+        viewModel.reqUserLoginResponse().observe(this){
+            when(it.status) {
+                Status.SUCCESS -> {
+                    binding.constraint.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.GONE
+                    setView()
                 }
                 Status.LOADING -> {
                     binding.progressBar.visibility = View.VISIBLE
@@ -157,5 +178,9 @@ class MainActivity : BaseActivity() {
         viewModel.apiGetOtp()
     }
 
+    private fun apiCheckUserLogin() {
+        running_service = RunningServiceType.CHECK_USER_LOGIN
+        viewModel.apiGetOtp()
+    }
 
 }

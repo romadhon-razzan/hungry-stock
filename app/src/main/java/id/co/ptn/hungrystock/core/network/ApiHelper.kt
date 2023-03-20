@@ -2,6 +2,7 @@ package id.co.ptn.hungrystock.core.network
 
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
 import id.co.ptn.hungrystock.models.auth.ResponseAuthV2
+import id.co.ptn.hungrystock.models.auth.ResponseCheckUserLogin
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.landing.ResponseBooks
 import id.co.ptn.hungrystock.models.landing.ResponseWebinar
@@ -35,6 +36,7 @@ interface ApiHelper {
     suspend fun books(): Response<ResponseBooks>
     suspend fun webinar(): Response<ResponseWebinar>
     suspend fun codeOfConduct(): Response<ResponseCodeOfConduct>
+    suspend fun checkUserLogin(param: String): Response<ResponseCheckUserLogin>
 
     suspend fun auth(nt: String, p: String): Response<ResponseAuth>
     suspend fun resetPassword(p: String): Response<ResponsePassword>

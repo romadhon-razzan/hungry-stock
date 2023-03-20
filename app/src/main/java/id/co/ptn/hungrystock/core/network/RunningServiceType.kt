@@ -15,5 +15,6 @@ enum class RunningServiceType {
     RESEARCH_CATEGORIES,
     WEBINAR,
     BOOKS,
-    CODE_OF_CONDUCT
+    CODE_OF_CONDUCT,
+    CHECK_USER_LOGIN
 }

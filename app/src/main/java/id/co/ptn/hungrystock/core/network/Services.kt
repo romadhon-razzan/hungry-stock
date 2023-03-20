@@ -3,6 +3,7 @@ package id.co.ptn.hungrystock.core.network
 import com.google.gson.JsonObject
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
 import id.co.ptn.hungrystock.models.auth.ResponseAuthV2
+import id.co.ptn.hungrystock.models.auth.ResponseCheckUserLogin
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.landing.ResponseBooks
 import id.co.ptn.hungrystock.models.landing.ResponseWebinar
@@ -63,6 +64,10 @@ interface Services {
 
     @GET(CODE_OF_CONDUCT)
     suspend fun codeOfConduct(): Response<ResponseCodeOfConduct>
+    @GET("${CHECK_USER_LOGIN}/{param}")
+    suspend fun checkUserLogin(
+        @Path("param") param: String,
+    ): Response<ResponseCheckUserLogin>
 
 
 
