@@ -10,6 +10,7 @@ import id.co.ptn.hungrystock.bases.BaseWebViewActivity
 import id.co.ptn.hungrystock.bases.dialogs.ConfirmDialog
 import id.co.ptn.hungrystock.config.ENV
 import id.co.ptn.hungrystock.config.TOKEN
+import id.co.ptn.hungrystock.helper.extension.toast
 import id.co.ptn.hungrystock.ui.profile.view_model.ProfileViewModel
 import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Status
@@ -57,6 +58,11 @@ open class ProfileV2Activity : BaseWebViewActivity() {
     }
 
     private fun setObserve() {
+        webViewModel?.onPageStarted()?.observe(this){url ->
+            if ((url ?: "").contains("mobile-profile-success")){
+                toast("Berhasil mengubah profil")
+            }
+        }
         viewModel.reqOtpResponse().observe(this){
             when(it.status) {
                 Status.SUCCESS -> {
