@@ -1,30 +1,9 @@
 package id.co.ptn.hungrystock.core.network
 
 enum class Env {
-//    PRODUCTION {
-//        override fun serviceUrl(): String {
-//            return "https://hungrystock.com/api/"
-//        }
-//
-//        override fun serviceSecretKey(): String {
-//            return ""
-//        }
-//
-//        override fun userKey(): String {
-//            return "8000"
-//        }
-//
-//        override fun webUrl(): String {
-//            return "https://hungrystock.com/"
-//        }
-//
-//        override fun debug(): Boolean {
-//            return false
-//        }
-//
-//    },
 PRODUCTION {
     override fun serviceUrl(): String {
+//        return "https://hungrystock.com/api/" // api version 1
         return "https://hungrystock.com/api/v3/"
     }
 
