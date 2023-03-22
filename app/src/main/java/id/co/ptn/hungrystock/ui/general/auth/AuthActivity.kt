@@ -91,6 +91,7 @@ class AuthActivity : BaseActivity() {
                 Status.LOADING -> {binding.btLogin.startAnimation()}
                 Status.ERROR -> {
                     binding.btLogin.revertAnimation()
+                    it.message?.let { message -> Toast.makeText(this, message, Toast.LENGTH_SHORT).show() }
                 }
             }
         }

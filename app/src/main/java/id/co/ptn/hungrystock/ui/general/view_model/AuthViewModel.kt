@@ -73,7 +73,17 @@ class AuthViewModel @Inject constructor(private val repository: AppRepository): 
                     if (it.isSuccessful){
                         _reqAuthResponse.postValue(Resource.success(it.body()))
                     } else {
-                        _reqAuthResponse.postValue(Resource.error(it.body()?.message ?: "", null))
+                        val type = object : TypeToken<ResponseAuthV2>() {}.type
+                        val errorResponse: ResponseAuthV2?
+                        try {
+                            errorResponse = Gson().fromJson(it.errorBody()?.charStream(), type)
+                            errorResponse?.failed_data?.forEach { failedData ->
+                            _reqAuthResponse.postValue(Resource.error(failedData.message ?: "", null))
+                            return@forEach
+                            }
+                        } catch(e: Exception) {
+                            e.printStackTrace()
+                        }
                     }
                 }
             }catch (e: Exception){
