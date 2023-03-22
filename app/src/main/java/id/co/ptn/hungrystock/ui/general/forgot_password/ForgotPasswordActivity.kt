@@ -2,7 +2,6 @@ package id.co.ptn.hungrystock.ui.general.forgot_password
 
 import android.os.Bundle
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import dagger.hilt.android.AndroidEntryPoint
