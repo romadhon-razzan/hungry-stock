@@ -42,4 +42,5 @@ class AppRepository @Inject constructor(private val apiHelper: ApiHelper) {
     suspend fun books() =  apiHelper.books()
     suspend fun webinar() =  apiHelper.webinar()
     suspend fun checkUserLogin(param: String) = apiHelper.checkUserLogin(param)
+    suspend fun forgotPassword(param: RequestBody) = apiHelper.forgotPassword(param)
 }

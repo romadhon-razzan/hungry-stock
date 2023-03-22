@@ -37,6 +37,7 @@ interface ApiHelper {
     suspend fun webinar(): Response<ResponseWebinar>
     suspend fun codeOfConduct(): Response<ResponseCodeOfConduct>
     suspend fun checkUserLogin(param: String): Response<ResponseCheckUserLogin>
+    suspend fun forgotPassword(param: RequestBody): Response<ResponseCodeOfConduct>
 
     suspend fun auth(nt: String, p: String): Response<ResponseAuth>
     suspend fun resetPassword(p: String): Response<ResponsePassword>

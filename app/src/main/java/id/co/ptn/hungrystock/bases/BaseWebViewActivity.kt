@@ -10,22 +10,24 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
-import android.webkit.ValueCallback
-import android.webkit.WebChromeClient
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
+import id.co.ptn.hungrystock.bases.view_model.WebViewViewModel
 import id.co.ptn.hungrystock.config.ENV
 import id.co.ptn.hungrystock.core.network.Env
 import id.co.ptn.hungrystock.databinding.ActivityWebviewBinding
 
 private const val REQUEST_SELECT_FILE = 100
 private const val FILECHOOSER_RESULTCODE = 1
+@AndroidEntryPoint
 open class BaseWebViewActivity: BaseActivity() {
      public lateinit var binding: ActivityWebviewBinding
     private var mUploadMessage: ValueCallback<Uri?>? = null
     var uploadMessage: ValueCallback<Array<Uri>>? = null
+    var webViewModel: WebViewViewModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_webview)
@@ -37,6 +39,7 @@ open class BaseWebViewActivity: BaseActivity() {
     private fun init() {
         setToolbar(binding.toolbar, resources.getString(R.string.title_profile))
         binding.lifecycleOwner = this
+        webViewModel = ViewModelProvider(this)[WebViewViewModel::class.java]
         setView()
         setListener()
     }
@@ -51,6 +54,9 @@ open class BaseWebViewActivity: BaseActivity() {
         binding.webView.settings.domStorageEnabled = true
         binding.webView.settings.allowContentAccess = true
         binding.webView.settings.allowFileAccess = true
+        binding.webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE
+        binding.webView.clearCache(true)
+        binding.webView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         binding.webView.webChromeClient = object : WebChromeClient() {
             // For 3.0+ Devices (Start)
             // onActivityResult attached before constructor
@@ -141,9 +147,7 @@ open class BaseWebViewActivity: BaseActivity() {
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
             Log.d("onPageStarted", url ?: "")
-            if (url == ENV.webUrl()){
-                finish()
-            }
+            webViewModel?._onPageStarted?.postValue(url ?: "")
         }
 
         override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {

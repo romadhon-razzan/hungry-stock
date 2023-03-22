@@ -26,6 +26,12 @@ class RegistrationV2Activity : BaseWebViewActivity() {
     private fun setView() {
         binding.buttonAction.visibility = View.GONE
         loadUrl("${ENV.webUrl()}mobile-registration")
+        webViewModel?.onPageStarted()?.observe(this){url ->
+            if ((url ?: "").contains("mobile-registration-success")){
+                router.toRegistrationSuccess()
+                finish()
+            }
+        }
     }
 
 }
