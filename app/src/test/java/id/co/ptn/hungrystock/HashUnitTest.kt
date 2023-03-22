@@ -14,4 +14,15 @@ class HashUnitTest {
         println(result)
     }
 
+    @Test
+    fun generateHash256Customer() {
+        val resultOtp = HashUtils.hash256Otp()
+        println("OTP : $resultOtp")
+        // 75346e7acda499ee9b025335aa66d3a9c0d36951425286ac94569024f8f4ad2d.8000.5bb112d489e4ec3836d80f6bc6d9ef90
+
+        val result = HashUtils.hash256Profile("code=CO00916")
+        println("Customer : $result")
+        //500c2ddf77a82bfa81fc4535a53d3212c73485231f6a8a0f9443e49641dfec35.8000.5bb112d489e4ec3836d80f6bc6d9ef90
+    }
+
 }
