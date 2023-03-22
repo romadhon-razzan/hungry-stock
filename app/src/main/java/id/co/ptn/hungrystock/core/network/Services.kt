@@ -68,8 +68,8 @@ interface Services {
     suspend fun checkUserLogin(
         @Path("param") param: String,
     ): Response<ResponseCheckUserLogin>
-    @GET(FORGOT_PASSWORD)
-    suspend fun forgotPassword(@Body requestBody: RequestBody): Response<ResponseCodeOfConduct>
+    @POST(FORGOT_PASSWORD)
+    suspend fun forgotPassword(@Body requestBody: RequestBody): Response<ResponsePassword>
 
 
 

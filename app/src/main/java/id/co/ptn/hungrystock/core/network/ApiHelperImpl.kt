@@ -39,7 +39,7 @@ class ApiHelperImpl @Inject constructor(private val apiService: Services) : ApiH
     override suspend fun webinar(): Response<ResponseWebinar> = apiService.webinar()
     override suspend fun codeOfConduct(): Response<ResponseCodeOfConduct> = apiService.codeOfConduct()
     override suspend fun checkUserLogin(param: String): Response<ResponseCheckUserLogin> = apiService.checkUserLogin(param)
-    override suspend fun forgotPassword(param: RequestBody): Response<ResponseCodeOfConduct> = apiService.forgotPassword(param)
+    override suspend fun forgotPassword(param: RequestBody): Response<ResponsePassword> = apiService.forgotPassword(param)
 
     override suspend fun auth(nt: String, p: String): Response<ResponseAuth> = apiService.auth(nt, p)
     override suspend fun resetPassword(e: String): Response<ResponsePassword> = apiService.resetPassword(e)
