@@ -70,7 +70,7 @@ open class ProfileV2Activity : BaseWebViewActivity() {
                     val parameter = StringBuilder()
                     parameter.append("mobile-profile?customer_id=${sessionManager?.authData?.code ?: ""}")
                     parameter.append("&otp=${it.data?.data ?: ""}")
-                    parameter.append("&activationhashkey=${sessionManager?.user?.activation_key ?: ""}")
+                    parameter.append("&activation_key=${sessionManager?.user?.activation_key ?: ""}")
                     loadUrl("${ENV.webUrl()}$parameter")
                 }
                 Status.LOADING -> {
