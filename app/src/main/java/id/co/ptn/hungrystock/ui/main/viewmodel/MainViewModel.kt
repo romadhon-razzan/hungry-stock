@@ -138,7 +138,7 @@ class MainViewModel @Inject constructor(private val repository: AppRepository): 
     fun apiCheckUserLogin(sessionManager: SessionManager?, otp: String, activity: Activity) {
         viewModelScope.launch {
             try {
-                val parameter = "customer_id=${sessionManager?.authData?.code ?: ""}&ip_address=${NetUtils(activity).getLocalIpAddress() ?: ""}"
+                val parameter = "customer_id=${sessionManager?.authData?.code ?: ""}"
                 TOKEN = "${HashUtils.hash256CheckUserLogin(parameter)}.${ ENV.userKey()}.$otp"
                 _reqProfileResponse.postValue(Resource.loading(null))
                 repository.checkUserLogin(parameter).let {

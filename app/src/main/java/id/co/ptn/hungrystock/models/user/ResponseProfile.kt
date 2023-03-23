@@ -31,6 +31,7 @@ data class ResponseProfileData (
     @SerializedName("map_address"           ) var mapAddress           : String? = null,
     @SerializedName("latlng"                ) var latlng               : String? = null,
     @SerializedName("status_key"            ) var statusKey            : String? = null,
+    @SerializedName("activation_key"            ) var activation_key            : String? = null,
     @SerializedName("membership_level_key"  ) var membershipLevelKey   : String? = null,
     @SerializedName("membership_level_name" ) var membershipLevelName  : String? = null,
     @SerializedName("membership_exp_date"   ) var membershipExpDate    : Long?    = null,
