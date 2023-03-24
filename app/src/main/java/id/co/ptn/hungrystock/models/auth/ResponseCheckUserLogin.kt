@@ -1,10 +1,6 @@
 package id.co.ptn.hungrystock.models.auth
 
-import android.app.Activity
-import android.content.Context
 import com.google.gson.annotations.SerializedName
-import id.co.ptn.hungrystock.bases.dialogs.InfoDialog
-import id.co.ptn.hungrystock.config.TOKEN
 
 data class ResponseCheckUserLogin(
     @SerializedName("response_code" ) var responseCode : Int?                   = null,
@@ -14,10 +10,10 @@ data class ResponseCheckUserLogin(
     @SerializedName("failed_data"   ) var failedData   : ArrayList<String>      = arrayListOf()
 ) {
     companion object {
-        fun userLoginInAnotherDevice(data: ResponseCheckUserLogin?): Boolean {
+        fun isLogin(data: ResponseCheckUserLogin?): Boolean {
             var result = false
             data?.successData?.forEach {successData ->
-                result = successData.data.isLogin == 1
+                result = successData.data.isLogin == 1 // artinya dia masih login di device / ip tersebut, jd boleh lanjut
             }
             return result
         }

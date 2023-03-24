@@ -1,30 +1,21 @@
 package id.co.ptn.hungrystock.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
 import id.co.ptn.hungrystock.bases.dialogs.InfoDialog
-import id.co.ptn.hungrystock.config.ASSET_URL
-import id.co.ptn.hungrystock.config.ENV
-import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.core.network.RunningServiceType
 import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.ActivityMainBinding
-import id.co.ptn.hungrystock.models.User
 import id.co.ptn.hungrystock.models.auth.ResponseCheckUserLogin
 import id.co.ptn.hungrystock.ui.main.adapters.MainVPAdapter
 import id.co.ptn.hungrystock.ui.main.viewmodel.MainViewModel
-import id.co.ptn.hungrystock.ui.onboarding.adapters.OnboardVPAdapter
-import id.co.ptn.hungrystock.ui.privacy_police.view_model.PrivacyPoliceViewModel
-import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.MediaUtils
 import id.co.ptn.hungrystock.utils.Status
 import kotlinx.coroutines.delay
@@ -161,7 +152,9 @@ class MainActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     binding.constraint.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.GONE
-                    if (ResponseCheckUserLogin.userLoginInAnotherDevice(it.data)){
+                    if (ResponseCheckUserLogin.isLogin(it.data)){
+                        setView()
+                    } else {
                         val dialog = InfoDialog(this)
                         dialog.setTitle("Pesan")
                         dialog.setMessage("Maaf akun ini sudah digunakan pada perangkat lain. Silakan logout akun Anda, kemudian coba login kembali menggunakan perangkat ini.")
@@ -172,8 +165,6 @@ class MainActivity : BaseActivity() {
                             }
                         })
                         dialog.show("Keluar")
-                    } else {
-                        setView()
                     }
                 }
                 Status.LOADING -> {

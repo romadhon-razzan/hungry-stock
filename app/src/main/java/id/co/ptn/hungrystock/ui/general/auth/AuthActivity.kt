@@ -44,8 +44,8 @@ class AuthActivity : BaseActivity() {
 
     private fun setView() {
         //        for user test
-        //        binding.etEmail.setText("81285535093")
-        //        binding.etPassword.setText("12345689")
+//                binding.etEmail.setText("81285535093")
+//                binding.etPassword.setText("12345678")
     }
 
     private fun initListener() {
