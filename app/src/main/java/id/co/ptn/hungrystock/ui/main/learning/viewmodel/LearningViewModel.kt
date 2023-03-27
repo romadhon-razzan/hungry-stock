@@ -142,6 +142,9 @@ class LearningViewModel @Inject constructor(private val repository: EventReposit
                 if (getYear().isNotEmpty()){
                     parameter.append("&year=${getYear()}")
                 }
+                if (getMonthId().isNotEmpty()){
+                    parameter.append("&month=${getMonthId()}")
+                }
                 if (getCategory().isNotEmpty()){
                     parameter.append("&category_id=${getCategory()}")
                 }
