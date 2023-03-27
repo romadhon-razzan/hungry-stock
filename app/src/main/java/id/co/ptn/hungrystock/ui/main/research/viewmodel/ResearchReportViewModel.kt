@@ -105,11 +105,12 @@ class ResearchReportViewModel @Inject constructor(val repository: ResearchReposi
             }
         }
     }
-    fun apiResearch(otp: String) {
+    fun apiResearch(otp: String, sessionManager: SessionManager) {
         viewModelScope.launch {
             try {
                 val parameter = StringBuilder()
-                parameter.append("order_by=category_name")
+                parameter.append("customer_id=${sessionManager.authData?.code ?: ""}")
+                parameter.append("&order_by=category_name")
                 if (getYear().isNotEmpty()){
                     parameter.append("&year=${getYear()}")
                 }
@@ -138,11 +139,12 @@ class ResearchReportViewModel @Inject constructor(val repository: ResearchReposi
         }
     }
 
-    fun apiGetNextLearnings(otp: String, nextPage: String) {
+    fun apiGetNextLearnings(otp: String, nextPage: String, sessionManager: SessionManager) {
         viewModelScope.launch {
             try {
                 val parameter = StringBuilder()
-                parameter.append("order_by=category_name&offset=${nextPage}")
+                parameter.append("customer_id=${sessionManager.authData?.code ?: ""}")
+                parameter.append("&order_by=category_name&offset=${nextPage}")
                 TOKEN = "${HashUtils.hash256Research(parameter.toString())}.${ENV.userKey()}.$otp"
                 _reqNextResearchResponse.postValue(Resource.loading(null))
                 repository.getResearch(parameter.toString()).let {

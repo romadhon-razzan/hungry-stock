@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.EmptyStateFragment
 import id.co.ptn.hungrystock.bases.view_model.PaginationViewModel
+import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.core.network.RunningServiceType
 import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.FragmentResearchReportBinding
@@ -199,10 +200,10 @@ class ResearchReportFragment : Fragment() {
                     binding?.progressBar?.visibility = View.GONE
                     when(running_service){
                         RunningServiceType.RESEARCH -> {
-                            viewModel?.apiResearch(it.data?.data ?: "")
+                            viewModel?.apiResearch(it.data?.data ?: "", SessionManager.getInstance(requireContext()))
                         }
                         RunningServiceType.RESEARCH_NEXT -> {
-                            viewModel?.apiGetNextLearnings(it.data?.data ?: "", paginationViewModel?.getNextPage() ?: "1")
+                            viewModel?.apiGetNextLearnings(it.data?.data ?: "", paginationViewModel?.getNextPage() ?: "1", SessionManager.getInstance(requireContext()))
                         }
                         else -> {}
                     }
