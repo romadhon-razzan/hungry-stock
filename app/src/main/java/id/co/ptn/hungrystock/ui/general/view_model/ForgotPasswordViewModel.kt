@@ -67,7 +67,6 @@ class ForgotPasswordViewModel @Inject constructor(private val repository: AppRep
     fun apiResetPassword(otp: String) {
         viewModelScope.launch {
             try {
-                TOKEN = HashUtils.hash256ForgotPassword()
                 TOKEN = "${HashUtils.hash256ForgotPassword()}.${ENV.userKey()}.$otp"
                 _reqResetPasswordResponse.postValue(Resource.loading(null))
 
