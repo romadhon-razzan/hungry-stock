@@ -2,7 +2,7 @@ package id.co.ptn.hungrystock.config
 
 import id.co.ptn.hungrystock.core.network.Env
 
-val ENV = Env.DEVELOPMENT
+val ENV = Env.PRODUCTION
 const val ASSET_URL = "https://hungrystock.sgp1.digitaloceanspaces.com/"
 const val PRIVACY_POLICY_URL = "https://hungrystock.com/privacy-policy"
 const val MEMBERSHIP = "https://hungrystock.com/membership"
