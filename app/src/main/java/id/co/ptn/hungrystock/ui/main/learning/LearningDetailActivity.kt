@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
 import id.co.ptn.hungrystock.bases.WebViewFragment
+import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.core.network.RunningServiceType
 import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.ActivityLearningDetailBinding
@@ -103,7 +104,7 @@ class LearningDetailActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     viewModel.setLoadingReqDetail(false)
                     if (running_service == RunningServiceType.EVENT_RELATED){
-                        viewModel.apiGetEventsRelated(event?.code ?: "", it.data?.data ?: "")
+                        viewModel.apiGetEventsRelated(event?.code ?: "", it.data?.data ?: "", SessionManager.getInstance(this))
                     }
                 }
                 Status.LOADING -> {

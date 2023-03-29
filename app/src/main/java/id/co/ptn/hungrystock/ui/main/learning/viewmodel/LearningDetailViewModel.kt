@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
 import id.co.ptn.hungrystock.config.ENV
 import id.co.ptn.hungrystock.config.TOKEN
+import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.main.home.ResponseEvents
 import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
@@ -83,11 +84,12 @@ class LearningDetailViewModel @Inject constructor(private val repository: EventR
             }
         }
     }
-    fun apiGetEventsRelated(id: String?, otp: String) {
+    fun apiGetEventsRelated(id: String?, otp: String, sessionManager: SessionManager) {
         viewModelScope.launch {
             try {
                 val parameter = StringBuilder()
                 parameter.append("id=${id ?: ""}")
+                parameter.append("&customer_id=${sessionManager.authData?.code}")
                 TOKEN = "${HashUtils.hash256EventsRelated(parameter.toString())}.${ENV.userKey()}.$otp"
                 Log.d("access_token", TOKEN)
                 _reqEventsRelatedResponse.postValue(Resource.loading(null))
