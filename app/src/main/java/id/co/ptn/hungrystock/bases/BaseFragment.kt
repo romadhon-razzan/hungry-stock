@@ -9,10 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.techiness.progressdialoglibrary.ProgressDialog
 import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.router.Router
+import id.co.ptn.hungrystock.ui.general.view_model.OtpViewModel
 
 open class BaseFragment: Fragment() {
     lateinit var router: Router

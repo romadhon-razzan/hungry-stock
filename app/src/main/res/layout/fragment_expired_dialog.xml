@@ -35,6 +35,8 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/Heading6"
                     android:layout_marginTop="@dimen/spacing_24"
+                    android:layout_marginStart="@dimen/spacing_16"
+                    android:layout_marginEnd="@dimen/spacing_16"
                     android:text="Akun anda sudah expired. Segera renewal membership anda. "/>
 
                 <androidx.appcompat.widget.AppCompatTextView

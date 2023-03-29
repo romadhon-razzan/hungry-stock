@@ -118,9 +118,10 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/bt_apply"
+            android:layout_above="@id/button_reset"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/spacing_12"
             app:cardBackgroundColor="@color/secondary"
             app:cardCornerRadius="50dp"
             app:cardElevation="5dp">
@@ -136,6 +137,19 @@
                 android:textColor="@color/dark"
                 android:textSize="@dimen/font_normal" />
         </com.google.android.material.card.MaterialCardView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/button_reset"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/large"
+            android:layout_marginEnd="@dimen/large"
+            android:fontFamily="@font/ft_barlow_semibold"
+            android:gravity="center"
+            android:text="@string/button_reset"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_normal" />
 
     </RelativeLayout>
 </layout>

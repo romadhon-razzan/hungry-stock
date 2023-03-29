@@ -66,5 +66,11 @@
                 android:textSize="@dimen/font_medium"
                 android:text="@string/button_login_register"/>
         </com.google.android.material.card.MaterialCardView>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
     </RelativeLayout>
 </layout>

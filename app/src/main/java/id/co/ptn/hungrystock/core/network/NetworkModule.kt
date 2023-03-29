@@ -1,18 +1,17 @@
 package id.co.ptn.hungrystock.core.network
 
+import android.util.Log
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import id.co.ptn.hungrystock.config.API_URL
-import id.co.ptn.hungrystock.config.DEBUG
+import id.co.ptn.hungrystock.config.ENV
 import id.co.ptn.hungrystock.config.TOKEN
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -20,14 +19,15 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
     @Provides
-    fun provideBaseUrl() = API_URL
+    fun provideBaseUrl() = ENV.serviceUrl()
 
     private fun getHeader(): Interceptor {
+
         return Interceptor { chain ->
             val request =
                 chain.request().newBuilder()
                     .addHeader("Accept","application/json")
-                    .addHeader("Authorization", "Bearer $TOKEN")
+                    .addHeader("Authorization", TOKEN)
                     .build()
             chain.proceed(request)
         }
@@ -36,7 +36,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient = if (DEBUG) {
+    fun provideOkHttpClient(): OkHttpClient = if (ENV.debug()) {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         OkHttpClient.Builder()

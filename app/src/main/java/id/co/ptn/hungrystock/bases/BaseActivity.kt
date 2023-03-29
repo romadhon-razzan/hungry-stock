@@ -10,14 +10,16 @@ import com.google.android.material.snackbar.Snackbar
 import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.router.Router
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.ViewModelProvider
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.helper.Keyboard
+import id.co.ptn.hungrystock.ui.general.view_model.OtpViewModel
 
 
 open class BaseActivity : AppCompatActivity() {
 
-    lateinit var sessionManager: SessionManager
+    var sessionManager: SessionManager? = null
     lateinit var router: Router
     lateinit var keyboard: Keyboard
 
@@ -25,7 +27,6 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         sessionManager = SessionManager.getInstance(this)
         router = Router(this)
-        TOKEN = sessionManager.token
     }
 
     fun changeStatusBar() {
@@ -58,5 +59,12 @@ open class BaseActivity : AppCompatActivity() {
     fun loading(view: View, loading: Boolean) {
         if (loading) view.visibility = View.VISIBLE
         else view.visibility = View.GONE
+    }
+
+    fun logout() {
+        TOKEN = ""
+        sessionManager?.destroy()
+        router.toExit()
+        finishAffinity()
     }
 }

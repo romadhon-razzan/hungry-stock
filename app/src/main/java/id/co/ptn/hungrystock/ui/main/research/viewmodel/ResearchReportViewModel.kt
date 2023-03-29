@@ -1,5 +1,6 @@
 package id.co.ptn.hungrystock.ui.main.research.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
@@ -7,14 +8,29 @@ import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
+import id.co.ptn.hungrystock.config.ENV
+import id.co.ptn.hungrystock.config.TOKEN
+import id.co.ptn.hungrystock.core.SessionManager
+import id.co.ptn.hungrystock.helper.extension.printToLog
+import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.models.main.research.ResearchFilter
+import id.co.ptn.hungrystock.models.main.research.ResponseResearch
+import id.co.ptn.hungrystock.models.main.research.ResponseResearchData
 import id.co.ptn.hungrystock.repositories.AppRepository
+import id.co.ptn.hungrystock.repositories.ResearchRepository
+import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Resource
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ResearchReportViewModel @Inject constructor(val repository: AppRepository) : BaseViewModel() {
+class ResearchReportViewModel @Inject constructor(val repository: ResearchRepository) : BaseViewModel() {
+    private val _sortingLabel = MutableLiveData("")
+    val sortingLabel: LiveData<String> = _sortingLabel
+    fun setSortingLabel(title: String) {
+        _sortingLabel.value = title
+    }
+
     private var keyword = ""
     fun getKeyword(): String = keyword
     fun setKeyword(k: String) {
@@ -57,36 +73,86 @@ class ResearchReportViewModel @Inject constructor(val repository: AppRepository)
         initial = i
     }
 
-    private var filters = mutableListOf<ResearchFilter>()
-    fun getFilters(): MutableList<ResearchFilter> = filters
-    fun setFilter(v: MutableList<ResearchFilter>) {
-        filters.clear()
-        filters.addAll(v)
-    }
+    var pageFirstRequested = false
 
-    private var _reqResearchResponse: MutableLiveData<Resource<JsonObject>> = MutableLiveData()
-    fun reqResearchResponse(): MutableLiveData<Resource<JsonObject>> = _reqResearchResponse
+    private var _reqOtpResponse: MutableLiveData<Resource<ResponseOtp>> = MutableLiveData()
+    fun reqOtpResponse(): MutableLiveData<Resource<ResponseOtp>> = _reqOtpResponse
+
+    private var _reqResearchResponse: MutableLiveData<Resource<ResponseResearch>> = MutableLiveData()
+    fun reqResearchResponse(): MutableLiveData<Resource<ResponseResearch>> = _reqResearchResponse
+    private var _reqNextResearchResponse: MutableLiveData<Resource<ResponseResearch>> = MutableLiveData()
+    fun reqNextResearchResponse(): MutableLiveData<Resource<ResponseResearch>> = _reqNextResearchResponse
+    var researchData: MutableList<ResponseResearchData> = mutableListOf()
 
     /**
      * Api
      * */
 
-    fun apiResearch(t: String, k: String, c: String, y: String, m: String, i: String) {
+    fun apiGetOtp() {
         viewModelScope.launch {
             try {
+                TOKEN = HashUtils.hash256Otp()
+                _reqOtpResponse.postValue(Resource.loading(null))
+                repository.otp().let {
+                    if (it.isSuccessful){
+                        _reqOtpResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        //
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+    fun apiResearch(otp: String, sessionManager: SessionManager) {
+        viewModelScope.launch {
+            try {
+                val parameter = StringBuilder()
+                parameter.append("customer_id=${sessionManager.authData?.code ?: ""}")
+                parameter.append("&order_by=category_name")
+                if (getYear().isNotEmpty()){
+                    parameter.append("&year=${getYear()}")
+                }
+                if (getMonth().isNotEmpty()){
+                    parameter.append("&month=${getMonth()}")
+                }
+                if (getInitial().isNotEmpty()){
+                    parameter.append("&initial=${getInitial()}")
+                }
+                if (getCategory().isNotEmpty()){
+                    parameter.append("&category_id=${getCategory()}")
+                }
+                TOKEN = "${HashUtils.hash256Research(parameter.toString())}.${ENV.userKey()}.$otp"
+                TOKEN.printToLog("access_token_research")
                 _reqResearchResponse.postValue(Resource.loading(null))
-                repository.getResearch(t,k, c, y, m, i).let {
+                repository.getResearch(parameter.toString()).let {
                     if (it.isSuccessful){
                         _reqResearchResponse.postValue(Resource.success(it.body()))
                     } else {
-                        val type = object : TypeToken<JsonObject>() {}.type
-                        var errorResponse: JsonObject? = null
-                        try {
-                            errorResponse = Gson().fromJson(it.errorBody()?.charStream(), type)
-                        } catch(e: Exception) {
-                            e.printStackTrace()
-                        }
-                        _reqResearchResponse.postValue(Resource.error(it.errorBody().toString(), errorResponse))
+                        _reqResearchResponse.postValue(Resource.error(it.body()?.message ?: "",it.body()))
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun apiGetNextLearnings(otp: String, nextPage: String, sessionManager: SessionManager) {
+        viewModelScope.launch {
+            try {
+                val parameter = StringBuilder()
+                parameter.append("customer_id=${sessionManager.authData?.code ?: ""}")
+                parameter.append("&order_by=category_name&offset=${nextPage}")
+                TOKEN = "${HashUtils.hash256Research(parameter.toString())}.${ENV.userKey()}.$otp"
+                _reqNextResearchResponse.postValue(Resource.loading(null))
+                repository.getResearch(parameter.toString()).let {
+                    if (it.isSuccessful){
+                        _reqNextResearchResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        //
+                        _reqNextResearchResponse.postValue(Resource.error(it.body()?.message ?: "", null))
                     }
                 }
             }catch (e: Exception){

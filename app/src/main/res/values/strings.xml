@@ -104,6 +104,8 @@
     <string name="message_profile_photo_empty">Foto profil harus diisi</string>
     <string name="label_nomor_telepon">Nomor Telepon</string>
     <string name="message_system_wrong">Maaf ada kesalahan sistem</string>
+    <string name="label_pilih_kategori">Pilih Kategori</string>
+    <string name="sorting_semua">Semua</string>
     <string name="sorting_terbaru">Terbaru</string>
     <string name="sorting_top_up_knowledge_amp_wisdom"><![CDATA[Top Up Knowledge & Wisdom]]></string>
     <string name="sorting_temu_emiten">Temu Emiten</string>

@@ -7,7 +7,11 @@ import androidx.databinding.DataBindingUtil
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
+import id.co.ptn.hungrystock.core.network.RunningServiceType
+import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.ActivityForgotPasswordBinding
+import id.co.ptn.hungrystock.helper.extension.hideKeyboard
+import id.co.ptn.hungrystock.helper.extension.toast
 import id.co.ptn.hungrystock.ui.general.view_model.ForgotPasswordViewModel
 import id.co.ptn.hungrystock.utils.Status
 
@@ -42,32 +46,35 @@ class ForgotPasswordActivity : BaseActivity() {
     }
 
     private fun setObserve() {
+        viewModel.reqOtpResponse().observe(this){
+            when(it.status){
+                Status.SUCCESS -> {
+                    if (running_service == RunningServiceType.FORGOT_PASSWORD){
+                        viewModel.apiResetPassword(it.data?.data ?: "")
+                    }
+                }
+                Status.LOADING -> {
+                    binding.btSubmit.startAnimation()
+                }
+                Status.ERROR -> {
+
+                }
+            }
+        }
         viewModel.reqResetPasswordResponse().observe(this){
             when(it.status){
                 Status.SUCCESS -> {
                     binding.btSubmit.revertAnimation()
-                    try {
-                        it.data?.let { d ->
-                            if (d.status == "success"){
-                                router.toResetPasswordSuccess(viewModel.email.value)
-                            } else {
-                                showSnackBar(binding.container, d.message)
-                            }
-                        }
-                    }catch (e: Exception){
-                        e.printStackTrace()
-                    }
+                    router.toResetPasswordSuccess(viewModel.email.value)
                     binding.etEmail.setText("")
                 }
                 Status.LOADING -> {
                     binding.btSubmit.startAnimation()
                 }
                 Status.ERROR -> {
-                    binding.etEmail.setText("")
+//                    binding.etEmail.setText("")
                     binding.btSubmit.revertAnimation()
-                    it.data?.message?.let { message ->
-                        showSnackBar(binding.container, message)
-                    }
+                    it.message?.let { message -> toast(message)}
                 }
             }
         }
@@ -78,6 +85,8 @@ class ForgotPasswordActivity : BaseActivity() {
      * */
 
     private fun apiResetPassword() {
-        viewModel.apiResetPassword()
+        running_service = RunningServiceType.FORGOT_PASSWORD
+        viewModel.apiGetOtp()
+        hideKeyboard()
     }
 }

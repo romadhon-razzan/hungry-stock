@@ -10,6 +10,8 @@ data class Links (
 
 ) {
     companion object {
+        const val previous = "previous"
+        const val next = "next"
         fun previousPage(value: String): String {
             return (value.toInt() - 1).toString()
         }

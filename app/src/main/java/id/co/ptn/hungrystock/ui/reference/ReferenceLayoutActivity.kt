@@ -21,7 +21,7 @@ class ReferenceLayoutActivity: BaseActivity() {
         binding.cTf2.textField.hint = "Input text field 2"
 
         binding.cBp.primaryButton.text = "Primary Button"
-        binding.cBp.primaryButton.setOnClickListener { sessionManager.setToken("A") }
+        binding.cBp.primaryButton.setOnClickListener { sessionManager?.setToken("A") }
         binding.cBo.outlinedButton.text = "Print Text Field 1"
         binding.cBo.outlinedButton.setOnClickListener { Log.d("TEXT FIELD", binding.cTf1.textField.text.toString()) }
         binding.cBt.textButton.text = "Print Text Field 2"

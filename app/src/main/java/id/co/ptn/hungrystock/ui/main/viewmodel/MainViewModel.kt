@@ -1,17 +1,30 @@
 package id.co.ptn.hungrystock.ui.main.viewmodel
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseViewModel
+import id.co.ptn.hungrystock.config.ENV
+import id.co.ptn.hungrystock.config.TOKEN
+import id.co.ptn.hungrystock.core.SessionManager
+import id.co.ptn.hungrystock.models.auth.ResponseCheckUserLogin
+import id.co.ptn.hungrystock.models.auth.ResponseOtp
+import id.co.ptn.hungrystock.models.user.ResponseProfile
 import id.co.ptn.hungrystock.repositories.AppRepository
+import id.co.ptn.hungrystock.utils.HashUtils
+import id.co.ptn.hungrystock.utils.MediaUtils
+import id.co.ptn.hungrystock.utils.NetUtils
+import id.co.ptn.hungrystock.utils.Resource
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val appRepository: AppRepository): BaseViewModel() {
+class MainViewModel @Inject constructor(private val repository: AppRepository): BaseViewModel() {
 
     private val _homePressed = MutableLiveData(true)
     private val _learningPressed = MutableLiveData(false)
@@ -72,5 +85,72 @@ class MainViewModel @Inject constructor(private val appRepository: AppRepository
         _researchPressed.value = false
         _enginePressed.value = false
         _hsroPressed.value = true
+    }
+
+    private var _reqOtpResponse: MutableLiveData<Resource<ResponseOtp>> = MutableLiveData()
+    fun reqOtpResponse(): MutableLiveData<Resource<ResponseOtp>> = _reqOtpResponse
+
+    private var _reqProfileResponse: MutableLiveData<Resource<ResponseProfile>> = MutableLiveData()
+    fun reqProfileResponse(): MutableLiveData<Resource<ResponseProfile>> = _reqProfileResponse
+    private var _reqUserLoginResponse: MutableLiveData<Resource<ResponseCheckUserLogin>> = MutableLiveData()
+    fun reqUserLoginResponse(): MutableLiveData<Resource<ResponseCheckUserLogin>> = _reqUserLoginResponse
+
+    /**
+     * Api
+     * */
+    fun apiGetOtp() {
+        viewModelScope.launch {
+            try {
+                TOKEN = HashUtils.hash256Otp()
+                _reqOtpResponse.postValue(Resource.loading(null))
+                repository.otp().let {
+                    if (it.isSuccessful){
+                        _reqOtpResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        //
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun apiGetProfile(sessionManager: SessionManager?, otp: String) {
+        viewModelScope.launch {
+            try {
+                val parameter = "code=${sessionManager?.authData?.code ?: ""}"
+                TOKEN = "${HashUtils.hash256Profile(parameter)}.${ ENV.userKey()}.$otp"
+                _reqProfileResponse.postValue(Resource.loading(null))
+                repository.profile(parameter).let {
+                    if (it.isSuccessful){
+                        _reqProfileResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        //
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun apiCheckUserLogin(sessionManager: SessionManager?, otp: String, activity: Activity) {
+        viewModelScope.launch {
+            try {
+                val parameter = "customer_id=${sessionManager?.authData?.code ?: ""}"
+                TOKEN = "${HashUtils.hash256CheckUserLogin(parameter)}.${ ENV.userKey()}.$otp"
+                _reqProfileResponse.postValue(Resource.loading(null))
+                repository.checkUserLogin(parameter).let {
+                    if (it.isSuccessful){
+                        _reqUserLoginResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        _reqUserLoginResponse.postValue(Resource.error("",null))
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
     }
 }

@@ -5,12 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
+import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.models.auth.ResponseAuth
+import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.repositories.AppRepository
-import id.co.ptn.hungrystock.utils.Resource
-import id.co.ptn.hungrystock.utils.indonesianTag
-import id.co.ptn.hungrystock.utils.iso8601
-import id.co.ptn.hungrystock.utils.stringToDate
+import id.co.ptn.hungrystock.utils.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -39,22 +38,18 @@ class ProfileViewModel @Inject constructor(private val repository: AppRepository
 
     private val _validDate = MutableStateFlow("")
     val validDate: StateFlow<String> = _validDate
-    fun setValidDate(validDate: String) {
+    fun setValidDate(validDate: Long) {
         viewModelScope.launch {
-            val stringToDate = stringToDate(iso8601, validDate)
-            val simpleDateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault() )
-            val finalDate: String = simpleDateFormat.format(stringToDate ?: "")
+            val finalDate: String = getDateMMMMddyyyy(validDate*1000)
             _validDate.value = finalDate
         }
     }
 
     private val _joinDate = MutableStateFlow("")
     val joinDate: StateFlow<String> = _joinDate
-    fun setJoinDate(joinDate: String) {
+    fun setJoinDate(joinDate: Long) {
         viewModelScope.launch {
-            val stringToDate = stringToDate(iso8601, joinDate)
-            val simpleDateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault() )
-            val finalDate: String = simpleDateFormat.format(stringToDate ?: "")
+            val finalDate: String = getDateMMMMddyyyy(joinDate*1000)
             _joinDate.value = finalDate
         }
     }
@@ -74,6 +69,9 @@ class ProfileViewModel @Inject constructor(private val repository: AppRepository
             _noWa.value = noWa
         }
     }
+
+    private var _reqOtpResponse: MutableLiveData<Resource<ResponseOtp>> = MutableLiveData()
+    fun reqOtpResponse(): MutableLiveData<Resource<ResponseOtp>> = _reqOtpResponse
 
     private var _reqAuthResponse: MutableLiveData<Resource<ResponseAuth>> = MutableLiveData()
     fun reqAuthResponse(): MutableLiveData<Resource<ResponseAuth>> = _reqAuthResponse
@@ -97,6 +95,24 @@ class ProfileViewModel @Inject constructor(private val repository: AppRepository
 //                        _reqAuthResponse.postValue(Resource.error(it.errorBody().toString(), errorResponse))
 //                    }
 //                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun apiGetOtp() {
+        viewModelScope.launch {
+            try {
+                TOKEN = HashUtils.hash256Otp()
+                _reqOtpResponse.postValue(Resource.loading(null))
+                repository.otp().let {
+                    if (it.isSuccessful){
+                        _reqOtpResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        //
+                    }
+                }
             }catch (e: Exception){
                 e.printStackTrace()
             }

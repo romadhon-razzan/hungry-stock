@@ -9,6 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseActivity
 import id.co.ptn.hungrystock.databinding.ActivityHsroDetailBinding
+import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
 import id.co.ptn.hungrystock.models.main.hsro.HsroIndicator
 import id.co.ptn.hungrystock.models.main.learning.Learning
 import id.co.ptn.hungrystock.models.main.research.ResearchReport
@@ -27,9 +28,9 @@ class HsroDetailActivity : BaseActivity() {
     private var indicators: MutableList<HsroIndicator> = mutableListOf()
 
     private lateinit var learningListAdapter: LearningListAdapter
-    private var learnings: MutableList<Learning> = mutableListOf()
+    private var learnings: MutableList<ResponseEventsData> = mutableListOf()
 
-    private lateinit var researchReportListAdapter: ResearchReportListAdapter
+//    private lateinit var researchReportListAdapter: ResearchReportListAdapter
     private var researchReports: MutableList<ResearchReportData> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,7 +89,7 @@ class HsroDetailActivity : BaseActivity() {
 
     private fun iniVideoList() {
         learningListAdapter = LearningListAdapter(learnings, object : LearningListAdapter.LearningListener{
-            override fun itemClicked(learning: Learning) {
+            override fun itemClicked(learning: ResponseEventsData) {
 
             }
 
@@ -108,10 +109,10 @@ class HsroDetailActivity : BaseActivity() {
     }
 
     private fun initResearchList() {
-        researchReportListAdapter = ResearchReportListAdapter(supportFragmentManager,researchReports)
-        binding.recyclerViewResearch.apply {
-            layoutManager = GridLayoutManager(this@HsroDetailActivity, 2)
-            adapter = researchReportListAdapter
-        }
+//        researchReportListAdapter = ResearchReportListAdapter(supportFragmentManager,researchReports)
+//        binding.recyclerViewResearch.apply {
+//            layoutManager = GridLayoutManager(this@HsroDetailActivity, 2)
+//            adapter = researchReportListAdapter
+//        }
     }
 }

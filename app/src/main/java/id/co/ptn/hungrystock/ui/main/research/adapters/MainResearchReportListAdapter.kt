@@ -18,7 +18,7 @@ class MainResearchReportListAdapter(
     RecyclerView.Adapter<MainResearchReportListAdapter.ViewHolder>() {
     private lateinit var context: Context
     class ViewHolder(var binding: ItemResearchReportListBinding) : RecyclerView.ViewHolder(binding.root) {
-        private lateinit var listAdapter: ResearchReportListAdapter
+//        private lateinit var listAdapter: ResearchReportListAdapter
         fun bind(item: ResearchReport, context: Context,fragmentManager: FragmentManager) {
             var title = ""
             item.title?.let { t -> title = t }
@@ -27,11 +27,11 @@ class MainResearchReportListAdapter(
         }
 
         fun initList(items: MutableList<ResearchReportData>, context: Context, fragmentManager: FragmentManager) {
-            listAdapter = ResearchReportListAdapter(fragmentManager,items)
-            binding.recyclerView.apply {
-                layoutManager = GridLayoutManager(context, 2)
-                adapter = listAdapter
-            }
+//            listAdapter = ResearchReportListAdapter(fragmentManager,items)
+//            binding.recyclerView.apply {
+//                layoutManager = GridLayoutManager(context, 2)
+//                adapter = listAdapter
+//            }
         }
     }
 

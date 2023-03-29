@@ -12,6 +12,7 @@ import id.co.ptn.hungrystock.config.ASSET_URL
 import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.databinding.ActivityProfileBinding
 import id.co.ptn.hungrystock.ui.profile.view_model.ProfileViewModel
+import id.co.ptn.hungrystock.utils.MediaUtils
 
 @AndroidEntryPoint
 class ProfileActivity : BaseActivity() {
@@ -36,54 +37,20 @@ class ProfileActivity : BaseActivity() {
     private fun setView() {
         binding.etEmail.isEnabled = false
         binding.etWa.isEnabled = false
-        try {
-            Glide.with(this).load("$ASSET_URL${sessionManager.user.photo}").into(binding.imgPhoto)
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
-
-        try {
-            viewModel.setUserId(sessionManager.user.id.toString())
-        }catch (e: Exception){
-            viewModel.setUserId("")
-        }
-
-        try {
-
-        }catch (e: Exception){
-            viewModel.setUsername("")
-        }
-
-        try {
-            viewModel.setValidDate(sessionManager.user.membership_end_at)
-        }catch (e: Exception){
-            viewModel.setValidDate("-")
-        }
-
-        try {
-            viewModel.setJoinDate(sessionManager.user.email_verified_at)
-        }catch (e: Exception){
-            viewModel.setJoinDate("-")
-        }
-
-        try {
-            viewModel.setEmail(sessionManager.user.email)
-        }catch (e: Exception){
-            viewModel.setEmail("")
-        }
-
-        try {
-            viewModel.setNoWa(sessionManager.user.phone)
-        }catch (e: Exception){
-            viewModel.setNoWa("")
-        }
+        MediaUtils(this).setImageFromUrl(binding.imgPhoto, sessionManager?.user?.photo_file ?: "")
+        viewModel.setUserId(sessionManager?.user?.code ?: "")
+        viewModel.setUsername(sessionManager?.user?.name ?: "")
+        viewModel.setValidDate(sessionManager?.user?.membershipExpDate ?: 0)
+        viewModel.setJoinDate(sessionManager?.user?.activation_date ?: 0)
+        viewModel.setEmail(sessionManager?.user?.email ?: "")
+        viewModel.setNoWa(sessionManager?.user?.phone ?: "")
 
     }
 
     private fun setListener() {
         binding.btExit.setOnClickListener {
             TOKEN = ""
-            sessionManager.destroy()
+            sessionManager?.destroy()
             router.toExit()
             finishAffinity()
         }

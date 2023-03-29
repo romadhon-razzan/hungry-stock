@@ -7,8 +7,14 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.ptn.hungrystock.bases.BaseViewModel
+import id.co.ptn.hungrystock.config.ENV
+import id.co.ptn.hungrystock.config.TOKEN
+import id.co.ptn.hungrystock.models.auth.ResponseOtp
+import id.co.ptn.hungrystock.models.landing.ResponseBooks
+import id.co.ptn.hungrystock.models.landing.ResponseWebinar
 import id.co.ptn.hungrystock.models.onboard.ResponseOnboard
 import id.co.ptn.hungrystock.repositories.AppRepository
+import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Resource
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -46,30 +52,84 @@ class OnboardViewModel @Inject constructor(private val repository: AppRepository
         _content.value = content
     }
 
+    /**
+     * OnPageViewPager Changed
+     * */
+    private val _pageLatestEvent = MutableLiveData(false)
+    val pageLatestEvent: LiveData<Boolean> = _pageLatestEvent
+    fun setPageLatestEvent(selected: Boolean) {
+        _pageLatestEvent.postValue(selected)
+    }
+    private val _pageWebinar = MutableLiveData(false)
+    val pageWebinar: LiveData<Boolean> = _pageWebinar
+    fun setPageWebinar(selected: Boolean) {
+        _pageWebinar.postValue(selected)
+    }
+    private val _pageBooks = MutableLiveData(false)
+    val pageBooks: LiveData<Boolean> = _pageBooks
+    fun setPageBooks(selected: Boolean) {
+        _pageBooks.postValue(selected)
+    }
+
+    private var _reqOtpResponse: MutableLiveData<Resource<ResponseOtp>> = MutableLiveData()
+    fun reqOtpResponse(): MutableLiveData<Resource<ResponseOtp>> = _reqOtpResponse
+
     private var _reqOnboardResponse: MutableLiveData<Resource<ResponseOnboard>> = MutableLiveData()
     fun reqOnboardResponse(): MutableLiveData<Resource<ResponseOnboard>> = _reqOnboardResponse
+    private var _reqWebinarResponse: MutableLiveData<Resource<ResponseWebinar>> = MutableLiveData()
+    fun reqWebinarResponse(): MutableLiveData<Resource<ResponseWebinar>> = _reqWebinarResponse
+    private var _reqBooksResponse: MutableLiveData<Resource<ResponseBooks>> = MutableLiveData()
+    fun reqBooksResponse(): MutableLiveData<Resource<ResponseBooks>> = _reqBooksResponse
 
 
     /**
      * Api
      * */
-
-    fun apiGetOnboard() {
+    fun apiGetOtp() {
         viewModelScope.launch {
             try {
-                _reqOnboardResponse.postValue(Resource.loading(null))
-                repository.getOnBoard().let {
+                TOKEN = HashUtils.hash256Otp()
+                _reqOtpResponse.postValue(Resource.loading(null))
+                repository.otp().let {
                     if (it.isSuccessful){
-                        _reqOnboardResponse.postValue(Resource.success(it.body()))
+                        _reqOtpResponse.postValue(Resource.success(it.body()))
                     } else {
-                        val type = object : TypeToken<ResponseOnboard>() {}.type
-                        var errorResponse: ResponseOnboard? = null
-                        try {
-                            errorResponse = Gson().fromJson(it.errorBody()?.charStream(), type)
-                        } catch(e: Exception) {
-                            e.printStackTrace()
-                        }
-                        _reqOnboardResponse.postValue(Resource.error(it.errorBody().toString(), errorResponse))
+                        _reqOtpResponse.postValue(Resource.error(it.body()?.message ?: "", null))
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+    fun apiGetWebinar(otp: String) {
+        viewModelScope.launch {
+            try {
+                TOKEN = "${HashUtils.hash256Webinar()}.${ENV.userKey()}.$otp"
+                _reqWebinarResponse.postValue(Resource.loading(null))
+                repository.webinar().let {
+                    if (it.isSuccessful){
+                        _reqWebinarResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        _reqWebinarResponse.postValue(Resource.error(it.errorBody().toString(), null))
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun apiGetBooks(otp: String) {
+        viewModelScope.launch {
+            try {
+                TOKEN = "${HashUtils.hash256Books()}.${ENV.userKey()}.$otp"
+                _reqBooksResponse.postValue(Resource.loading(null))
+                repository.books().let {
+                    if (it.isSuccessful){
+                        _reqBooksResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        _reqBooksResponse.postValue(Resource.error(it.errorBody().toString(), null))
                     }
                 }
             }catch (e: Exception){

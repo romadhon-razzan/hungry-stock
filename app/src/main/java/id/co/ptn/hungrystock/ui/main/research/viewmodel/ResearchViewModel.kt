@@ -56,10 +56,29 @@ class ResearchViewModel @Inject constructor(val repository: AppRepository) : Bas
         month = m
     }
 
+    var monthName = ""
+
     private var initial = ""
     fun getInitial(): String = initial
     fun setInitial(i: String) {
         initial = i
+    }
+
+    private val _filterValues = MutableLiveData("")
+    val filterValues: LiveData<String> = _filterValues
+    fun setFilterValues() {
+        val parameter = StringBuilder()
+        parameter.append("Filter berdasarkan:")
+        if (getYear().isNotEmpty()){
+            parameter.append(" [Tahun ${getYear()}]")
+        }
+        if (monthName.isNotEmpty()){
+            parameter.append(" [Bulan ${monthName}]")
+        }
+        if (getInitial().isNotEmpty()){
+            parameter.append(" [Inisial: ${getInitial()}]")
+        }
+        _filterValues.postValue(parameter.toString())
     }
 
     private var _onFilter: MutableLiveData<Boolean> = MutableLiveData()

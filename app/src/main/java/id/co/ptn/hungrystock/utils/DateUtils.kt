@@ -16,6 +16,21 @@ fun getDateMMMMddyyyy(strDate: String): String {
     return simpleDateFormat.format(stringToDate ?: "")
 }
 
+fun getDateMMMMddyyyy(date: Long): String {
+    val simpleDateFormat = SimpleDateFormat("MMMM, dd yyyy", Locale.getDefault() )
+    return simpleDateFormat.format(date)
+}
+
+fun getDateMMMMddyyyyHHmm(date: Long): String {
+    val simpleDateFormat = SimpleDateFormat("MMMM, dd yyyy HH:mm", Locale.getDefault() )
+    return simpleDateFormat.format(date)
+}
+
+fun getHHmm(date: Long): String {
+    val simpleDateFormat = SimpleDateFormat("HH:mm", Locale.getDefault() )
+    return simpleDateFormat.format(date)
+}
+
 fun stringToDate(format: String, date: String): Date? {
     return try {
         SimpleDateFormat(format, Locale.forLanguageTag(indonesianTag)).parse(date)
@@ -39,9 +54,9 @@ fun currentYear() : String {
 fun currentMonth() : String {
     val calendar = Calendar.getInstance()
     val m = calendar[Calendar.MONTH] + 1
-    val month = StringBuilder()
-    if (m < 10) month.append("0$m") else month.append(m.toString())
-    return month.toString()
+//    val month = StringBuilder()
+//    if (m < 10) month.append("0$m") else month.append(m.toString())
+    return m.toString()
 }
 
 fun monthLabel(id: String) : String {

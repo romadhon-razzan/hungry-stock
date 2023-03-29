@@ -3,44 +3,39 @@ package id.co.ptn.hungrystock.ui.main.research.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.rajat.pdfviewer.PdfViewerActivity
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.core.SessionManager
 import id.co.ptn.hungrystock.databinding.*
-import id.co.ptn.hungrystock.models.OnboardPageTwo
 import id.co.ptn.hungrystock.models.User
-import id.co.ptn.hungrystock.models.main.home.PastEvent
-import id.co.ptn.hungrystock.models.main.research.ResearchReport
-import id.co.ptn.hungrystock.models.main.research.ResearchReportData
-import id.co.ptn.hungrystock.models.registration.MainRegistration
-import id.co.ptn.hungrystock.models.registration.RegistrationItem
+import id.co.ptn.hungrystock.models.main.research.ResponseResearchData
+import id.co.ptn.hungrystock.utils.MediaUtils
+import id.co.ptn.hungrystock.utils.getDateMMMMddyyyy
 
 class ResearchReportListAdapter(
     private val fragmentManager: FragmentManager,
-    private val items: MutableList<ResearchReportData>
+    private val items: MutableList<ResponseResearchData>
 ):
     RecyclerView.Adapter<ResearchReportListAdapter.ViewHolder>() {
     private lateinit var context: Context
     class ViewHolder(var binding: ItemResearchAndDataBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ResearchReportData, context: Context, fragmentManager: FragmentManager) {
-            var name = ""
-            item.value.let { name = it }
-            binding.tvTitle.text = name
-            item.photo_url.let { Glide.with(context).load(it).into(binding.image) }
-            item.file_url.let { url ->
+        fun bind(item: ResponseResearchData, context: Context, fragmentManager: FragmentManager) {
+
+            binding.tvTitle.text = item.title ?: ""
+            binding.tvDate.text = getDateMMMMddyyyy((item.date ?: 0) * 1000)
+            MediaUtils(context).setImageFromUrl(binding.image, item.imageFile ?: "", R.drawable.img_reseach_placeholder)
+            item.file?.let { url ->
                 binding.item.setOnClickListener {
                     val sessionManager = SessionManager.getInstance(context)
-                    if (!User.isExpired(fragmentManager, sessionManager.user.membership_end_at)){
+                    if (!User.isExpired(fragmentManager, sessionManager.user?.membershipExpDate ?: 0)){
                         context.startActivity(
                             PdfViewerActivity.launchPdfFromUrl(
                                 context,
                                 url,
-                                name,
+                                item.title ?: "",
                                 "",
                                 enableDownload = false
                             )

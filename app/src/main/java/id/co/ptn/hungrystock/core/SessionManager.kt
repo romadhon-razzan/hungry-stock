@@ -4,9 +4,12 @@ import android.content.Context
 import androidx.core.content.edit
 import com.google.gson.Gson
 import id.co.ptn.hungrystock.models.User
+import id.co.ptn.hungrystock.models.auth.ResponseAuthDataV2
+import id.co.ptn.hungrystock.models.user.ResponseProfileData
 
 private const val USER_PREFERENCES_NAME = "user_preferences"
 
+private const val KEY_AUTH_DATA = "auth_data"
 private const val KEY_TOKEN = "token"
 private const val KEY_USER = "user"
 private const val KEY_READ_PRIVACY_POLICE = "read_privacy_police"
@@ -15,6 +18,20 @@ class SessionManager private constructor(context: Context) {
     private val sharedPreferences =
         context.applicationContext.getSharedPreferences(USER_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
+
+    val authData: ResponseAuthDataV2?
+        get() {
+            val result = sharedPreferences.getString(KEY_AUTH_DATA, "")
+            return try {
+                Gson().fromJson(result, ResponseAuthDataV2::class.java)
+            } catch (e: Exception){
+                ResponseAuthDataV2("","","","")
+            }
+        }
+
+    fun setAuthData(authData: String) {
+        sharedPreferences.edit { putString(KEY_AUTH_DATA, authData) }
+    }
 
     val token: String
         get() {
@@ -26,13 +43,13 @@ class SessionManager private constructor(context: Context) {
         sharedPreferences.edit { putString(KEY_TOKEN, token) }
     }
 
-    val user: User
+    val user: ResponseProfileData?
         get() {
             val order = sharedPreferences.getString(KEY_USER, "")
-            return Gson().fromJson(order, User::class.java)
+            return Gson().fromJson(order, ResponseProfileData::class.java)
         }
 
-    fun setUser(user: User) {
+    fun setUser(user: ResponseProfileData) {
         val strUser = Gson().toJson(user)
         sharedPreferences.edit { putString(KEY_USER, strUser) }
     }

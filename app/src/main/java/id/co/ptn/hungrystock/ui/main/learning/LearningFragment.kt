@@ -10,12 +10,13 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.*
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,17 +25,27 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseFragment
 import id.co.ptn.hungrystock.bases.EmptyStateFragment
+import id.co.ptn.hungrystock.config.ENV
+import id.co.ptn.hungrystock.config.TOKEN
+import id.co.ptn.hungrystock.core.network.RunningServiceType
+import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.LearningFragmentBinding
 import id.co.ptn.hungrystock.models.Links
 import id.co.ptn.hungrystock.models.User
 import id.co.ptn.hungrystock.models.main.home.PastEvent
-import id.co.ptn.hungrystock.models.main.home.ResponseEventData
-import id.co.ptn.hungrystock.models.main.learning.Learning
+import id.co.ptn.hungrystock.models.main.home.ResponseEvents
+import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
 import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningListAdapter
 import id.co.ptn.hungrystock.ui.main.learning.adapters.LearningPaginationAdapter
 import id.co.ptn.hungrystock.ui.main.learning.dialogs.FilteLearningPageDialog
 import id.co.ptn.hungrystock.ui.main.learning.viewmodel.LearningViewModel
+import id.co.ptn.hungrystock.ui.main.viewmodel.MainViewModel
+import id.co.ptn.hungrystock.ui.main.viewmodel.ReferenceViewModel
+import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Status
+import id.co.ptn.hungrystock.utils.getHHmm
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LearningFragment : BaseFragment() {
@@ -44,9 +55,18 @@ class LearningFragment : BaseFragment() {
     }
 
     private lateinit var binding: LearningFragmentBinding
+    private var mainViewModel: MainViewModel? = null
     private var viewModel: LearningViewModel? = null
+    private var referenceViewModel: ReferenceViewModel? = null
     private lateinit var learningListAdapter: LearningListAdapter
     private var paginationAdapter: LearningPaginationAdapter? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[LearningViewModel::class.java]
+        referenceViewModel = ViewModelProvider(requireActivity())[ReferenceViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,24 +78,22 @@ class LearningFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[LearningViewModel::class.java]
         binding.vm = viewModel
         binding.lifecycleOwner = this
         init()
     }
 
     private fun init() {
-        viewModel?.setSortingLabel(resources.getString(R.string.sorting_terbaru))
+        viewModel?.setSortingLabel(resources.getString(R.string.label_pilih_kategori))
         initListener()
         initSearch()
         setObserve()
-        apiGetLearnings()
     }
 
     private fun initListener() {
+        binding.swipeRefresh.setOnRefreshListener { apiGetLearnings() }
         binding.btSorting.setOnClickListener { sortingPressed() }
         binding.btFilter.setOnClickListener { filterPressed() }
-        binding.btNext.setOnClickListener { apiGetNextLearnings() }
     }
 
     private fun initSearch() {
@@ -96,12 +114,11 @@ class LearningFragment : BaseFragment() {
     private fun initList() {
         viewModel?.getLearnings()?.let { learnings ->
             learningListAdapter = LearningListAdapter(learnings, object : LearningListAdapter.LearningListener{
-                override fun itemClicked(learning: Learning) {
-                    if (!User.isExpired(childFragmentManager,sessionManager?.user?.membership_end_at ?: "")){
+                override fun itemClicked(learning: ResponseEventsData) {
+                    if (!User.isExpired(childFragmentManager,sessionManager?.user?.membershipExpDate ?: 0)){
                         val intent =  router.toLearningDetail()
                         try {
-                            val event = PastEvent(learning.slug!!, learning.title!!, learning.speaker!!, learning.event_date!!, learning.event_hour_start!!, learning.event_hour_end!!, learning.video_url!!)
-                            intent.putExtra("event", Gson().toJson(event))
+                            intent.putExtra("event", Gson().toJson(learning))
                         }catch (e: Exception){
                             e.printStackTrace()
                         }
@@ -115,47 +132,68 @@ class LearningFragment : BaseFragment() {
                 adapter = learningListAdapter
             }
             binding.frameContainer.visibility = View.GONE
+            binding.nestedScrollView.smoothScrollTo(0,0)
         }
     }
 
     private fun initPagination() {
-        viewModel?.getLinks()?.let { links ->
-            paginationAdapter = LearningPaginationAdapter(links, object : LearningPaginationAdapter.LearningListener{
-                override fun itemClicked(page: Links, position: Int) {
+        paginationAdapter = LearningPaginationAdapter(viewModel?.getLinks() ?: mutableListOf(), object : LearningPaginationAdapter.LearningListener{
+            override fun itemClicked(page: Links, position: Int) {
+                if (viewModel?.requesting == false){
+                    // for inactive page button
+                    viewModel?.getLinks()?.forEachIndexed { index, links ->
+                        if (links.active == true){
+                            links.active = false
+                            paginationAdapter?.notifyItemChanged(index)
+                            return@forEachIndexed
+                        }
+                    }
+
                     val lastPage = viewModel?.lastPage?.toInt() ?: 0
-                    val currentPage = viewModel?.getNextPage()?.toInt() ?: 0
-                    if (page.label?.lowercase()?.contains("sebelumnya") == true) {
-                        var prevPage = Links.previousPage(currentPage.toString()).toInt()
+                    val currentPage = viewModel?.currentPage ?: "1"
+                    if (page.label?.lowercase()?.contains(Links.previous) == true) {
+                        var prevPage = Links.previousPage(currentPage).toInt()
                         if (prevPage < 1){
                             prevPage = 1
                         }
+
+                        viewModel?.getLinks()?.get(prevPage)?.active = true
+                        paginationAdapter?.notifyItemChanged(prevPage)
+
                         viewModel?.setNextPage(prevPage.toString())
-                    } else if (page.label?.lowercase()?.contains("berikutnya") == true) {
-                        var nextPage = Links.nextPage(currentPage.toString()).toInt()
+                    } else if (page.label?.lowercase()?.contains(Links.next) == true) {
+                        var nextPage = Links.nextPage(currentPage).toInt()
                         if (nextPage > lastPage) {
                             nextPage = lastPage
                         }
+
+                        viewModel?.getLinks()?.get(nextPage)?.active = true
+                        paginationAdapter?.notifyItemChanged(nextPage)
+
                         viewModel?.setNextPage(nextPage.toString())
                     } else {
+                        viewModel?.getLinks()?.get(position)?.active = true
+                        paginationAdapter?.notifyItemChanged(position)
                         viewModel?.setNextPage(page.label ?: "0")
                     }
+                    viewModel?.currentPage = viewModel?.getNextPage() ?: "1"
                     apiGetNextLearnings()
                 }
-            })
-            binding.rvPagination.apply {
-                layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-                adapter = paginationAdapter
             }
+        })
+        binding.rvPagination.apply {
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+            adapter = paginationAdapter
         }
     }
 
     private fun initData() {
         viewModel?.getLearnings()?.clear()
         viewModel?.reqLearningResponse()?.value?.let {
-            it.data?.data?.learnings?.data?.let { learnings ->
-                viewModel?.getLearnings()?.addAll(learnings)
+            it.data?.data.let { learnings ->
+                viewModel?.getLearnings()?.addAll(learnings ?: mutableListOf())
                 initPagination()
-            } ?: emptyState()
+            }
         } ?: emptyState()
         initList()
     }
@@ -164,12 +202,11 @@ class LearningFragment : BaseFragment() {
         viewModel?.getLearnings()?.clear()
         try {
             viewModel?.reqNextLearningResponse()?.value?.let {
-                it.data?.data?.learnings?.data?.let { learnings ->
+                it.data?.data?.let { learnings ->
                     viewModel?.getLearnings()?.addAll(learnings)
                 }
             }
             initList()
-            initPagination()
             binding.nestedScrollView.smoothScrollTo(0,0)
         }catch (e: Exception){
             e.printStackTrace()
@@ -193,44 +230,29 @@ class LearningFragment : BaseFragment() {
      * */
     private fun sortingPressed() {
         val popup = PopupMenu(requireContext(), binding.btSorting)
-        popup.inflate(R.menu.sorting_learning_menu)
-
+        popup.menu.add(resources.getString(R.string.sorting_semua))
+        referenceViewModel?.refEventCategories?.forEach {
+            popup.menu.add(it.name)
+        }
         popup.setOnMenuItemClickListener { item: MenuItem? ->
             item?.let {
-                when (it.itemId) {
-                    R.id.terbaru -> {
-                        viewModel?.setSortingLabel(resources.getString(R.string.sorting_terbaru))
-                        viewModel?.setCategory("")
+                val title = it.title?.toString() ?: ""
+                viewModel?.setSortingLabel(title)
+                if (title == resources.getString(R.string.sorting_semua)){
+                    viewModel?.setCategory("")
+                } else {
+                    referenceViewModel?.refEventCategories?.forEach {ref ->
+                        if (title == ref.name) {
+                            viewModel?.setCategory(ref.code ?: "")
+                            return@forEach
+                        }
                     }
-                    R.id.topup -> {
-                        viewModel?.setSortingLabel(resources.getString(R.string.sorting_top_up_knowledge_amp_wisdom))
-                        viewModel?.setCategory(viewModel?.sortingLabel?.value.toString())
-                    }
-                    R.id.temu -> {
-                        viewModel?.setSortingLabel(resources.getString(R.string.sorting_temu_emiten))
-                        viewModel?.setCategory(viewModel?.sortingLabel?.value.toString())
-                    }
-                    R.id.bedah -> {
-                        viewModel?.setSortingLabel(resources.getString(R.string.sorting_bedah_emiten))
-                        viewModel?.setCategory(viewModel?.sortingLabel?.value.toString())
-                    }
-                    R.id.stockScope -> {
-                        viewModel?.setSortingLabel(resources.getString(R.string.sorting_stockscope))
-                        viewModel?.setCategory(viewModel?.sortingLabel?.value.toString())
-                    }
-                    R.id.stock_discovery -> {
-                        viewModel?.setSortingLabel(resources.getString(R.string.stock_discovery))
-                        viewModel?.setCategory(viewModel?.sortingLabel?.value.toString())
-                    }
-                    else -> {}
                 }
-            }
             apiGetLearnings()
+            }
             true
         }
-
         popup.show()
-
     }
 
     private fun filterPressed() {
@@ -288,26 +310,60 @@ class LearningFragment : BaseFragment() {
 
 
     private fun setObserve() {
+        viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS -> {
+                    when (running_service) {
+                        RunningServiceType.EVENT -> {
+                            lifecycleScope.launch {
+                                delay(500)
+                                viewModel?.apiGetLearnings(sessionManager, it?.data?.data ?: "")
+                            }
+                        }
+                        RunningServiceType.EVENT_NEXT -> {
+                            lifecycleScope.launch {
+                                delay(500)
+                                viewModel?.apiGetNextLearnings(sessionManager, it.data?.data ?: "")
+                            }
+                        }
+                        else -> {}
+                    }
+                }
+                Status.LOADING -> {
+                    if (!binding.swipeRefresh.isRefreshing) {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
         viewModel?.reqLearningResponse()?.observe(viewLifecycleOwner){
             when(it.status) {
                 Status.SUCCESS ->{
+                    binding.swipeRefresh.isRefreshing = false
                     binding.progressBar.visibility = View.GONE
 
-                    it.data?.data?.let { data ->
-                        viewModel?.lastPage = data.learnings.last_page?.toString() ?: "0"
-                        data.learnings.links.let { links ->
-                            viewModel?.setLinks(links as MutableList<Links>)
-                        }
-                        data.learnings.next_page_url?.let { _ ->
-                            data.learnings.current_page?.let { cp -> viewModel?.setNextPage((cp+1).toString()) }
-                            viewModel?.setCanLoadNext(true)
-                        } ?: viewModel?.setCanLoadNext(false)
-
+                    it.data?.let { data ->
                         initData()
+                        viewModel?.setLinks(data.total_pages ?: 0)
+                        viewModel?.setNextPage(ResponseEvents.getNextPage(data).toString())
                     } ?: emptyState()
+                    if (referenceViewModel?.refEventCategories?.size == 0) {
+                        apiEventCategories()
+                    }
+                    if (binding.relativeLayout.isGone) {
+                        binding.relativeLayout.visibility = View.VISIBLE
+                    }
                 }
-                Status.LOADING ->{ binding.progressBar.visibility = View.VISIBLE}
+                Status.LOADING ->{
+                    if (!binding.swipeRefresh.isRefreshing) {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+                }
                 Status.ERROR ->{
+                    binding.swipeRefresh.isRefreshing = false
                     binding.progressBar.visibility = View.GONE
                     emptyState()
                 }
@@ -315,14 +371,11 @@ class LearningFragment : BaseFragment() {
         }
 
         viewModel?.reqNextLearningResponse()?.observe(viewLifecycleOwner){
+            viewModel?.requesting = false
             when(it.status) {
                 Status.SUCCESS ->{
                     binding.progressBar.visibility = View.GONE
-                    viewModel?.setLoadingNext(false)
                     it.data?.data?.let {data ->
-                        data.learnings.links.let { links ->
-                            viewModel?.setLinks(links as MutableList<Links>)
-                        }
                         setNextData()
                     }
                 }
@@ -335,18 +388,69 @@ class LearningFragment : BaseFragment() {
                 }
             }
         }
+
+        referenceViewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS ->{
+                    binding.progressBar.visibility = View.GONE
+                    when(running_service){
+                        RunningServiceType.EVENT_CATEGORIES -> {
+                            referenceViewModel?.apiEventCategories(it.data?.data ?: "")
+                        }
+                        else -> {}
+                    }
+                }
+                Status.LOADING ->{
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.ERROR ->{
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
+        referenceViewModel?.reqEventCategoriesResponse()?.observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS ->{
+                    binding.progressBar.visibility = View.GONE
+                }
+                Status.LOADING ->{
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.ERROR ->{
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
+        mainViewModel?.learningPressed?.observe(requireActivity()){
+            if (it){
+                if (viewModel?.pageFirstRequested == false) {
+                    apiGetLearnings()
+                    viewModel?.pageFirstRequested = true
+                }
+            }
+        }
     }
 
     /**
      * Api
      * */
-
+    private fun apiGetOtp() {
+        viewModel?.apiGetOtp()
+    }
     private fun apiGetLearnings() {
-        viewModel?.apiGetLearnings(viewModel?.getKeyword()!!,viewModel?.getCategory()!!,viewModel?.getYear()!!,viewModel?.getMonthId()!!,viewModel?.getAbjad()!!)
+        running_service = RunningServiceType.EVENT
+        apiGetOtp()
     }
 
     private fun apiGetNextLearnings() {
-        viewModel?.apiGetNextLearnings(viewModel?.getNextPage()!!, viewModel?.getKeyword()!!,viewModel?.getCategory()!!,viewModel?.getYear()!!,viewModel?.getMonthId()!!,viewModel?.getAbjad()!!)
+        viewModel?.requesting = true
+        running_service = RunningServiceType.EVENT_NEXT
+        apiGetOtp()
+    }
+
+    private fun apiEventCategories() {
+        running_service = RunningServiceType.EVENT_CATEGORIES
+        referenceViewModel?.apiGetOtp()
     }
 
 }

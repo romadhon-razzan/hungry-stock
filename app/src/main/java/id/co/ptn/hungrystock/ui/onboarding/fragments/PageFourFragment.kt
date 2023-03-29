@@ -5,18 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.bases.BaseFragment
-import id.co.ptn.hungrystock.bases.WebViewFragment
+import id.co.ptn.hungrystock.core.network.RunningServiceType
+import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.FragmentPageFourBinding
+import id.co.ptn.hungrystock.helper.extension.toDate
+import id.co.ptn.hungrystock.helper.extension.toStringFormat
+import id.co.ptn.hungrystock.ui.onboarding.view_model.BooksViewModel
 import id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel
-import id.co.ptn.hungrystock.utils.getDateMMMMddyyyy
-import java.lang.StringBuilder
+import id.co.ptn.hungrystock.ui.onboarding.view_model.WebinarViewModel
+import id.co.ptn.hungrystock.utils.MediaUtils
+import id.co.ptn.hungrystock.utils.Status
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -26,7 +28,8 @@ class PageFourFragment : BaseFragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentPageFourBinding
-    private var viewModel: OnboardViewModel? = null
+    private var viewModel: WebinarViewModel? = null
+    private var onboardViewModel: OnboardViewModel? = null
 
     companion object {
         @JvmStatic
@@ -45,6 +48,8 @@ class PageFourFragment : BaseFragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        viewModel = ViewModelProvider(requireActivity())[WebinarViewModel::class.java]
+        onboardViewModel = ViewModelProvider(requireActivity())[OnboardViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -57,38 +62,72 @@ class PageFourFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[OnboardViewModel::class.java]
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-        setView()
+        setObserve()
     }
 
     private fun setView() {
-        viewModel?.reqOnboardResponse()?.value?.data?.data?.headlineWebinar?.let { webinar ->
-            webinar.photo_url?.let { photo ->
-                binding.image.let { i -> Glide.with(requireActivity()).load(photo).into(i) }
-            }
-            webinar.title?.let { title -> binding.tvTitle.text = title }
+        binding.card.visibility = View.VISIBLE
+        MediaUtils(requireContext()).setImageFromUrl(binding.image, viewModel?.webinar?.image_file ?: "")
+        binding.tvTitle.text = viewModel?.webinar?.title ?: ""
+        binding.tvDescription.text = viewModel?.webinar?.description ?: ""
 
-            val stringBuilder = StringBuilder()
-            webinar.date_start?.let { date ->
-                stringBuilder.append(getDateMMMMddyyyy(date))
-            }
+        val dateFrom = viewModel?.webinar?.date_from?.toDate()?.toStringFormat("EEEE, MMMM dd")
+        val dateTo = viewModel?.webinar?.dateTo?.toDate()?.toStringFormat("EEEE, MMMM dd yyyy")
+        binding.tvDate.text = "$dateFrom - $dateTo"
+        binding.tvSpeaker.text = "Pembicara: ${viewModel?.webinar?.speakers ?: ""}"
+    }
 
-            webinar.date_end?.let { date ->
-                stringBuilder.append(" - ")
-                stringBuilder.append(getDateMMMMddyyyy(date))
-            }
-            binding.tvDate.text = stringBuilder.toString()
-            webinar.speaker?.let { speaker -> binding.tvSpeaker.text = speaker }
-            webinar.content?.let { content ->
-                childFragmentManager.commit {
-                    val bundle = Bundle()
-                    bundle.putString("content", content)
-                    bundle.putString("font_size","small")
-                    add<WebViewFragment>(R.id.frame_web, null, bundle)
+    private fun setObserve() {
+        viewModel?.reqOtpResponse()?.observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
+                    if (running_service == RunningServiceType.WEBINAR){
+                        viewModel?.apiGetWebinar(it.data?.data ?: "")
+                    }
+                }
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
                 }
             }
         }
+
+        viewModel?.reqWebinarResponse()?.observe(viewLifecycleOwner){
+            when(it.status) {
+                Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
+                    it.data?.data?.forEach { data ->
+                        viewModel?.webinar = data
+                    }
+                    setView()
+                }
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
+        onboardViewModel?.pageWebinar?.observe(requireActivity()){
+            if (it){
+                if (viewModel?.webinar == null) {
+                    apiGetWebinar()
+                }
+            }
+        }
+    }
+
+    /**
+     * Api
+     * */
+    private fun apiGetWebinar() {
+        running_service = RunningServiceType.WEBINAR
+        viewModel?.apiGetOtp()
     }
 }

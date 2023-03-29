@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="id.co.ptn.hungrystock.ui.onboarding.view_model.OnboardViewModel" />
+            type="id.co.ptn.hungrystock.ui.onboarding.view_model.WebinarViewModel" />
     </data>
 
     <RelativeLayout
@@ -19,10 +19,12 @@
         android:paddingEnd="@dimen/normal2"
         tools:background="@color/background">
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/secondary"
-            app:cardCornerRadius="14dp">
+            app:cardCornerRadius="14dp"
+            android:visibility="gone">
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -36,7 +38,7 @@
                     <ImageView
                         android:id="@+id/image"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="400dp"
                         android:layout_marginBottom="@dimen/small1"
                         tools:src="@drawable/img_onboarding_2" />
 
@@ -104,6 +106,11 @@
                 </RelativeLayout>
             </androidx.core.widget.NestedScrollView>
         </com.google.android.material.card.MaterialCardView>
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
     </RelativeLayout>
 
 

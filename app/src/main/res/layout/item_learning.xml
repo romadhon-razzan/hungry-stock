@@ -33,7 +33,7 @@
             android:fontFamily="@font/ft_coolvetica"
             android:textSize="@dimen/font_medium1"
             android:textColor="@color/white"
-            android:text="This is the item title with supposed a long line"/>
+            tools:text="This is the item title with supposed a long line"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_sub_title"
@@ -43,7 +43,7 @@
             android:fontFamily="@font/ft_barlow_semibold_italic"
             android:textSize="@dimen/font_normal1"
             android:textColor="@color/white_70"
-            android:text="Latest Learning Materials"/>
+            tools:text="Latest Learning Materials"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

@@ -8,18 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import id.co.ptn.hungrystock.R
 import id.co.ptn.hungrystock.databinding.*
+import id.co.ptn.hungrystock.models.main.home.ResponseEventsData
 import id.co.ptn.hungrystock.models.main.learning.Learning
+import id.co.ptn.hungrystock.utils.MediaUtils
 import id.co.ptn.hungrystock.utils.getDateMMMMddyyyy
 
-class LearningListAdapter(private val items: MutableList<Learning>, private val listener: LearningListener):
+class LearningListAdapter(private val items: MutableList<ResponseEventsData>, private val listener: LearningListener):
     RecyclerView.Adapter<LearningListAdapter.ViewHolder>() {
     class ViewHolder(var binding: ItemLearningBinding, var context: Context) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Learning) {
-            item.photo_url.let { Glide.with(context).load(it).into(binding.image) }
-            item.title.let { binding.tvTitle.text = it }
-            item.event_date?.let {
-                binding.tvSubTitle.text = getDateMMMMddyyyy(it)
-            }
+        fun bind(item: ResponseEventsData) {
+            MediaUtils(context).setImageFromUrl(binding.image, item.image_file ?: "", R.drawable.img_event_placeholder)
+            binding.tvTitle.text = item.title ?: ""
+            binding.tvSubTitle.text = getDateMMMMddyyyy((item.date_from ?: 0) * 1000)
         }
     }
 
@@ -39,6 +39,6 @@ class LearningListAdapter(private val items: MutableList<Learning>, private val 
     }
 
     public interface LearningListener {
-        fun itemClicked(learning: Learning)
+        fun itemClicked(learning: ResponseEventsData)
     }
 }

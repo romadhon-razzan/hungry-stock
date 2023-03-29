@@ -16,6 +16,7 @@ import id.co.ptn.hungrystock.bases.popup.MonthPopupMenu
 import id.co.ptn.hungrystock.databinding.DialogFilterResearchPageBinding
 import id.co.ptn.hungrystock.ui.main.research.adapters.FilterEmitenListAdapter
 import id.co.ptn.hungrystock.ui.main.research.adapters.FilterYearListAdapter
+import id.co.ptn.hungrystock.utils.currentYear
 import java.util.*
 
 class FilterResearchPageDialog(private val listener: Listener): BaseBottomSheetModal() {
@@ -23,19 +24,23 @@ class FilterResearchPageDialog(private val listener: Listener): BaseBottomSheetM
     private lateinit var binding: DialogFilterResearchPageBinding
     private lateinit var filterYearListAdapter: FilterYearListAdapter
     private var years: MutableList<Int> = mutableListOf()
-    private var yearSelected = "1900"
+    private var yearSelected = currentYear()
     private var monthSelected = ""
     private var monthIdSelected = ""
     private var abjadSelected = ""
     private lateinit var filterEmitenListAdapter: FilterEmitenListAdapter
     private var filterEmiten: MutableList<String> = mutableListOf()
 
-    private fun setYearSelected(year: String) {
+    fun setYearSelected(year: String) {
         yearSelected = year
     }
 
-    private fun setMontSelected(month: String) {
+    fun setMonthSelected(month: String) {
         monthSelected = month
+    }
+
+    fun setInitialSelected(initial: String) {
+        abjadSelected = initial
     }
 
     override fun onCreateView(
@@ -94,6 +99,10 @@ class FilterResearchPageDialog(private val listener: Listener): BaseBottomSheetM
             dismiss()
         }
         binding.btSpinnerMonth.setOnClickListener { monthPressed() }
+        binding.buttonReset.setOnClickListener {
+            listener.onFilter(currentYear(),"","","")
+            dismiss()
+        }
     }
 
 
@@ -123,7 +132,7 @@ class FilterResearchPageDialog(private val listener: Listener): BaseBottomSheetM
     }
 
     private fun initSpinnerMonth() {
-
+        binding.tvMonth.text = monthSelected.ifEmpty { requireContext().getText(R.string.hint_pilih_bulan) }
     }
 
     private fun initDataFilterEmiten() {
