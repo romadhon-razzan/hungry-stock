@@ -44,8 +44,8 @@ class AuthActivity : BaseActivity() {
 
     private fun setView() {
         //        for user test
-//                binding.etEmail.setText("81285535093")
-//                binding.etPassword.setText("12345678")
+//                binding.etEmail.setText("082110735190")
+//                binding.etPassword.setText("123456")
     }
 
     private fun initListener() {
@@ -105,6 +105,6 @@ class AuthActivity : BaseActivity() {
         viewModel.apiGetOtp()
     }
     private fun apiAuth() {
-        viewModel.apiAuth()
+        viewModel.apiAuth(this)
     }
 }

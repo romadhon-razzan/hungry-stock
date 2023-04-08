@@ -1,5 +1,6 @@
 package id.co.ptn.hungrystock.ui.general.view_model
 
+import android.app.Activity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
@@ -10,6 +11,7 @@ import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.models.auth.ResponseAuthV2
 import id.co.ptn.hungrystock.models.auth.ResponseOtp
 import id.co.ptn.hungrystock.repositories.AppRepository
+import id.co.ptn.hungrystock.utils.DeviceUtils
 import id.co.ptn.hungrystock.utils.HashUtils
 import id.co.ptn.hungrystock.utils.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -65,11 +67,11 @@ class AuthViewModel @Inject constructor(private val repository: AppRepository): 
             }
         }
     }
-    fun apiAuth() {
+    fun apiAuth(activity: Activity) {
         viewModelScope.launch {
             try {
                 _reqAuthResponse.postValue(Resource.loading(null))
-                repository.authV2(_username.value,_password.value).let {
+                repository.authV2(_username.value,_password.value, DeviceUtils.getDeviceId(activity)).let {
                     if (it.isSuccessful){
                         _reqAuthResponse.postValue(Resource.success(it.body()))
                     } else {

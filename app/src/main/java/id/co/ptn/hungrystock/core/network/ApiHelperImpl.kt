@@ -28,7 +28,7 @@ import javax.inject.Inject
 
 class ApiHelperImpl @Inject constructor(private val apiService: Services) : ApiHelper {
     override suspend fun otp(): Response<ResponseOtp> = apiService.otp()
-    override suspend fun authV2(username: String, password: String): Response<ResponseAuthV2> = apiService.authV2(username, password)
+    override suspend fun authV2(username: String, password: String, deviceId: String): Response<ResponseAuthV2> = apiService.authV2(username, password, deviceId)
     override suspend fun profile(param: String): Response<ResponseProfile> = apiService.profile(param)
     override suspend fun events(param: String): Response<ResponseEvents> = apiService.events(param)
     override suspend fun eventsRelated(param: String): Response<ResponseEventsRelated> = apiService.eventsRelated(param)
