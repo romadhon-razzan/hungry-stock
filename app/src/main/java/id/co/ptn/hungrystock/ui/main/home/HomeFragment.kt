@@ -154,11 +154,16 @@ class HomeFragment : BaseFragment() {
                 }
                 Status.LOADING -> {
                     if (!binding.swipeRefresh.isRefreshing) {
-                        binding.progressBar.visibility = View.VISIBLE
+                        if (running_service == RunningServiceType.EVENT_NEXT){
+                            binding.progressBarNext.visibility = View.GONE
+                        } else {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
                     }
                 }
                 Status.ERROR -> {
                     binding.progressBar.visibility = View.GONE
+                    binding.progressBarNext.visibility = View.GONE
                 }
             }
         }

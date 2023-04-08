@@ -26,7 +26,7 @@ import retrofit2.Response
 interface ApiHelper {
 //    suspend fun getDrinkByFirstLetter(s: String): Response<DrinkResponse>
     suspend fun otp(): Response<ResponseOtp>
-    suspend fun authV2(username: String, password: String): Response<ResponseAuthV2>
+    suspend fun authV2(username: String, password: String, deviceId: String): Response<ResponseAuthV2>
     suspend fun profile(param: String): Response<ResponseProfile>
     suspend fun events(param: String): Response<ResponseEvents>
     suspend fun eventsRelated(param: String): Response<ResponseEventsRelated>
