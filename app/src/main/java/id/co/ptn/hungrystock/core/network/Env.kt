@@ -20,7 +20,7 @@ PRODUCTION {
     }
 
     override fun debug(): Boolean {
-        return true
+        return false
     }
 
 },
