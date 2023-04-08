@@ -35,6 +35,7 @@ interface Services {
     suspend fun authV2(
         @Field("username") username: String,
         @Field("password") password: String,
+        @Field("deviceid") deviceid: String,
     ): Response<ResponseAuthV2>
 
     @GET("${PROFILE}/{param}")

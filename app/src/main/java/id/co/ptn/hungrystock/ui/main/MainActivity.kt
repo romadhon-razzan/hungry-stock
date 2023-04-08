@@ -157,7 +157,7 @@ class MainActivity : BaseActivity() {
                     } else {
                         val dialog = InfoDialog(this)
                         dialog.setTitle("Pesan")
-                        dialog.setMessage("Maaf akun ini sudah digunakan pada perangkat lain. Silakan logout akun Anda, kemudian coba login kembali menggunakan perangkat ini.")
+                        dialog.setMessage("Maaf akun ini sudah digunakan pada perangkat lain. Silakan login ulang untuk melanjutkan aplikasi pada perangkat ini.")
                         dialog.setCancelable(false)
                         dialog.setListener(object : InfoDialog.Listener{
                             override fun onPositiveClick() {
