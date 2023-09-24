@@ -13,6 +13,7 @@ import id.co.ptn.hungrystock.bases.BaseFragment
 import id.co.ptn.hungrystock.core.network.RunningServiceType
 import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.FragmentPageFiveBinding
+import id.co.ptn.hungrystock.helper.extension.isValidUrl
 import id.co.ptn.hungrystock.models.landing.ResponseBooksData
 import id.co.ptn.hungrystock.models.onboard.Books
 import id.co.ptn.hungrystock.router.Router
@@ -81,7 +82,11 @@ class PageFiveFragment : BaseFragment() {
     private fun initList() {
         bookListAdapter = BookListAdapter(viewModel?.books ?: mutableListOf(), object : BookListAdapter.Listener{
             override fun itemClicked(books: ResponseBooksData) {
-                books.tokopediaUrl?.let { url -> openUrlPage(url) }
+                books.tokopediaUrl?.let { url ->
+                    if (url.isNotEmpty() && url.isValidUrl()) {
+                        openUrlPage(url, requireContext())
+                    }
+                }
             }
         })
         binding.recyclerView.apply {
