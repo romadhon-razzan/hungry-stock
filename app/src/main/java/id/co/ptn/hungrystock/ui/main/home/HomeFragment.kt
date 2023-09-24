@@ -1,5 +1,7 @@
 package id.co.ptn.hungrystock.ui.main.home
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,6 +24,8 @@ import id.co.ptn.hungrystock.config.TOKEN
 import id.co.ptn.hungrystock.core.network.RunningServiceType
 import id.co.ptn.hungrystock.core.network.running_service
 import id.co.ptn.hungrystock.databinding.HomeFragmentBinding
+import id.co.ptn.hungrystock.helper.extension.isValidUrl
+import id.co.ptn.hungrystock.helper.extension.printToLog
 import id.co.ptn.hungrystock.models.User
 import id.co.ptn.hungrystock.models.main.home.*
 import id.co.ptn.hungrystock.ui.general.view_model.OtpViewModel
@@ -83,8 +87,9 @@ class HomeFragment : BaseFragment() {
         eventListAdapter = EventListAdapter(viewModel?.getEvents() ?: mutableListOf(), object : EventListAdapter.Listener{
             override fun openConference(url: String) {
                 if (!User.isExpired(childFragmentManager, sessionManager?.user?.membershipExpDate ?: 0)){
-                    if (url.isNotEmpty()) {
-                        openUrlPage(url)
+                    if (url.isNotEmpty() && url.isValidUrl()) {
+                        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        requireActivity().startActivity(browserIntent)
                     } else {
                         Toast.makeText(requireContext(), "Link belum disiapkan", Toast.LENGTH_SHORT).show()
                     }

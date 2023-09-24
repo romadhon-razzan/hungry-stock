@@ -61,7 +61,9 @@ class PageTwoFragment : BaseFragment() {
     }
 
     private fun initListener() {
-        binding?.cardAnnualFee?.setOnClickListener { openUrlPage(MEMBERSHIP) }
+        binding?.cardAnnualFee?.setOnClickListener {
+            openUrlPage(MEMBERSHIP, requireContext())
+        }
     }
 
     private fun initList() {
